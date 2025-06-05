@@ -1,7 +1,7 @@
 import apiRequest, { type ApiResponse } from "../../../config/axios";
 
 export const loginAccount = async (data: object) => {
-  const response: ApiResponse<{ token: string }> = await apiRequest({
+  const response: { data: { token: string } } = await apiRequest({
     method: "POST",
     url: "/auth/login",
     data,

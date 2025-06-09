@@ -1,8 +1,8 @@
-import { DataTable } from "@/components/Table";
 import { columns } from "./Column";
 import { useGetPinjaman } from "@/networks/pinjaman";
-import Filter from "@/components/Filter";
 import { useSearchParams } from "react-router-dom";
+import ListLayout from "@/components/ListLayout";
+import ButtonAddPinjaman from "./components/ButtonAddPinjaman";
 
 const PinjamanList = () => {
   const [searchParams] = useSearchParams();
@@ -10,28 +10,34 @@ const PinjamanList = () => {
 
   const { data = [] } = useGetPinjaman({ status });
   return (
-    <div>
-      <Filter
-        queryKey="status"
-        label="Status"
-        options={[
+    <>
+      <ListLayout
+        columns={columns}
+        data={data}
+        title="Pinjaman"
+        filters={[
           {
-            value: "lunas",
-            label: "Lunas",
-          },
-          {
-            value: "disetujui",
-            label: "Disetujui",
-          },
-          {
-            value: "ditolak",
-            label: "Ditolak",
+            queryKey: "status",
+            label: "Status",
+            options: [
+              {
+                value: "lunas",
+                label: "Lunas",
+              },
+              {
+                value: "disetujui",
+                label: "Disetujui",
+              },
+              {
+                value: "ditolak",
+                label: "Ditolak",
+              },
+            ],
           },
         ]}
-        className="mb-5"
+        extendButtons={<ButtonAddPinjaman />}
       />
-      <DataTable columns={columns} data={data} />
-    </div>
+    </>
   );
 };
 

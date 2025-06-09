@@ -3,7 +3,7 @@ import Chips from "@/components/Chips";
 import { STATUS_PINJAMAN_OPTIONS } from "@/constant/pinjaman";
 import type { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "date-fns";
-import ActionPinjaman from "./components/ActionPinjaman";
+import ActionDetail from "./components/ActionDetail";
 
 export const columns: ColumnDef<PinjamanProps>[] = [
   {
@@ -52,7 +52,7 @@ export const columns: ColumnDef<PinjamanProps>[] = [
 
     cell: ({ row }) => {
       const data = row.original;
-      return <ActionPinjaman data={data} />;
+      return <ActionDetail data={data} />;
     },
   },
 ];

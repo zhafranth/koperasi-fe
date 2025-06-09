@@ -1,14 +1,14 @@
-import { DataTable } from "@/components/Table";
 import { columns } from "./Column";
 import { useGetTransaksi } from "@/networks/transaksi";
+import ListLayout from "@/components/ListLayout";
 
 const TransaksiList = () => {
   const { data = [] } = useGetTransaksi();
 
   return (
-    <div>
-      <DataTable columns={columns} data={data} />
-    </div>
+    <>
+      <ListLayout columns={columns} data={data} title="Transaksi" />
+    </>
   );
 };
 

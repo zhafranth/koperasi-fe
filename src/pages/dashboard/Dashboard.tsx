@@ -47,7 +47,7 @@ const Dashboard = () => {
     {
       title: "Pinjaman",
       icon: Wallet,
-      path: "/pinjaman",
+      path: "/pinjaman?status=disetujui",
     },
     {
       title: "Simpanan",

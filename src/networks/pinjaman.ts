@@ -5,6 +5,7 @@ export const useGetPinjaman = (params?: object) => {
   return useQuery({
     queryKey: ["pinjaman", "list", params],
     queryFn: () => getListPinjaman(params),
+    enabled: !!params,
   });
 };
 

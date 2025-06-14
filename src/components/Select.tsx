@@ -13,13 +13,19 @@ interface Props {
   }[];
   onChange: (value: string) => void;
   value: string;
+  placeholder?: string;
 }
 
-const Select: React.FC<Props> = ({ options = [], onChange, value }) => {
+const Select: React.FC<Props> = ({
+  options = [],
+  onChange,
+  value,
+  placeholder,
+}) => {
   return (
     <SelectUI onValueChange={onChange} value={value}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Theme" />
+        <SelectValue placeholder={placeholder || "Select"} />
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (

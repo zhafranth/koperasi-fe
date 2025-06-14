@@ -17,6 +17,7 @@ const Filter: React.FC<Props> = ({ queryKey, options, label, className }) => {
     const newParams = new URLSearchParams(searchParams);
 
     newParams.set(queryKey, e);
+    newParams.delete("page");
     setSearchParams(newParams);
   };
 

@@ -11,7 +11,7 @@ const Home = () => {
     navigate("/login");
   };
   return (
-    <div className="p-6 container mx-auto py-10 dark:bg-slate-950 dark:text-white min-h-screen">
+    <div className="p-6 container mx-auto py-10 dark:bg-slate-950 dark:text-white h-screen">
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold tracking-tight mb-6">
           Dashboard Koperasi
@@ -25,7 +25,7 @@ const Home = () => {
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 overflow-y-scroll">
         <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] hover:bg-gradient-to-br hover:from-blue-100 hover:via-blue-50 hover:to-slate-50 bg-gradient-to-br from-blue-50 via-white to-slate-50 dark:from-blue-900/30 dark:via-slate-900 dark:to-slate-800 dark:hover:from-blue-800/50 dark:hover:via-slate-800 dark:hover:to-slate-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Anggota</CardTitle>

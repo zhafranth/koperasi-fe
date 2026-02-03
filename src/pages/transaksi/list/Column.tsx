@@ -35,26 +35,11 @@ export const columns: ColumnDef<TransaksiProps>[] = [
     },
   },
   {
-    accessorKey: "tanggal",
-    header: "Tanggal",
+    accessorKey: "createdAt",
+    header: "Tanggal Input",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("tanggal"));
-      const formatted = formatDate(date, "dd MMMM yyyy");
-      return formatted;
-    },
-  },
-  {
-    accessorKey: "saldo_akhir",
-    header: "Saldo Akhir",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("saldo_akhir"));
-      const formatted = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(amount);
-
+      const date = new Date(row.getValue("createdAt"));
+      const formatted = formatDate(date, "dd MMM yyyy");
       return formatted;
     },
   },

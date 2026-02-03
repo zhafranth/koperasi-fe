@@ -21,16 +21,12 @@ const PinjamanList = () => {
             label: "Status",
             options: [
               {
+                value: "proses",
+                label: "Proses",
+              },
+              {
                 value: "lunas",
                 label: "Lunas",
-              },
-              {
-                value: "disetujui",
-                label: "Disetujui",
-              },
-              {
-                value: "ditolak",
-                label: "Ditolak",
               },
             ],
           },

@@ -29,7 +29,9 @@ apiRequest.interceptors.request.use((config) => {
 });
 
 apiRequest.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
     if (error.response && [401, 403].includes(error.response.status)) {
       // Token expired atau tidak valid
@@ -37,8 +39,11 @@ apiRequest.interceptors.response.use(
       localStorage.removeItem("token");
       window.location.href = "/login"; // Redirect ke login
     }
-    return toast.error("API Error 400");
-  }
+    const message =
+      error?.response?.data?.message ?? "Terjadi kesalahan pada server";
+    toast.error(message);
+    return Promise.reject(error);
+  },
 );
 
 export default apiRequest;

@@ -1,7 +1,7 @@
 import { getListAnggota, getDetailAnggota } from "@/api/anggota";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetAnggota = (params: object) => {
+export const useGetAnggota = (params?: object) => {
   return useQuery({
     queryKey: ["anggota", "list", params],
     queryFn: () => getListAnggota(params),

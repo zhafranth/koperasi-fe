@@ -5,6 +5,7 @@ import InfoTotal from "./components/InfoTotal";
 import { TRANSAKSI_OPTIONS } from "@/constant/transaksi";
 import { useSearchParams } from "react-router-dom";
 import { removeEmptyObjectValues } from "@/utils";
+import ButtonAddTransaksi from "./components/ButtonAddTransaksi";
 
 const TransaksiList = () => {
   const [searchParams] = useSearchParams();
@@ -38,6 +39,7 @@ const TransaksiList = () => {
         ]}
         extraComponents={<InfoTotal />}
         pagination={pagination}
+        extendButtons={<ButtonAddTransaksi />}
       />
     </>
   );

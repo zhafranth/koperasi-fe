@@ -8,11 +8,11 @@ import {
 
 interface Props {
   options: {
-    value: string;
+    value: string | number;
     label: string;
   }[];
   onChange: (value: string) => void;
-  value: string;
+  value: string | number;
   placeholder?: string;
 }
 

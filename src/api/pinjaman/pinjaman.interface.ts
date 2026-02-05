@@ -23,3 +23,9 @@ export interface PinjamanDetailProps extends PinjamanProps {
   sisa: number;
   cicilan: CicilanProps[];
 }
+
+export interface CreatePinjamanPayload {
+  id_anggota: number;
+  jumlah: number;
+  keterangan?: string;
+}

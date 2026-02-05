@@ -16,6 +16,8 @@ import { useGetAnggota } from "@/networks/anggota";
 import InputNumber from "@/components/InputNumber";
 import InputRadioGroup from "@/components/InputRadioGroup";
 import { useCreateSimpanan } from "@/networks/simpanan";
+import { useCreatePinjaman } from "@/networks/pinjaman";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z
   .object({
@@ -45,6 +47,7 @@ const formSchema = z
           .optional(),
       })
       .optional(),
+    keterangan: z.string().optional(),
   })
   .superRefine((val, ctx) => {
     if (val.type === 1) {
@@ -72,8 +75,10 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const { mutate: createSimpanan, isPending } = useCreateSimpanan();
+  const { mutate: createSimpanan, isPending: isPendingSimpanan } = useCreateSimpanan();
+  const { mutate: createPinjaman, isPending: isPendingPinjaman } = useCreatePinjaman();
 
+  const isPending = isPendingSimpanan || isPendingPinjaman;
   const typeValue = form.watch("type");
 
   const { data: anggotaList = [] } = useGetAnggota();
@@ -84,25 +89,36 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
   }));
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { tanggal, type, ...rest } = values;
-    const { start: startDate, end: endDate } = tanggal ?? {};
+    const { tanggal, type, id_anggota, jumlah, keterangan } = values;
 
-    const payload = {
-      start: startDate
-        ? new Date(startDate.year, startDate.month - 1, 1).toISOString()
-        : null,
-      end: endDate
-        ? new Date(endDate.year, endDate.month - 1, 1).toISOString()
-        : null,
-      ...rest,
-    };
-    createSimpanan(payload, {
+    const onSuccessCallback = {
       onSuccess: () => {
         form.reset();
         onClose();
       },
-    });
+    };
+
+    if (type === 1) {
+      const { start: startDate, end: endDate } = tanggal ?? {};
+      const payload = {
+        start: startDate
+          ? new Date(startDate.year, startDate.month - 1, 1).toISOString()
+          : null,
+        end: endDate
+          ? new Date(endDate.year, endDate.month - 1, 1).toISOString()
+          : null,
+        id_anggota,
+        jumlah,
+      };
+      createSimpanan(payload, onSuccessCallback);
+    } else if (type === 3) {
+      const payload = {
+        id_anggota,
+        jumlah,
+        keterangan,
+      };
+      createPinjaman(payload, onSuccessCallback);
+    }
   };
 
   return (
@@ -178,24 +194,42 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
           />
 
           {typeValue === 1 && (
-            <>
-              <FormField
-                control={form.control}
-                name="tanggal"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tanggal</FormLabel>
-                    <FormControl>
-                      <MonthYearRange
-                        value={field.value}
-                        onChange={(v) => field.onChange(v)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
+            <FormField
+              control={form.control}
+              name="tanggal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tanggal</FormLabel>
+                  <FormControl>
+                    <MonthYearRange
+                      value={field.value}
+                      onChange={(v) => field.onChange(v)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {typeValue === 3 && (
+            <FormField
+              control={form.control}
+              name="keterangan"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Keterangan (Opsional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Masukkan keterangan pinjaman"
+                      value={field.value || ""}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )}
         </div>
       </Form>

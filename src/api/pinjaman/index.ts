@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../../../config/axios";
 import apiRequest from "../../../config/axios";
-import type { PinjamanProps, PinjamanDetailProps } from "./pinjaman.interface";
+import type { PinjamanProps, PinjamanDetailProps, CreatePinjamanPayload } from "./pinjaman.interface";
 
 export const getListPinjaman = async (params?: object) => {
   const response: ApiResponse<PinjamanProps[]> = await apiRequest({
@@ -19,4 +19,14 @@ export const getDetailPinjaman = async (id: number) => {
   });
 
   return response.data.data;
+};
+
+export const postCreatePinjaman = async (data: CreatePinjamanPayload) => {
+  const response: ApiResponse<undefined> = await apiRequest({
+    method: "POST",
+    url: "/pinjaman",
+    data,
+  });
+
+  return response.data;
 };

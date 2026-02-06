@@ -8,6 +8,7 @@ import Anggota from "./pages/anggota/list";
 import AnggotaDetail from "./pages/anggota/detail";
 import Transaksi from "./pages/transaksi/list";
 import Pinjaman from "./pages/pinjaman/list";
+import AnggotaPublicDetail from "./pages/anggota/public";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/anggota/:id" element={<AnggotaPublicDetail />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="dashboard" element={<div>dashboard</div>} />
           <Route path="transaksi" element={<Transaksi />} />

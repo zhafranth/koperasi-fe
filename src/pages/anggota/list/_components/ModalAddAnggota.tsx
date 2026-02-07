@@ -20,7 +20,13 @@ import {
 import { useEffect } from "react";
 import { useCreateAnggota } from "@/networks/auth";
 import { useGetKeluarga } from "@/networks/keluarga";
-import InputSelect from "@/components/InputSelect";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   nama: z.string().min(1, "Nama is required"),
@@ -240,14 +246,26 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
                   <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
                     Keluarga (Opsional)
                   </FormLabel>
-                  <FormControl>
-                    <InputSelect
-                      options={keluargaOptions}
-                      value={field.value}
-                      onChange={(v) => field.onChange(v as number | null)}
-                      inputPlaceholder="Cari keluarga..."
-                    />
-                  </FormControl>
+                  <Select
+                    value={field.value ? String(field.value) : undefined}
+                    onValueChange={(v) =>
+                      field.onChange(v === "__none__" ? null : Number(v))
+                    }
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]">
+                        <SelectValue placeholder="Pilih keluarga" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="__none__">Tidak ada</SelectItem>
+                      {keluargaOptions.map((opt) => (
+                        <SelectItem key={opt.value} value={String(opt.value)}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

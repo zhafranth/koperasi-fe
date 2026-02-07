@@ -6,14 +6,49 @@ import {
   Wallet,
   PiggyBank,
   BadgeDollarSign,
-  TrendingUp,
   Building2,
-  CheckCircle2,
   Search,
   ChevronRight,
+  CalendarDays,
+  Clock,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGetAnggota } from "@/networks/anggota";
+import { useGetEvents } from "@/networks/event";
+import EmptyState from "@/components/EmptyState";
+import ModalDetailEvent from "./dashboard/_components/ModalDetailEvent";
+import type { EventProps } from "@/api/event/event.interface";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
+
+dayjs.locale("id");
+
+const KATEGORI_COLOR: Record<string, string> = {
+  rapat: "text-blue-800 bg-blue-50",
+  pelatihan: "text-[#92400e] bg-[#c9a84c]/10",
+  sosial: "text-emerald-800 bg-emerald-50",
+  silaturahmi: "text-rose-800 bg-rose-50",
+  olahraga: "text-cyan-800 bg-cyan-50",
+  pendidikan: "text-indigo-800 bg-indigo-50",
+  kesehatan: "text-pink-800 bg-pink-50",
+  keagamaan: "text-teal-800 bg-teal-50",
+  musyawarah: "text-violet-800 bg-violet-50",
+  penggalangan_dana: "text-orange-800 bg-orange-50",
+};
+
+const KATEGORI_LABEL: Record<string, string> = {
+  rapat: "Rapat",
+  pelatihan: "Pelatihan",
+  sosial: "Sosial",
+  silaturahmi: "Silaturahmi",
+  olahraga: "Olahraga",
+  pendidikan: "Pendidikan",
+  kesehatan: "Kesehatan",
+  keagamaan: "Keagamaan",
+  musyawarah: "Musyawarah",
+  penggalangan_dana: "Penggalangan Dana",
+};
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -26,7 +61,9 @@ const formatCurrency = (amount: number) =>
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState<EventProps | null>(null);
   const { data: anggotaList = [] } = useGetAnggota();
+  const { data: events = [] } = useGetEvents();
 
   const filteredAnggota = anggotaList.filter((anggota) =>
     anggota.nama.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -175,75 +212,61 @@ const Home = () => {
             <ChartKoperasi />
           </div>
 
-          {/* Pembayaran */}
+          {/* Event Terdekat */}
           <div className="lg:col-span-2 kp-fade-up kp-d6">
             <div className="bg-white rounded-2xl shadow-sm border border-[#e7e5e0] h-full flex flex-col">
               <div className="px-6 py-5 border-b border-[#e7e5e0]">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-emerald-800" />
+                  <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-violet-800" />
                   </div>
                   <h3 className="text-base font-bold text-[#1c1917]">
-                    Pembayaran Iuran
+                    Event Terdekat
                   </h3>
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
-                {[
-                  {
-                    name: "Ahmad Dahlan",
-                    date: "5 Januari 2024",
-                    amount: 100000,
-                  },
-                  {
-                    name: "Budi Santoso",
-                    date: "3 Januari 2024",
-                    amount: 100000,
-                  },
-                  {
-                    name: "Citra Dewi",
-                    date: "2 Januari 2024",
-                    amount: 100000,
-                  },
-                  {
-                    name: "David Wijaya",
-                    date: "1 Januari 2024",
-                    amount: 100000,
-                  },
-                ].map((payment, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between px-6 py-4 hover:bg-stone-50/60 transition-colors"
-                    style={{
-                      borderBottom: index < 3 ? "1px solid #e7e5e0" : "none",
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-xs font-bold text-emerald-800">
-                        {payment.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .slice(0, 2)
-                          .join("")}
+                {events.length > 0 ? (
+                  events.slice(0, 4).map((event, index) => (
+                    <div
+                      key={event.id}
+                      className="group flex items-start gap-3 px-6 py-4 hover:bg-stone-50/60 transition-colors cursor-pointer"
+                      style={{
+                        borderBottom:
+                          index < Math.min(events.length, 4) - 1
+                            ? "1px solid #e7e5e0"
+                            : "none",
+                      }}
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d3b2c] to-[#145a3f] flex items-center justify-center shrink-0 mt-0.5">
+                        <CalendarDays className="w-4 h-4 text-[#c9a84c]" />
                       </div>
-                      <div>
-                        <p className="font-semibold text-sm text-[#1c1917]">
-                          {payment.name}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-semibold text-sm text-[#1c1917] truncate">
+                            {event.title}
+                          </p>
+                        </div>
+                        <p className="text-xs text-[#a8a29e] flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {dayjs(event.tanggal).format("D MMMM YYYY")}
                         </p>
-                        <p className="text-xs text-[#a8a29e]">{payment.date}</p>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sm text-emerald-700">
-                        +{formatCurrency(payment.amount)}
-                      </p>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3" />
-                        Lunas
+                      <span
+                        className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${KATEGORI_COLOR[event.kategori] || "text-gray-800 bg-gray-50"}`}
+                      >
+                        {KATEGORI_LABEL[event.kategori] || event.kategori}
                       </span>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={CalendarDays}
+                    title="Tidak ada event"
+                    description="Tidak ada event yang akan datang"
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -370,6 +393,12 @@ const Home = () => {
           Dashboard ringkasan koperasi
         </p>
       </footer>
+
+      <ModalDetailEvent
+        isOpen={!!selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+        event={selectedEvent}
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import type { TransaksiProps } from "@/api/transaksi/transaksi.interface";
 import { formatDate } from "date-fns";
 import Chips from "@/components/Chips";
 import { TRANSAKSI_OPTIONS } from "@/constant/transaksi";
+import { formatCurrency } from "@/lib/utils";
 
 export const columns: ColumnDef<TransaksiProps>[] = [
   {
@@ -22,14 +23,9 @@ export const columns: ColumnDef<TransaksiProps>[] = [
     header: "Jumlah",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("jumlah"));
-      const formatted = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      }).format(amount);
-
       return (
         <p className={`${amount < 0 ? "text-red-600" : "text-green-600"}`}>
-          {formatted}
+          {formatCurrency(amount)}
         </p>
       );
     },

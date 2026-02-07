@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/InputNumber";
 import { useCicilan } from "@/networks/cicilan";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type React from "react";
@@ -64,11 +65,11 @@ const TabPayment: React.FC<Props> = ({ changeContent, data }) => {
             <FormItem>
               <FormLabel>Jumlah</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
+                <InputNumber
+                  thousandSeparator
                   placeholder="Masukkan jumlah"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  value={field.value}
+                  onChange={(v) => field.onChange(v as number)}
                 />
               </FormControl>
               <FormMessage />

@@ -21,14 +21,7 @@ import { useParams } from "react-router-dom";
 import { SkeletonDetail } from "@/components/Skeleton";
 import useToggle from "@/hooks/useToggle";
 import ModalEditAnggota from "../list/_components/ModalEditAnggota";
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+import { formatCurrency } from "@/lib/utils";
 
 const InfoRow = ({
   icon,

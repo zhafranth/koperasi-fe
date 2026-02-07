@@ -1,5 +1,6 @@
 import type { CicilanProps } from "@/api/pinjaman/pinjaman.interface";
 import { formatDate } from "date-fns";
+import { formatCurrency } from "@/lib/utils";
 
 interface Props {
   data: CicilanProps;
@@ -18,7 +19,7 @@ const ItemCicilan: React.FC<Props> = ({ data, index }) => {
           </p>
         </div>
         <div className="text-right">
-          <p className="font-medium">Rp {jumlah}</p>
+          <p className="font-medium">{formatCurrency(jumlah)}</p>
           <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
             Lunas
           </span>

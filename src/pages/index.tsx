@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "@/lib/utils";
 import { useGetAnggota } from "@/networks/anggota";
 import { useGetEvents } from "@/networks/event";
 import EmptyState from "@/components/EmptyState";
@@ -49,14 +50,6 @@ const KATEGORI_LABEL: Record<string, string> = {
   musyawarah: "Musyawarah",
   penggalangan_dana: "Penggalangan Dana",
 };
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
 
 const Home = () => {
   const navigate = useNavigate();

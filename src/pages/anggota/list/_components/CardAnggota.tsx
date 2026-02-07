@@ -2,19 +2,12 @@ import type { AnggotaProps } from "@/api/anggota/anggota.interface";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
 
 interface Props {
   data: AnggotaProps;
   onEdit?: (id: number) => void;
 }
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
 
 const getInitials = (name: string) => {
   return name

@@ -1,14 +1,7 @@
 import { useGetTransaksiTotal } from "@/networks/transaksi";
 import { PiggyBank, Wallet, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+import { formatCurrency } from "@/lib/utils";
 
 const InfoTotal = () => {
   const { data } = useGetTransaksiTotal();
@@ -58,7 +51,7 @@ const InfoTotal = () => {
               {info.title}
             </h3>
             <p className={`text-base font-bold ${info.valueColor}`}>
-              {info.value ? formatCurrency(info.value) : "Rp 0"}
+              {formatCurrency(info.value || 0)}
             </p>
           </div>
         </div>

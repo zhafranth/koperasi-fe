@@ -4,6 +4,7 @@ import { STATUS_PINJAMAN_OPTIONS } from "@/constant/pinjaman";
 import type { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "date-fns";
 import ActionDetail from "./components/ActionDetail";
+import { formatCurrency } from "@/lib/utils";
 
 export const columns: ColumnDef<PinjamanProps>[] = [
   {
@@ -27,14 +28,7 @@ export const columns: ColumnDef<PinjamanProps>[] = [
     header: "Jumlah",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("jumlah"));
-      const formatted = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(amount);
-
-      return <p>{formatted}</p>;
+      return <p>{formatCurrency(amount)}</p>;
     },
   },
   {

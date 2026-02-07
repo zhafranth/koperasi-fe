@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/id";
 import EmptyState from "@/components/EmptyState";
 import { useState } from "react";
+import { formatCurrency } from "@/lib/utils";
 
 dayjs.locale("id");
 
@@ -48,14 +49,6 @@ const KATEGORI_LABEL: Record<string, string> = {
   musyawarah: "Musyawarah",
   penggalangan_dana: "Penggalangan Dana",
 };
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
 
 const stats = [
   {

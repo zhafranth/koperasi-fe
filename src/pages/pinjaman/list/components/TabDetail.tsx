@@ -4,6 +4,7 @@ import ItemCicilan from "./ItemCicilan";
 import { Check } from "lucide-react";
 import { formatDate } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/utils";
 
 interface Props {
   data?: PinjamanDetailProps;
@@ -72,11 +73,11 @@ const TabDetail: React.FC<Props> = ({ data, changeContent }) => {
         <div className=" flex items-center justify-between pt-4">
           <div>
             <p className="text-sm font-medium text-gray-500">Total Cicilan</p>
-            <p className="text-lg font-semibold">Rp {jumlah}</p>
+            <p className="text-lg font-semibold">{formatCurrency(jumlah || 0)}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500">Sisa Cicilan</p>
-            <p className="text-lg font-semibold">Rp {sisa}</p>
+            <p className="text-lg font-semibold">{formatCurrency(sisa || 0)}</p>
           </div>
         </div>
       )}

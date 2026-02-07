@@ -21,14 +21,7 @@ import { useGetAnggotaDetail } from "@/networks/anggota";
 import { SkeletonDetail } from "@/components/Skeleton";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
-
-const formatCurrency = (amount: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+import { formatCurrency } from "@/lib/utils";
 
 const InfoRow = ({
   icon,

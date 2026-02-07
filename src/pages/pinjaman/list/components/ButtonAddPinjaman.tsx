@@ -10,9 +10,9 @@ const ButtonAddPinjaman = () => {
       <Button
         disabled
         onClick={toggle}
-        className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+        className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
       >
-        <PlusIcon className="h-5 w-5 mr-2 animate-pulse" />
+        <PlusIcon className="h-4 w-4 mr-2" />
         Pinjaman
       </Button>
 

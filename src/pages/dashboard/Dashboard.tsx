@@ -20,10 +20,9 @@ const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAuthenticated = !!localStorage.getItem("token"); // atau cek dari context/auth store
+  const isAuthenticated = !!localStorage.getItem("token");
 
   const logout = () => {
-    // Logout logic
     localStorage.removeItem("token");
     navigate("/login");
   };
@@ -59,12 +58,12 @@ const Dashboard = () => {
   if (!isAuthenticated) return <Navigate to="/login" />;
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-[#f7f5f0]">
       {/* Mobile Menu Button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 left-4 md:hidden z-50"
+        className="absolute top-4 left-4 md:hidden z-50 text-white hover:bg-white/10"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -73,70 +72,76 @@ const Dashboard = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed md:static inset-y-0 left-0 w-64 bg-white border-r shadow-sm transform transition-transform duration-200 ease-in-out z-40 flex flex-col",
+          "fixed md:static inset-y-0 left-0 w-64 bg-gradient-to-b from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] transform transition-transform duration-300 ease-in-out z-40 flex flex-col shadow-xl",
           {
             "-translate-x-full md:translate-x-0": !isOpen,
             "translate-x-0": isOpen,
           }
         )}
       >
-        <div className="p-6 border-b">
-          <div className="flex items-center gap-2">
-            <Building2 className="w-6 h-6 text-blue-600 transition-all duration-300 hover:scale-110 hover:rotate-6 cursor-pointer" />
-            <h2 className="text-xl font-bold text-gray-800">Koperasi App</h2>
+        {/* Logo */}
+        <div className="p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#c9a84c] flex items-center justify-center shadow-lg">
+              <Building2 className="w-5 h-5 text-[#0d3b2c]" />
+            </div>
+            <h2 className="text-lg font-bold text-white font-serif">
+              Koperasi
+            </h2>
           </div>
         </div>
+
         {/* Navigation Menu */}
-        <nav className="flex-1 space-y-3.5 p-4">
-          {menus.map((menu) => (
-            <Link
-              key={menu.path}
-              to={`/dashboard${menu.path}`}
-              onClick={() => setIsOpen(false)}
-            >
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full mb-2 justify-start gap-3 h-12 transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 text-gray-600 rounded-lg",
-                  {
-                    "bg-blue-50 text-blue-600 font-medium shadow-sm ring-1 ring-blue-100":
-                      location.pathname
-                        .replace("/dashboard", "")
-                        .includes(menu.path),
-                  }
-                )}
+        <nav className="flex-1 p-4 space-y-1">
+          {menus.map((menu) => {
+            const isActive = location.pathname
+              .replace("/dashboard", "")
+              .includes(menu.path);
+            return (
+              <Link
+                key={menu.path}
+                to={`/dashboard${menu.path}`}
+                onClick={() => setIsOpen(false)}
               >
-                <menu.icon
-                  className={cn("h-5 w-5", {
-                    "text-blue-500": location.pathname
-                      .replace("/dashboard", "")
-                      .includes(menu.path),
-                  })}
-                />
-                {menu.title}
-              </Button>
-            </Link>
-          ))}
+                <div
+                  className={cn(
+                    "flex items-center gap-3 h-11 px-4 rounded-xl text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "bg-[#c9a84c]/15 text-[#c9a84c]"
+                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                  )}
+                >
+                  <menu.icon
+                    className={cn(
+                      "h-[18px] w-[18px]",
+                      isActive ? "text-[#c9a84c]" : ""
+                    )}
+                  />
+                  {menu.title}
+                </div>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Profile Section */}
-        <div className="border-t p-5 bg-gradient-to-b from-gray-50 to-gray-100">
-          <div className="flex items-center space-x-3 mb-5">
-            <div className="w-11 h-11 rounded-full bg-white shadow-sm ring-1 ring-gray-100 flex items-center justify-center">
-              <Users className="h-6 w-6 text-blue-500" />
+        <div className="border-t border-white/10 p-5">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-[#c9a84c] flex items-center justify-center text-sm font-bold text-[#0d3b2c] font-serif">
+              JD
             </div>
             <div>
-              <p className="font-semibold text-gray-900">John Doe</p>
-              <p className="text-sm text-gray-500">Admin</p>
+              <p className="font-semibold text-sm text-white">John Doe</p>
+              <p className="text-xs text-white/40">Admin</p>
             </div>
           </div>
           <Button
-            variant="destructive"
-            className="w-full gap-2 transition-all duration-200 hover:scale-[0.98] active:scale-95 bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 shadow-sm"
+            variant="ghost"
+            className="w-full gap-2 h-10 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition-all duration-200 justify-start"
             size="sm"
             onClick={logout}
           >
-            <LogOut className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+            <LogOut className="h-4 w-4" />
             Logout
           </Button>
         </div>
@@ -145,7 +150,7 @@ const Dashboard = () => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm md:hidden z-30"
           onClick={() => setIsOpen(false)}
         />
       )}

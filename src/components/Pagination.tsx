@@ -35,10 +35,10 @@ export function Pagination({ pagination }: PaginationProps) {
           <PaginationItem>
             <PaginationPrevious
               aria-disabled={true}
-              className={`hover:cursor-pointer ${
+              className={`hover:cursor-pointer rounded-xl ${
                 page === 1
-                  ? "pointer-events-none hover:cursor-not-allowed bg-gray-200"
-                  : ""
+                  ? "pointer-events-none hover:cursor-not-allowed bg-[#f5f0e8] text-[#a8a29e]"
+                  : "hover:bg-[#f5f0e8]"
               }`}
               onClick={() => handleLinkPage(Number(page) - 1)}
             />
@@ -46,11 +46,12 @@ export function Pagination({ pagination }: PaginationProps) {
           {Array.from({ length: total_pages }, (_, i) => i + 1).map((num) => {
             return (
               <PaginationItem
+                key={num}
                 className={`${
                   Number(page) === num
-                    ? "bg-blue-200 rounded-md text-blue-500"
-                    : ""
-                } cursor-pointer`}
+                    ? "bg-[#145a3f] rounded-xl text-white"
+                    : "hover:bg-[#f5f0e8] rounded-xl"
+                } cursor-pointer transition-colors`}
                 onClick={() => handleLinkPage(num)}
               >
                 <PaginationLink>{num}</PaginationLink>
@@ -59,10 +60,10 @@ export function Pagination({ pagination }: PaginationProps) {
           })}
           <PaginationItem>
             <PaginationNext
-              className={`hover:cursor-pointer ${
+              className={`hover:cursor-pointer rounded-xl ${
                 Number(page) === total_pages
-                  ? "pointer-events-none hover:cursor-not-allowed bg-gray-200"
-                  : ""
+                  ? "pointer-events-none hover:cursor-not-allowed bg-[#f5f0e8] text-[#a8a29e]"
+                  : "hover:bg-[#f5f0e8]"
               }`}
               onClick={() => handleLinkPage(Number(page) + 1)}
             />

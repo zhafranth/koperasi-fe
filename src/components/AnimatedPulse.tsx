@@ -7,18 +7,19 @@ interface AnimatedPulseProps {
 
 const AnimatedPulse: React.FC<AnimatedPulseProps> = ({
   size = "md",
-  color = "blue",
+  color = "emerald",
 }) => {
-  // Menentukan ukuran berdasarkan prop size
   const sizeClasses = {
     sm: { inner: "w-2 h-2", outer: "w-3 h-3" },
     md: { inner: "w-2 h-2", outer: "w-4 h-4" },
     lg: { inner: "w-3 h-3", outer: "w-6 h-6" },
   };
 
-  // Menentukan warna berdasarkan prop color
   const getColorClasses = (colorName: string) => {
     const colorMap: Record<string, { bg: string; pulse: string }> = {
+      emerald: { bg: "bg-emerald-500", pulse: "bg-emerald-400" },
+      amber: { bg: "bg-amber-500", pulse: "bg-amber-400" },
+      gold: { bg: "bg-[#c9a84c]", pulse: "bg-[#c9a84c]/70" },
       blue: { bg: "bg-blue-500", pulse: "bg-blue-400" },
       red: { bg: "bg-red-500", pulse: "bg-red-400" },
       green: { bg: "bg-green-500", pulse: "bg-green-400" },
@@ -29,18 +30,16 @@ const AnimatedPulse: React.FC<AnimatedPulseProps> = ({
       gray: { bg: "bg-gray-500", pulse: "bg-gray-400" },
     };
 
-    return colorMap[colorName] || { bg: colorName, pulse: colorName }; // Gunakan nilai langsung jika tidak ada di map
+    return colorMap[colorName] || { bg: colorName, pulse: colorName };
   };
 
   const colorClasses = getColorClasses(color);
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* Lingkaran luar yang berpulse */}
       <div
         className={`absolute ${sizeClasses[size].outer} ${colorClasses.pulse} rounded-full animate-ping opacity-75`}
       />
-      {/* Lingkaran dalam yang statis */}
       <div
         className={`relative ${sizeClasses[size].inner} ${colorClasses.bg} rounded-full`}
       />

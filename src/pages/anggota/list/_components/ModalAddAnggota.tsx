@@ -79,9 +79,11 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] rounded-2xl border-[#e7e5e0]">
         <DialogHeader className="flex flex-row items-center justify-between">
-          <DialogTitle>Tambah Anggota Baru</DialogTitle>
+          <DialogTitle className="text-lg text-[#1c1917]">
+            Tambah Anggota Baru
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -90,9 +92,15 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="nama"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nama</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    Nama
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukkan nama" {...field} />
+                    <Input
+                      placeholder="Masukkan nama"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,9 +111,15 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    Username
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukkan username" {...field} />
+                    <Input
+                      placeholder="Masukkan username"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,11 +130,14 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="Masukkan password"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
                       {...field}
                     />
                   </FormControl>
@@ -133,9 +150,15 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="nik"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>NIK</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    NIK
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukkan NIK" {...field} />
+                    <Input
+                      placeholder="Masukkan NIK"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,9 +169,15 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="no_telepon"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>No. Telepon</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    No. Telepon
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukkan no telepon" {...field} />
+                    <Input
+                      placeholder="Masukkan no telepon"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,11 +188,14 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder="Masukkan email"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
                       {...field}
                     />
                   </FormControl>
@@ -176,27 +208,33 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               name="alamat"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Alamat</FormLabel>
+                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
+                    Alamat
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Masukkan alamat" {...field} />
+                    <Input
+                      placeholder="Masukkan alamat"
+                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-4 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="hover:bg-gray-100 transition-colors duration-200"
+                className="rounded-xl border-[#e7e5e0] text-[#78716c] hover:bg-[#f5f0e8] hover:text-[#1c1917]"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
                 disabled={!isValid}
-                className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white shadow-md hover:shadow-lg transition-all duration-200"
+                className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Simpan
               </Button>

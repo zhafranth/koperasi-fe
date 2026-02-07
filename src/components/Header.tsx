@@ -12,10 +12,10 @@ interface Props {
 
 const Header: React.FC<Props> = ({ title, filters = [], extendButtons }) => {
   return (
-    <div>
-      <h2 className="text-3xl font-semibold">{title}</h2>
-      <div className="my-4 h-[1px] w-full bg-gray-300" />
-      <div className="flex  mb-6">
+    <div className="kp-fade-up">
+      <h2 className="text-2xl font-bold text-[#1c1917]">{title}</h2>
+      <div className="my-4 h-[1px] w-full bg-[#e7e5e0]" />
+      <div className="flex mb-6">
         {filters?.map(({ label, options, queryKey }, index) => (
           <Filter
             key={index}

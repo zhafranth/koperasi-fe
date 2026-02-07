@@ -1,6 +1,14 @@
-import AnimatedPulse from "@/components/AnimatedPulse";
 import { useGetTransaksiTotal } from "@/networks/transaksi";
+import { PiggyBank, Wallet, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
+
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
 
 const InfoTotal = () => {
   const { data } = useGetTransaksiTotal();
@@ -10,34 +18,47 @@ const InfoTotal = () => {
       {
         title: "Jumlah Dana",
         value: jumlah_dana,
-        color: "blue",
+        icon: PiggyBank,
+        iconBg: "bg-emerald-50",
+        iconColor: "text-emerald-800",
+        valueColor: "text-emerald-800",
       },
       {
         title: "Jumlah Pinjaman",
         value: jumlah_pinjaman,
-        color: "red",
+        icon: Wallet,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-800",
+        valueColor: "text-amber-800",
       },
       {
         title: "Total Dana",
         value: total_dana,
-        color: "purple",
+        icon: TrendingUp,
+        iconBg: "bg-[#c9a84c]/10",
+        iconColor: "text-[#92400e]",
+        valueColor: "text-[#92400e]",
       },
     ];
   }, [data]);
   return (
-    <div className="grid grid-cols-3 gap-4 mb-4">
+    <div className="grid grid-cols-3 gap-4 mb-4 kp-fade-up kp-d1">
       {infos.map((info, index) => (
         <div
           key={index}
-          className="flex gap-x-4 items-center bg-white py-1 px-3 rounded-lg shadow"
+          className="flex gap-x-4 items-center bg-white py-3 px-4 rounded-2xl shadow-sm border border-[#e7e5e0] hover:shadow-md transition-all duration-300"
         >
-          <AnimatedPulse size="sm" color={info.color} />
+          <div
+            className={`w-10 h-10 rounded-xl ${info.iconBg} flex items-center justify-center shrink-0`}
+          >
+            <info.icon className={`w-4 h-4 ${info.iconColor}`} />
+          </div>
           <div>
-            <h3 className="text-xs font-semibold text-gray-700">
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#78716c]">
               {info.title}
             </h3>
-            <p className={`text-base font-bold text-${info.color}-600`}>
-              Rp {info.value?.toLocaleString("id-ID")}
+            <p className={`text-base font-bold ${info.valueColor}`}>
+              {info.value ? formatCurrency(info.value) : "Rp 0"}
             </p>
           </div>
         </div>

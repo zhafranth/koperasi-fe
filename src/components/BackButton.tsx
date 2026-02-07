@@ -13,7 +13,7 @@ const BackButton = ({ className }: BackButtonProps) => {
     <Button
       onClick={() => navigate(-1)}
       variant="ghost"
-      className={`group hover:bg-gray-100 ${className}`}
+      className={`group text-[#78716c] hover:text-[#1c1917] hover:bg-[#f5f0e8] rounded-xl ${className}`}
     >
       <ChevronLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
       Kembali

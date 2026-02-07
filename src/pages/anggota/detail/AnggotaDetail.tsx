@@ -1,6 +1,4 @@
 import BackButton from "@/components/BackButton";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetAnggotaDetail } from "@/networks/anggota";
 import { formatDate } from "date-fns";
@@ -12,8 +10,39 @@ import {
   Phone,
   User,
   UserCircle,
+  PiggyBank,
+  Wallet,
+  CheckCircle2,
+  Clock,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { useParams } from "react-router-dom";
+
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+
+const InfoRow = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) => (
+  <div className="flex gap-4">
+    <div className="flex items-center gap-2 w-36 shrink-0 text-[#a8a29e]">
+      {icon}
+      <span className="text-xs font-medium">{label}</span>
+    </div>
+    <p className="text-sm font-semibold text-[#1c1917]">{value}</p>
+  </div>
+);
 
 const AnggotaDetail = () => {
   const { id } = useParams();
@@ -31,193 +60,216 @@ const AnggotaDetail = () => {
     simpanan = [],
     pinjaman = [],
   } = data ?? {};
+
+  const initials = nama
+    ? nama
+        .split(" ")
+        .map((n: string) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : "";
+
   return (
-    <div className="p-6 space-y-6">
-      <BackButton />
+    <div className="space-y-6">
+      <div className="kp-fade-up">
+        <BackButton />
+      </div>
 
-      <Card className="w-full mx-auto py-0 overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-        <CardHeader className="border-b h-full bg-gradient-to-r from-blue-50 to-blue-100 pb-1! py-4 ">
-          <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <UserCircle className="h-4 w-4 text-blue-500" />
-            Informasi Anggota
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 p-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <UserCircle className="h-4 w-4" />
-                  <span className="text-xs font-medium">Nama Lengkap</span>
-                </div>
-                <p className="text-sm font-semibold">{nama}</p>
-              </div>
-
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <User className="h-4 w-4" />
-                  <span className="text-xs font-medium">Username</span>
-                </div>
-                <p className="text-sm font-semibold">{username || "-"}</p>
-              </div>
-
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <CalendarDays className="h-4 w-4" />
-                  <span className="text-xs font-medium">Tanggal Bergabung</span>
-                </div>
-                <p className="text-sm font-semibold">
-                  {tanggal_bergabung
-                    ? formatDate(tanggal_bergabung, "dd MMM yyyy")
-                    : "-"}
-                </p>
-              </div>
-
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <User className="h-4 w-4" />
-                  <span className="text-xs font-medium">NIK</span>
-                </div>
-                <p className="text-sm font-semibold">{nik || "-"}</p>
-              </div>
+      {/* Member Info Card */}
+      <div className="kp-fade-up kp-d1 bg-white rounded-2xl shadow-sm border border-[#e7e5e0] overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#0d3b2c] via-[#145a3f] to-[#1a6b50] px-6 py-5">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-[#c9a84c] flex items-center justify-center text-lg font-bold text-[#0d3b2c] font-serif shadow-lg">
+              {initials}
             </div>
+            <div>
+              <h2 className="text-lg font-bold text-white">{nama}</h2>
+              <p className="text-white/50 text-sm flex items-center gap-1.5">
+                <UserCircle className="w-3.5 h-3.5" />
+                {username || "-"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-            <div className="space-y-4">
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <Phone className="h-4 w-4" />
-                  <span className="text-xs font-medium">No. Telepon</span>
-                </div>
-                <p className="text-sm font-semibold">{no_telepon || "-"}</p>
-              </div>
-
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <Mail className="h-4 w-4" />
-                  <span className="text-xs font-medium">Email</span>
-                </div>
-                <p className="text-sm font-semibold">{email || "-"}</p>
-              </div>
-
-              <div className="flex gap-x-4">
-                <div className="flex items-center w-1/3 gap-2 text-gray-500">
-                  <MapPin className="h-4 w-4" />
-                  <span className="text-xs font-medium">Alamat</span>
-                </div>
-                <p className="text-sm font-semibold">{alamat || "-"}</p>
-              </div>
+        {/* Personal Info */}
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-5">
+              <InfoRow
+                icon={<User className="w-4 h-4" />}
+                label="NIK"
+                value={nik || "-"}
+              />
+              <InfoRow
+                icon={<Phone className="w-4 h-4" />}
+                label="No. Telepon"
+                value={no_telepon || "-"}
+              />
+              <InfoRow
+                icon={<Mail className="w-4 h-4" />}
+                label="Email"
+                value={email || "-"}
+              />
+            </div>
+            <div className="space-y-5">
+              <InfoRow
+                icon={<MapPin className="w-4 h-4" />}
+                label="Alamat"
+                value={alamat || "-"}
+              />
+              <InfoRow
+                icon={<CalendarDays className="w-4 h-4" />}
+                label="Bergabung"
+                value={
+                  tanggal_bergabung
+                    ? formatDate(tanggal_bergabung, "dd MMM yyyy", {
+                        locale: formatID,
+                      })
+                    : "-"
+                }
+              />
             </div>
           </div>
 
-          <div className="border-t pt-6 mt-4">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex flex-col">
-                  <span className="text-xs font-medium text-emerald-600/70 mb-1">
+          {/* Financial Summary */}
+          <div className="border-t border-[#e7e5e0] mt-6 pt-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-emerald-50 p-5 rounded-2xl border border-emerald-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+                    <PiggyBank className="w-5 h-5 text-emerald-800" />
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600">
                     Total Simpanan
                   </span>
-                  <span className="text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors">
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(saldo_simpanan || 0)}
-                  </span>
                 </div>
+                <p className="text-2xl font-bold text-emerald-800">
+                  {formatCurrency(saldo_simpanan || 0)}
+                </p>
               </div>
-              <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="flex flex-col">
-                  <span className="text-xs font-medium text-red-600/70 mb-1">
+              <div className="bg-amber-50 p-5 rounded-2xl border border-amber-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+                    <Wallet className="w-5 h-5 text-amber-800" />
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-600">
                     Total Pinjaman
                   </span>
-                  <span className="text-2xl font-bold text-red-600 group-hover:text-red-700 transition-colors">
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    }).format(jumlah_pinjaman || 0)}
-                  </span>
                 </div>
+                <p className="text-2xl font-bold text-amber-800">
+                  {formatCurrency(jumlah_pinjaman || 0)}
+                </p>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <div className="bg-white p-4 rounded-md">
+      {/* Tabs */}
+      <div className="kp-fade-up kp-d3 bg-white rounded-2xl shadow-sm border border-[#e7e5e0] p-6">
         <Tabs defaultValue="simpanan" className="w-full">
-          <TabsList className="flex w-full h-12 gap-2 p-1  bg-blue-50 rounded-lg">
+          <TabsList className="flex w-full h-12 gap-2 p-1 bg-[#f7f5f0] rounded-xl">
             <TabsTrigger
               value="simpanan"
-              className="flex-1 px-6 py-3 text-sm font-medium text-blue-700 rounded-md data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-300 hover:bg-blue-400 hover:text-white"
+              className="flex-1 px-6 py-3 text-sm font-medium text-[#78716c] rounded-lg data-[state=active]:bg-[#145a3f] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-300 hover:bg-[#e7e5e0] hover:text-[#1c1917]"
             >
               Simpanan
             </TabsTrigger>
             <TabsTrigger
               value="pinjaman"
-              className="flex-1 px-6 py-3 text-sm font-medium text-blue-700 rounded-md data-[state=active]:bg-blue-700 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-300 hover:bg-blue-400 hover:text-white"
+              className="flex-1 px-6 py-3 text-sm font-medium text-[#78716c] rounded-lg data-[state=active]:bg-[#145a3f] data-[state=active]:text-white data-[state=active]:shadow-sm transition-all duration-300 hover:bg-[#e7e5e0] hover:text-[#1c1917]"
             >
               Pinjaman
             </TabsTrigger>
           </TabsList>
+
           <TabsContent value="simpanan">
-            <div className="mt-6">
-              {simpanan?.map((item) => (
-                <Card
+            <div className="mt-6 space-y-3">
+              {simpanan?.map((item, index) => (
+                <div
                   key={item.id}
-                  className="px-6 border-blue-300 cursor-pointer hover:bg-blue-50 mb-4 transition-all"
+                  className="flex items-center justify-between p-4 rounded-xl border border-[#e7e5e0] hover:bg-stone-50/60 transition-colors"
                 >
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4">
-                      <Badge className="bg-blue-100 text-blue-700 rounded-full">
-                        Iuran Bualan
-                      </Badge>
-                      <p className="text-xl text-neutral-800 font-semibold">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                      <PiggyBank className="w-4 h-4 text-emerald-800" />
+                    </div>
+                    <div>
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800">
+                        Iuran Bulanan
+                      </span>
+                      <p className="text-sm font-semibold text-[#1c1917] mt-1">
                         {formatDate(new Date(item.tanggal), "MMMM yyyy", {
                           locale: formatID,
                         })}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-xl font-semibold text-blue-500">
-                        {item.jumlah.toLocaleString("id-ID", {
-                          maximumFractionDigits: 0,
-                          minimumFractionDigits: 0,
-                        })}
-                      </p>
-                    </div>
                   </div>
-                </Card>
+                  <p className="font-bold text-sm text-emerald-700">
+                    +{formatCurrency(item.jumlah)}
+                  </p>
+                </div>
               ))}
+              {simpanan?.length === 0 && (
+                <p className="text-center py-8 text-[#a8a29e]">
+                  Belum ada data simpanan
+                </p>
+              )}
             </div>
           </TabsContent>
+
           <TabsContent value="pinjaman">
-            <div className="mt-6">
+            <div className="mt-6 space-y-3">
               {pinjaman?.map((item) => (
-                <Card
+                <div
                   key={`pinjaman-${item.id}`}
-                  className="px-6 py-4 border-blue-300 cursor-pointer hover:bg-blue-50 mb-4 transition-all"
+                  className="p-4 rounded-xl border border-[#e7e5e0] hover:bg-stone-50/60 transition-colors"
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-neutral-500">10 Mei 2024</p>
-                      <p className="text-xl text-neutral-800 font-semibold">
+                      <p className="text-xs text-[#a8a29e]">
+                        {item.tanggal_pengajuan
+                          ? formatDate(
+                              new Date(item.tanggal_pengajuan),
+                              "dd MMM yyyy",
+                              { locale: formatID }
+                            )
+                          : "-"}
+                      </p>
+                      <p className="text-sm font-semibold text-[#1c1917] mt-0.5">
                         {item.keterangan}
                       </p>
                     </div>
-                    <div className="flex gap-x-4 items-center">
-                      <Badge className="bg-green-100 text-green-700 rounded-full">
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+                          item.status === "lunas"
+                            ? "bg-emerald-50 text-emerald-800"
+                            : "bg-amber-50 text-amber-800"
+                        }`}
+                      >
+                        {item.status === "lunas" ? (
+                          <CheckCircle2 className="w-3 h-3" />
+                        ) : (
+                          <Clock className="w-3 h-3" />
+                        )}
                         {item.status}
-                      </Badge>
-                      <p className="text-xl font-semibold text-blue-500">
-                        {item.jumlah.toLocaleString("id-ID", {})}
+                      </span>
+                      <p className="font-bold text-sm text-amber-700">
+                        {formatCurrency(item.jumlah)}
                       </p>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
+              {pinjaman?.length === 0 && (
+                <p className="text-center py-8 text-[#a8a29e]">
+                  Belum ada data pinjaman
+                </p>
+              )}
             </div>
           </TabsContent>
         </Tabs>

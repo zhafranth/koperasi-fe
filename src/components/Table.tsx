@@ -30,19 +30,19 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border shadow-sm overflow-hidden bg-white">
+    <div className="rounded-2xl border border-[#e7e5e0] shadow-sm overflow-hidden bg-white kp-fade-up kp-d2">
       <Table>
-        <TableHeader className="bg-slate-50">
+        <TableHeader className="bg-[#f7f5f0]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="border-b border-slate-200"
+              className="border-b border-[#e7e5e0]"
             >
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
                     key={header.id}
-                    className="py-3 font-semibold text-slate-700"
+                    className="py-3.5 text-[11px] font-semibold uppercase tracking-wider text-[#78716c]"
                   >
                     {header.isPlaceholder
                       ? null
@@ -58,16 +58,14 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row, index) => (
+            table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className={`hover:bg-slate-50 transition-colors ${
-                  index % 2 === 0 ? "bg-white" : "bg-slate-50/30"
-                }`}
+                className="hover:bg-stone-50/60 transition-colors border-b border-[#e7e5e0] last:border-b-0"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="py-3">
+                  <TableCell key={cell.id} className="py-4 text-sm text-[#1c1917]">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -77,9 +75,9 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center text-slate-500"
+                className="h-24 text-center text-[#a8a29e]"
               >
-                No results.
+                Tidak ada data.
               </TableCell>
             </TableRow>
           )}

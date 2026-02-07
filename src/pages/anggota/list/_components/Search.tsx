@@ -10,7 +10,6 @@ const Search = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
 
-    // Debounce the search params update
     const debouncedValue = setTimeout(() => {
       const value = e.target.value;
       const newParams = new URLSearchParams(searchParams);
@@ -40,18 +39,17 @@ const Search = () => {
         value={value}
         type="text"
         placeholder="Cari anggota berdasarkan nama..."
-        className="w-full pl-12 pr-4 py-3 bg-white/80 rounded-2xl border-2 border-gray-200
-                focus:border-blue-500 focus-visible:none focus:ring-2 focus:ring-blue-200 focus:outline-none
+        className="w-full pl-12 pr-4 py-3 bg-white rounded-2xl border border-[#e7e5e0]
+                focus:border-[#145a3f] focus-visible:ring-0 focus:ring-0 focus:outline-none
                 transition-all duration-300 ease-in-out
-                hover:border-blue-400 hover:shadow-md
-                text-gray-700 text-lg placeholder:text-gray-400"
+                hover:border-[#145a3f]/50 hover:shadow-md
+                text-[#1c1917] text-sm placeholder:text-[#a8a29e]
+                shadow-sm"
         onChange={handleChange}
       />
       <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-        <SearchIcon className="h-5 w-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-300 animate-pulse" />
+        <SearchIcon className="h-4 w-4 text-[#a8a29e] group-hover:text-[#145a3f] transition-colors duration-300" />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-100/20 via-purple-100/20 to-pink-100/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      <div className="absolute inset-0 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
     </div>
   );
 };

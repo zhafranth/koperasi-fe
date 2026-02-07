@@ -148,43 +148,7 @@ const AnggotaPublicDetail = () => {
   );
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap');
-
-        @keyframes kp-fade-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes kp-scale-in {
-          from { opacity: 0; transform: scale(0.92); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes kp-progress {
-          from { width: 0; }
-        }
-        .kp-fade-up {
-          animation: kp-fade-up 0.5s ease-out both;
-        }
-        .kp-scale-in {
-          animation: kp-scale-in 0.45s ease-out both;
-        }
-        .kp-progress-bar {
-          animation: kp-progress 1s ease-out 0.6s both;
-        }
-        .kp-d1 { animation-delay: 0.05s; }
-        .kp-d2 { animation-delay: 0.12s; }
-        .kp-d3 { animation-delay: 0.19s; }
-        .kp-d4 { animation-delay: 0.28s; }
-        .kp-d5 { animation-delay: 0.36s; }
-        .kp-d6 { animation-delay: 0.44s; }
-        .kp-d7 { animation-delay: 0.52s; }
-      `}</style>
-
-      <div
-        className="min-h-screen bg-[#f7f5f0]"
-        style={{ fontFamily: "Outfit, sans-serif" }}
-      >
+      <div className="min-h-screen bg-[#f7f5f0]">
         {/* Hero */}
         <header className="relative overflow-hidden bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#1a6b50]">
           {/* Decorative orbs */}
@@ -221,10 +185,7 @@ const AnggotaPublicDetail = () => {
             <div className="kp-fade-up flex flex-col md:flex-row items-center md:items-start gap-7">
               {/* Avatar */}
               <div className="relative shrink-0">
-                <div
-                  className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-bold shadow-2xl bg-[#c9a84c] text-[#0d3b2c]"
-                  style={{ fontFamily: "Fraunces, serif" }}
-                >
+                <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-bold shadow-2xl bg-[#c9a84c] text-[#0d3b2c] font-serif">
                   {initials}
                 </div>
                 <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg ring-2 ring-[#145a3f]">
@@ -236,8 +197,7 @@ const AnggotaPublicDetail = () => {
               <div className="text-center md:text-left">
                 <h1
                   className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight"
-                  style={{ fontFamily: "Fraunces, serif" }}
-                >
+>
                   {member.nama}
                 </h1>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
@@ -337,7 +297,6 @@ const AnggotaPublicDetail = () => {
           <section className="kp-fade-up kp-d4">
             <h2
               className="text-xl font-bold text-[#1c1917] mb-5"
-              style={{ fontFamily: "Fraunces, serif" }}
             >
               Informasi Pribadi
             </h2>
@@ -378,10 +337,7 @@ const AnggotaPublicDetail = () => {
           {/* Keluarga Terkait */}
           <section className="kp-fade-up kp-d5">
             <div className="flex items-center gap-3 mb-5">
-              <h2
-                className="text-xl font-bold text-[#1c1917]"
-                style={{ fontFamily: "Fraunces, serif" }}
-              >
+              <h2 className="text-xl font-bold text-[#1c1917]">
                 Keluarga Terkait
               </h2>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#c9a84c]/10 text-[#92400e] text-xs font-semibold">
@@ -430,7 +386,6 @@ const AnggotaPublicDetail = () => {
           <section className="kp-fade-up kp-d6">
             <h2
               className="text-xl font-bold text-[#1c1917] mb-5"
-              style={{ fontFamily: "Fraunces, serif" }}
             >
               Riwayat Simpanan
             </h2>
@@ -473,7 +428,6 @@ const AnggotaPublicDetail = () => {
           <section className="kp-fade-up kp-d7">
             <h2
               className="text-xl font-bold text-[#1c1917] mb-5"
-              style={{ fontFamily: "Fraunces, serif" }}
             >
               Riwayat Pinjaman
             </h2>
@@ -558,7 +512,6 @@ const AnggotaPublicDetail = () => {
           <section className="kp-fade-up kp-d7">
             <h2
               className="text-xl font-bold text-[#1c1917] mb-5"
-              style={{ fontFamily: "Fraunces, serif" }}
             >
               Riwayat Cicilan
             </h2>
@@ -600,10 +553,7 @@ const AnggotaPublicDetail = () => {
 
         {/* Footer */}
         <footer className="border-t border-[#e7e5e0] py-8 text-center bg-[#f7f5f0]">
-          <p
-            className="text-sm text-[#a8a29e]"
-            style={{ fontFamily: "Fraunces, serif" }}
-          >
+          <p className="text-sm text-[#a8a29e] font-serif">
             Koperasi Sejahtera Bersama
           </p>
           <p className="text-xs mt-1 text-[#d6d3d1]">
@@ -611,7 +561,6 @@ const AnggotaPublicDetail = () => {
           </p>
         </footer>
       </div>
-    </>
   );
 };
 

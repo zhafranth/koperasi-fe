@@ -18,24 +18,31 @@ const Anggota = () => {
 
   return (
     <>
-      <div className="p-6 space-y-6">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold tracking-tight">Daftar Anggota</h2>
+      <div className="space-y-6">
+        <div className="kp-fade-up flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-[#1c1917]">Daftar Anggota</h2>
           <Button
             onClick={onOpen}
-            className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium px-6 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+            className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
           >
-            <PlusIcon className="h-5 w-5 mr-2 animate-pulse" />
+            <PlusIcon className="h-4 w-4 mr-2" />
             Tambah Anggota
           </Button>
         </div>
 
-        <Search />
+        <div className="kp-fade-up kp-d1">
+          <Search />
+        </div>
 
         <div className="space-y-4">
-          {data.map((anggota, index) => (
-            <CardAnggota data={anggota} key={`anggota-${index}`} />
-          ))}
+          {data.map((anggota, index) => {
+            const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6", "kp-d7"];
+            return (
+              <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
+                <CardAnggota data={anggota} />
+              </div>
+            );
+          })}
         </div>
       </div>
 

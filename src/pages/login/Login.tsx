@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Building2, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,7 +40,6 @@ const Login = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    // Handle login logic here
     mutate(data, {
       onSuccess: () => {
         navigate("/dashboard/dashboard");
@@ -57,79 +49,134 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-100 via-white to-purple-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <Card className="w-[400px] shadow-xl">
-        <CardHeader className="space-y-1">
-          <div className="flex justify-center mb-4">
-            <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6 text-white"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
-              </svg>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#1a6b50] relative overflow-hidden">
+      {/* Decorative orbs */}
+      <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[radial-gradient(circle,rgba(201,168,76,0.15)_0%,transparent_70%)]" />
+      <div className="absolute -bottom-40 -left-24 w-96 h-96 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.06)_0%,transparent_70%)]" />
+
+      {/* Diagonal line pattern */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="kp-diag-login"
+            width="40"
+            height="40"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="40"
+              stroke="rgba(255,255,255,0.03)"
+              strokeWidth="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#kp-diag-login)" />
+      </svg>
+
+      <div className="kp-scale-in relative z-10 w-full max-w-[420px]">
+        <div className="bg-white rounded-2xl shadow-2xl border border-[#e7e5e0] overflow-hidden">
+          {/* Header */}
+          <div className="px-8 pt-8 pb-6 text-center">
+            <div className="flex justify-center mb-5">
+              <div className="w-14 h-14 rounded-2xl bg-[#c9a84c] flex items-center justify-center shadow-lg">
+                <Building2 className="w-7 h-7 text-[#0d3b2c]" />
+              </div>
             </div>
+            <h1 className="text-2xl font-bold text-[#1c1917] font-serif">
+              Selamat Datang
+            </h1>
+            <p className="text-sm text-[#a8a29e] mt-1">
+              Masuk ke akun koperasi Anda
+            </p>
           </div>
-          <CardTitle className="text-2xl font-bold text-center">
-            Welcome Back
-          </CardTitle>
-          <CardDescription className="text-center">
-            Login to access your koperasi account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                {...register("username")}
-                className={errors.username ? "border-red-500" : ""}
-              />
-              {errors.username && (
-                <p className="text-sm text-red-500">
-                  {errors.username.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                {...register("password")}
-                className={errors.password ? "border-red-500" : ""}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Logging in..." : "Login"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="w-full flex items-center justify-center gap-2"
-              onClick={() => navigate("/")}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Kembali ke Dashboard
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+
+          {/* Form */}
+          <div className="px-8 pb-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div className="space-y-2">
+                <Label
+                  htmlFor="username"
+                  className="text-xs font-semibold uppercase tracking-wider text-[#78716c]"
+                >
+                  Username
+                </Label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="w-4 h-4 text-[#a8a29e]" />
+                  </div>
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Masukkan username"
+                    {...register("username")}
+                    className={`pl-11 h-12 rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f] transition-all ${
+                      errors.username ? "border-red-400" : ""
+                    }`}
+                  />
+                </div>
+                {errors.username && (
+                  <p className="text-xs text-red-500">
+                    {errors.username.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label
+                  htmlFor="password"
+                  className="text-xs font-semibold uppercase tracking-wider text-[#78716c]"
+                >
+                  Password
+                </Label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="w-4 h-4 text-[#a8a29e]" />
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Masukkan password"
+                    {...register("password")}
+                    className={`pl-11 h-12 rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f] transition-all ${
+                      errors.password ? "border-red-400" : ""
+                    }`}
+                  />
+                </div>
+                {errors.password && (
+                  <p className="text-xs text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Memproses..." : "Masuk"}
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full flex items-center justify-center gap-2 text-[#78716c] hover:text-[#1c1917] hover:bg-[#f5f0e8] rounded-xl"
+                onClick={() => navigate("/")}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Kembali ke Beranda
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

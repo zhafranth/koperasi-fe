@@ -22,18 +22,18 @@ const chartData = [
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
-    color: "#2563eb",
+    label: "Simpanan",
+    color: "#145a3f",
   },
   mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
+    label: "Pinjaman",
+    color: "#c9a84c",
   },
 } satisfies ChartConfig;
 
 const ChartKoperasi = () => {
   return (
-    <div className="w-4/6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg rounded-xl h-full border border-blue-100">
+    <div className="w-full p-5 bg-white shadow-sm rounded-2xl h-full border border-[#e7e5e0]">
       <ChartContainer config={chartConfig} className="w-full h-full">
         <BarChart
           accessibilityLayer
@@ -43,7 +43,7 @@ const ChartKoperasi = () => {
           <CartesianGrid
             vertical={false}
             strokeDasharray="3 3"
-            stroke="#e5e7eb"
+            stroke="#e7e5e0"
           />
 
           <XAxis
@@ -51,10 +51,10 @@ const ChartKoperasi = () => {
             tickLine={false}
             tickMargin={12}
             axisLine={false}
-            stroke="#6b7280"
+            stroke="#a8a29e"
           />
           <ChartTooltip
-            cursor={{ fill: "rgba(147, 197, 253, 0.1)" }}
+            cursor={{ fill: "rgba(20, 90, 63, 0.05)" }}
             content={<ChartTooltipContent />}
           />
           <ChartLegend
@@ -65,13 +65,13 @@ const ChartKoperasi = () => {
           <Bar
             dataKey="desktop"
             fill="var(--color-desktop)"
-            radius={[4, 4, 0, 0]}
+            radius={[6, 6, 0, 0]}
             animationDuration={1500}
           />
           <Bar
             dataKey="mobile"
             fill="var(--color-mobile)"
-            radius={[4, 4, 0, 0]}
+            radius={[6, 6, 0, 0]}
             animationDuration={1500}
           />
         </BarChart>

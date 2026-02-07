@@ -30,7 +30,7 @@ const Home = () => {
   const { data: anggotaList = [] } = useGetAnggota();
 
   const filteredAnggota = anggotaList.filter((anggota) =>
-    anggota.nama.toLowerCase().includes(searchQuery.toLowerCase())
+    anggota.nama.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -216,8 +216,7 @@ const Home = () => {
                     key={index}
                     className="flex items-center justify-between px-6 py-4 hover:bg-stone-50/60 transition-colors"
                     style={{
-                      borderBottom:
-                        index < 3 ? "1px solid #e7e5e0" : "none",
+                      borderBottom: index < 3 ? "1px solid #e7e5e0" : "none",
                     }}
                   >
                     <div className="flex items-center gap-3">
@@ -232,9 +231,7 @@ const Home = () => {
                         <p className="font-semibold text-sm text-[#1c1917]">
                           {payment.name}
                         </p>
-                        <p className="text-xs text-[#a8a29e]">
-                          {payment.date}
-                        </p>
+                        <p className="text-xs text-[#a8a29e]">{payment.date}</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -295,7 +292,14 @@ const Home = () => {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {filteredAnggota.map((anggota, index) => {
-                    const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6"];
+                    const delays = [
+                      "kp-d1",
+                      "kp-d2",
+                      "kp-d3",
+                      "kp-d4",
+                      "kp-d5",
+                      "kp-d6",
+                    ];
                     const initials = anggota.nama
                       .split(" ")
                       .map((n) => n[0])
@@ -340,34 +344,13 @@ const Home = () => {
                             <div className="flex items-center gap-1.5 mt-1">
                               <Phone className="w-3 h-3 text-[#a8a29e]" />
                               <p className="text-xs text-[#a8a29e]">
-                                {anggota.no_telepon}
+                                {anggota.no_telepon || "-"}
                               </p>
                             </div>
                           </div>
 
                           {/* Arrow */}
                           <ChevronRight className="w-4 h-4 text-[#d6d3d1] group-hover:text-[#c9a84c] transition-colors shrink-0" />
-                        </div>
-
-                        {/* Financial Summary */}
-                        <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#e7e5e0]/60">
-                          <div className="flex-1">
-                            <p className="text-[10px] uppercase tracking-wider text-[#a8a29e] mb-0.5">
-                              Simpanan
-                            </p>
-                            <p className="text-xs font-bold text-emerald-700">
-                              {formatCurrency(anggota.saldo_simpanan)}
-                            </p>
-                          </div>
-                          <div className="w-px h-8 bg-[#e7e5e0]" />
-                          <div className="flex-1">
-                            <p className="text-[10px] uppercase tracking-wider text-[#a8a29e] mb-0.5">
-                              Pinjaman
-                            </p>
-                            <p className="text-xs font-bold text-amber-700">
-                              {formatCurrency(anggota.jumlah_pinjaman)}
-                            </p>
-                          </div>
                         </div>
                       </div>
                     );

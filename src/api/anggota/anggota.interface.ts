@@ -14,11 +14,14 @@ export interface AnggotaDetailProps {
   alamat: string;
   no_telepon: string;
   email: string;
-  tanggal_bergabung: string;
+  tgl_gabung: string;
   status: string;
   saldo_simpanan: number;
   username: string;
+  jumlah_simpanan: number;
   jumlah_pinjaman: number;
+  jumlah_cicilan?: number;
+  total_cicilan?: number;
   simpanan: {
     id: number;
     id_jenis: number;
@@ -34,11 +37,22 @@ export interface AnggotaDetailProps {
     id: number;
     id_anggota: number;
     jumlah: number;
-    tanggal_pengajuan: string;
-    tanggal_disetujui: string;
-    tanggal_jatuh_tempo: string | null;
+    createdAt: string;
     status: string;
     keterangan: string;
+    sisa?: number;
     id_pengurus: number | null;
+  }[];
+  keluarga?: {
+    id: number;
+    nama: string;
+    hubungan: string;
+    no_telepon: string;
+  }[];
+  cicilan?: {
+    id: number;
+    jumlah: number;
+    tanggal_bayar: string;
+    keterangan: string;
   }[];
 }

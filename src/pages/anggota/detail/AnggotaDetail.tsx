@@ -58,7 +58,7 @@ const AnggotaDetail = () => {
     nik,
     no_telepon,
     saldo_simpanan,
-    tanggal_bergabung,
+    tgl_gabung,
     username,
     jumlah_pinjaman,
     simpanan = [],
@@ -128,8 +128,8 @@ const AnggotaDetail = () => {
                 icon={<CalendarDays className="w-4 h-4" />}
                 label="Bergabung"
                 value={
-                  tanggal_bergabung
-                    ? formatDate(tanggal_bergabung, "dd MMM yyyy", {
+                  tgl_gabung
+                    ? formatDate(tgl_gabung, "dd MMM yyyy", {
                         locale: formatID,
                       })
                     : "-"
@@ -235,11 +235,11 @@ const AnggotaDetail = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs text-[#a8a29e]">
-                        {item.tanggal_pengajuan
+                        {item.createdAt
                           ? formatDate(
-                              new Date(item.tanggal_pengajuan),
+                              new Date(item.createdAt),
                               "dd MMM yyyy",
-                              { locale: formatID }
+                              { locale: formatID },
                             )
                           : "-"}
                       </p>

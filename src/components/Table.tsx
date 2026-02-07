@@ -13,15 +13,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { SkeletonTableRows } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import { Inbox } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -57,7 +62,9 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            <SkeletonTableRows columns={columns.length} rows={5} />
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -75,9 +82,13 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center text-[#a8a29e]"
+                className="h-auto p-0"
               >
-                Tidak ada data.
+                <EmptyState
+                  icon={Inbox}
+                  title="Tidak ada data"
+                  description="Belum ada data yang tersedia untuk ditampilkan."
+                />
               </TableCell>
             </TableRow>
           )}

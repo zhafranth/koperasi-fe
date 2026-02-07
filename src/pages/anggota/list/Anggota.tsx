@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Users } from "lucide-react";
 import useToggle from "@/hooks/useToggle";
 import ModalAddAnggota from "./_components/ModalAddAnggota";
 
@@ -7,13 +7,15 @@ import { useGetAnggota } from "@/networks/anggota";
 import CardAnggota from "./_components/CardAnggota";
 import Search from "./_components/Search";
 import { useSearchParams } from "react-router-dom";
+import { SkeletonCard } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
 
 const Anggota = () => {
   const [searchParams] = useSearchParams();
 
   const queryObject = Object.fromEntries([...searchParams]);
 
-  const { data = [] } = useGetAnggota(queryObject);
+  const { data = [], isLoading } = useGetAnggota(queryObject);
   const { isOpen, onOpen, onClose } = useToggle();
 
   return (
@@ -35,14 +37,37 @@ const Anggota = () => {
         </div>
 
         <div className="space-y-4">
-          {data.map((anggota, index) => {
-            const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6", "kp-d7"];
-            return (
-              <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
-                <CardAnggota data={anggota} />
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className={`kp-fade-up kp-d${i + 1}`}>
+                <SkeletonCard />
               </div>
-            );
-          })}
+            ))
+          ) : data.length === 0 ? (
+            <EmptyState
+              icon={Users}
+              title="Belum ada anggota"
+              description="Data anggota akan muncul di sini setelah ditambahkan."
+              action={
+                <Button
+                  onClick={onOpen}
+                  className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl"
+                >
+                  <PlusIcon className="h-4 w-4 mr-2" />
+                  Tambah Anggota
+                </Button>
+              }
+            />
+          ) : (
+            data.map((anggota, index) => {
+              const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6", "kp-d7"];
+              return (
+                <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
+                  <CardAnggota data={anggota} />
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
 

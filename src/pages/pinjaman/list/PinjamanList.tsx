@@ -8,12 +8,13 @@ const PinjamanList = () => {
   const [searchParams] = useSearchParams();
   const status = searchParams.get("status") || "";
 
-  const { data = [] } = useGetPinjaman({ status });
+  const { data = [], isLoading } = useGetPinjaman({ status });
   return (
     <>
       <ListLayout
         columns={columns}
         data={data}
+        isLoading={isLoading}
         title="Pinjaman"
         filters={[
           {

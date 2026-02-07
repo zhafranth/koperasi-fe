@@ -11,15 +11,15 @@ const TransaksiList = () => {
   const [searchParams] = useSearchParams();
   const queryObject = Object.fromEntries([...searchParams]);
 
-  const { data } = useGetTransaksi(removeEmptyObjectValues(queryObject));
+  const { data, isLoading } = useGetTransaksi(removeEmptyObjectValues(queryObject));
   const { data: items = [], pagination } = data || {};
 
-  console.log("pagination", pagination);
   return (
     <>
       <ListLayout
         columns={columns}
         data={items}
+        isLoading={isLoading}
         title="Transaksi"
         filters={[
           {

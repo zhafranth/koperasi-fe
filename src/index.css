@@ -125,6 +125,10 @@
 @keyframes kp-progress {
   from { width: 0; }
 }
+@keyframes kp-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
 
 @layer base {
   * {
@@ -157,10 +161,17 @@
   .kp-d6 { animation-delay: 0.44s; }
   .kp-d7 { animation-delay: 0.52s; }
 
+  .kp-shimmer {
+    background: linear-gradient(90deg, #e7e5e0 0%, #f5f0e8 40%, #e7e5e0 80%);
+    background-size: 800px 100%;
+    animation: kp-shimmer 1.6s ease-in-out infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .kp-fade-up,
     .kp-scale-in,
-    .kp-progress-bar {
+    .kp-progress-bar,
+    .kp-shimmer {
       animation: none;
     }
   }

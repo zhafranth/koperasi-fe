@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useParams } from "react-router-dom";
+import { SkeletonDetail } from "@/components/Skeleton";
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -46,7 +47,10 @@ const InfoRow = ({
 
 const AnggotaDetail = () => {
   const { id } = useParams();
-  const { data } = useGetAnggotaDetail(Number(id));
+  const { data, isLoading } = useGetAnggotaDetail(Number(id));
+
+  if (isLoading) return <SkeletonDetail />;
+
   const {
     nama,
     alamat,
@@ -188,7 +192,7 @@ const AnggotaDetail = () => {
 
           <TabsContent value="simpanan">
             <div className="mt-6 space-y-3">
-              {simpanan?.map((item, index) => (
+              {simpanan?.map((item) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between p-4 rounded-xl border border-[#e7e5e0] hover:bg-stone-50/60 transition-colors"

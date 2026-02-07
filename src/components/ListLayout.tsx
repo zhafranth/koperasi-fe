@@ -14,6 +14,7 @@ interface Props<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   extraComponents?: React.ReactNode;
+  isLoading?: boolean;
   pagination?: {
     page: number;
     total: number;
@@ -28,13 +29,14 @@ function ListLayout<TData, TValue>({
   columns,
   data,
   extraComponents,
+  isLoading,
   pagination,
 }: Props<TData, TValue>) {
   return (
     <>
       <Header title={title} extendButtons={extendButtons} filters={filters} />
       {extraComponents}
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} isLoading={isLoading} />
       {pagination && <Pagination pagination={pagination} />}
     </>
   );

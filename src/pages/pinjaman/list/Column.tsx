@@ -38,10 +38,10 @@ export const columns: ColumnDef<PinjamanProps>[] = [
     },
   },
   {
-    accessorKey: "tanggal_pengajuan",
+    accessorKey: "createdAt",
     header: "Tanggal",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("tanggal_pengajuan"));
+      const date = new Date(row.getValue("createdAt"));
       const formatted = formatDate(date, "dd MMMM yyyy");
       return formatted;
     },

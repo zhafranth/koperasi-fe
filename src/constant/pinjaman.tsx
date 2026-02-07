@@ -1,12 +1,12 @@
 export const STATUS_PINJAMAN_OPTIONS = [
   {
-    key: "lunas",
-    label: "Lunas",
-    color: "green",
+    key: "proses",
+    label: "Proses",
+    color: "orange",
   },
   {
-    key: "disetujui",
-    label: "Disetujui",
+    key: "lunas",
+    label: "Lunas",
     color: "green",
   },
 ];

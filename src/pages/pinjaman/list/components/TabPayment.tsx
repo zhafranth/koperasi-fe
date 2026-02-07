@@ -26,7 +26,7 @@ const formSchema = z.object({
 });
 
 const TabPayment: React.FC<Props> = ({ changeContent, data }) => {
-  const { id } = data ?? {};
+  const { id_pinjaman: id } = data ?? {};
   const { mutate } = useCicilan(id);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,7 +47,7 @@ const TabPayment: React.FC<Props> = ({ changeContent, data }) => {
             form.reset();
             changeContent("detail");
           },
-        }
+        },
       );
     } catch (error) {
       console.error(error);

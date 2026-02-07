@@ -1,8 +1,8 @@
 export interface PinjamanProps {
-  id: number;
+  id_pinjaman: number;
   id_anggota: number;
   jumlah: number;
-  tanggal_pengajuan: string;
+  createdAt: string;
   tanggal_disetujui: string;
   tanggal_jatuh_tempo: string | null;
   status: string;
@@ -15,7 +15,7 @@ export interface CicilanProps {
   id: number;
   id_pinjaman: number;
   jumlah: number;
-  tanggal_bayar: string;
+  createdAt: string;
   keterangan: string;
 }
 

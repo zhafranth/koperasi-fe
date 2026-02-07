@@ -21,10 +21,12 @@ interface Props {
 const ActionDetail: React.FC<Props> = ({ data }) => {
   const { isOpen, toggle } = useToggle();
   const [contentMode, setContentMode] = useState<"detail" | "payment">(
-    "detail"
+    "detail",
   );
-  const { id } = data ?? {};
-  const { data: detail } = useGetPinjamanDetail(id);
+  const { id_pinjaman: id } = data ?? {};
+  const { data: detail } = useGetPinjamanDetail(id, {
+    enabled: !!id && isOpen,
+  });
 
   const handleChangeContent = (content: "detail" | "payment") => {
     setContentMode(content);
@@ -58,6 +60,15 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
         )}
         {contentMode === "payment" && (
           <TabPayment data={detail} changeContent={handleChangeContent} />
+        )}
+        {contentMode === "detail" && (
+          <Button
+            className="bg-transparent hover:bg-gray hover:cursor-pointer text-neutral-900 shadow-none"
+            size="sm"
+            onClick={() => handleChangeContent("payment")}
+          >
+            Bayar cicilan
+          </Button>
         )}
       </DialogContent>
     </Dialog>

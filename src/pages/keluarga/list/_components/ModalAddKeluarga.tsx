@@ -171,10 +171,12 @@ const ModalAddKeluarga = ({ isOpen, onClose }: ModalAddKeluargaProps) => {
   const { data: anggotaList = [] } = useGetAnggota();
   const { mutate: createKeluarga, isPending } = useCreateKeluarga();
 
-  const anggotaOptions = anggotaList.map((a) => ({
-    value: a.id,
-    label: a.nama,
-  }));
+  const anggotaOptions = anggotaList
+    .filter((a) => !a.id_keluarga)
+    .map((a) => ({
+      value: a.id,
+      label: a.nama,
+    }));
 
   useEffect(() => {
     if (!isOpen) {

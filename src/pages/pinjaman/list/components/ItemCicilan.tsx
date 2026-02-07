@@ -7,14 +7,14 @@ interface Props {
 }
 
 const ItemCicilan: React.FC<Props> = ({ data, index }) => {
-  const { jumlah, tanggal_bayar } = data ?? {};
+  const { jumlah, createdAt } = data ?? {};
   return (
     <div className="rounded-lg border p-4">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-medium">Cicilan #{index}</h3>
           <p className="text-sm text-gray-500">
-            Tanggal Bayar: {formatDate(tanggal_bayar, "dd MMM yyyy")}
+            Tanggal Bayar: {formatDate(createdAt, "dd MMM yyyy")}
           </p>
         </div>
         <div className="text-right">

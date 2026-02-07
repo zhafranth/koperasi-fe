@@ -1,4 +1,8 @@
-import { getListPinjaman, getDetailPinjaman, postCreatePinjaman } from "@/api/pinjaman";
+import {
+  getListPinjaman,
+  getDetailPinjaman,
+  postCreatePinjaman,
+} from "@/api/pinjaman";
 import type { CreatePinjamanPayload } from "@/api/pinjaman/pinjaman.interface";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -11,11 +15,11 @@ export const useGetPinjaman = (params?: object) => {
   });
 };
 
-export const useGetPinjamanDetail = (id: number) => {
+export const useGetPinjamanDetail = (id: number, options?: object) => {
   return useQuery({
     queryKey: ["pinjaman", "detail", id],
     queryFn: () => getDetailPinjaman(id),
-    enabled: !!id,
+    ...options,
   });
 };
 

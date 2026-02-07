@@ -113,37 +113,63 @@ const Keluarga = () => {
               Hapus Keluarga
             </DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-[#78716c]">
-            Apakah Anda yakin ingin menghapus keluarga{" "}
-            <span className="font-semibold text-[#1c1917]">
-              {deleteData?.nama_kepala_keluarga}
-            </span>
-            ? Semua anggota akan dilepas dari keluarga ini.
-          </p>
-          <div className="flex justify-end gap-4 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setDeleteData(null)}
-              className="rounded-xl border-[#e7e5e0] text-[#78716c] hover:bg-[#f5f0e8] hover:text-[#1c1917]"
-            >
-              Batal
-            </Button>
-            <Button
-              type="button"
-              disabled={isDeleting}
-              onClick={() => {
-                if (deleteData) {
-                  deleteKeluarga(deleteData.id_keluarga, {
-                    onSuccess: () => setDeleteData(null),
-                  });
-                }
-              }}
-              className="bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-            >
-              {isDeleting ? "Menghapus..." : "Hapus"}
-            </Button>
-          </div>
+          {deleteData && deleteData.anggota.length > 0 ? (
+            <>
+              <p className="text-sm text-[#78716c]">
+                Keluarga{" "}
+                <span className="font-semibold text-[#1c1917]">
+                  {deleteData.nama_kepala_keluarga}
+                </span>{" "}
+                masih memiliki {deleteData.anggota.length} anggota. Hapus atau
+                pindahkan semua anggota terlebih dahulu sebelum menghapus
+                keluarga ini.
+              </p>
+              <div className="flex justify-end pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setDeleteData(null)}
+                  className="rounded-xl border-[#e7e5e0] text-[#78716c] hover:bg-[#f5f0e8] hover:text-[#1c1917]"
+                >
+                  Tutup
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-[#78716c]">
+                Apakah Anda yakin ingin menghapus keluarga{" "}
+                <span className="font-semibold text-[#1c1917]">
+                  {deleteData?.nama_kepala_keluarga}
+                </span>
+                ?
+              </p>
+              <div className="flex justify-end gap-4 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setDeleteData(null)}
+                  className="rounded-xl border-[#e7e5e0] text-[#78716c] hover:bg-[#f5f0e8] hover:text-[#1c1917]"
+                >
+                  Batal
+                </Button>
+                <Button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => {
+                    if (deleteData) {
+                      deleteKeluarga(deleteData.id_keluarga, {
+                        onSuccess: () => setDeleteData(null),
+                      });
+                    }
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  {isDeleting ? "Menghapus..." : "Hapus"}
+                </Button>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </>

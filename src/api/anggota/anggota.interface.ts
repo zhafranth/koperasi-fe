@@ -5,6 +5,7 @@ export interface AnggotaProps {
   no_telepon: string;
   jumlah_pinjaman: number;
   saldo_simpanan: number;
+  id_keluarga?: number | null;
   nama_kepala_keluarga?: string | null;
 }
 

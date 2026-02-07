@@ -47,7 +47,7 @@ const Dashboard = () => {
     {
       title: "Pinjaman",
       icon: Wallet,
-      path: "/pinjaman?status=disetujui",
+      path: "/pinjaman?status=proses",
     },
     {
       title: "Simpanan",
@@ -82,7 +82,7 @@ const Dashboard = () => {
           {
             "-translate-x-full md:translate-x-0": !isOpen,
             "translate-x-0": isOpen,
-          }
+          },
         )}
       >
         {/* Logo */}
@@ -114,13 +114,13 @@ const Dashboard = () => {
                     "flex items-center gap-3 h-11 px-4 rounded-xl text-sm font-medium transition-all duration-200",
                     isActive
                       ? "bg-[#c9a84c]/15 text-[#c9a84c]"
-                      : "text-white/60 hover:bg-white/5 hover:text-white"
+                      : "text-white/60 hover:bg-white/5 hover:text-white",
                   )}
                 >
                   <menu.icon
                     className={cn(
                       "h-[18px] w-[18px]",
-                      isActive ? "text-[#c9a84c]" : ""
+                      isActive ? "text-[#c9a84c]" : "",
                     )}
                   />
                   {menu.title}

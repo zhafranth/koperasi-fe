@@ -174,10 +174,13 @@ const ModalEditKeluarga = ({
   const { data: anggotaList = [] } = useGetAnggota();
   const { mutate: updateKeluarga, isPending } = useUpdateKeluarga();
 
-  const anggotaOptions = anggotaList.map((a) => ({
-    value: a.id,
-    label: a.nama,
-  }));
+  const currentAnggotaIds = data.anggota.map((a) => a.id);
+  const anggotaOptions = anggotaList
+    .filter((a) => !a.id_keluarga || a.id_keluarga === data.id_keluarga || currentAnggotaIds.includes(a.id))
+    .map((a) => ({
+      value: a.id,
+      label: a.nama,
+    }));
 
   useEffect(() => {
     if (isOpen && data) {

@@ -18,7 +18,7 @@ const TabDetail: React.FC<Props> = ({ data, changeContent }) => {
     jumlah,
     sisa,
     status,
-    tanggal_pengajuan,
+    createdAt,
   } = data ?? {};
   return (
     <div className="mt-4 space-y-4">
@@ -30,9 +30,7 @@ const TabDetail: React.FC<Props> = ({ data, changeContent }) => {
         <div className="flex justify-between text-sm">
           <p className="text-gray-500">Tanggal Pinjaman</p>
           <p className="font-medium">
-            {tanggal_pengajuan
-              ? formatDate(tanggal_pengajuan, "dd MMMM yyyy")
-              : "-"}
+            {createdAt ? formatDate(createdAt, "dd MMMM yyyy") : "-"}
           </p>
         </div>
         <div className="flex justify-between text-sm">

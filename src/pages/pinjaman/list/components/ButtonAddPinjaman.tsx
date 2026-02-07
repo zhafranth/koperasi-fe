@@ -8,7 +8,6 @@ const ButtonAddPinjaman = () => {
   return (
     <>
       <Button
-        disabled
         onClick={toggle}
         className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
       >

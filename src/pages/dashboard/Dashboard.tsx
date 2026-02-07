@@ -11,6 +11,7 @@ import {
   X,
   LogOut,
   Building2,
+  Home,
 } from "lucide-react";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
@@ -52,6 +53,11 @@ const Dashboard = () => {
       title: "Simpanan",
       icon: PiggyBank,
       path: "/simpanan",
+    },
+    {
+      title: "Keluarga",
+      icon: Home,
+      path: "/keluarga",
     },
   ];
 

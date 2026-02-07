@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, Users } from "lucide-react";
 import useToggle from "@/hooks/useToggle";
 import ModalAddAnggota from "./_components/ModalAddAnggota";
+import ModalEditAnggota from "./_components/ModalEditAnggota";
 
 import { useGetAnggota } from "@/networks/anggota";
 import CardAnggota from "./_components/CardAnggota";
@@ -12,6 +14,7 @@ import EmptyState from "@/components/EmptyState";
 
 const Anggota = () => {
   const [searchParams] = useSearchParams();
+  const [editId, setEditId] = useState<number | null>(null);
 
   const queryObject = Object.fromEntries([...searchParams]);
 
@@ -63,7 +66,10 @@ const Anggota = () => {
               const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6", "kp-d7"];
               return (
                 <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
-                  <CardAnggota data={anggota} />
+                  <CardAnggota
+                    data={anggota}
+                    onEdit={(id) => setEditId(id)}
+                  />
                 </div>
               );
             })
@@ -72,6 +78,14 @@ const Anggota = () => {
       </div>
 
       <ModalAddAnggota isOpen={isOpen} onClose={onClose} />
+
+      {editId !== null && (
+        <ModalEditAnggota
+          isOpen={editId !== null}
+          onClose={() => setEditId(null)}
+          anggotaId={editId}
+        />
+      )}
     </>
   );
 };

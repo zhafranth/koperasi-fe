@@ -15,7 +15,6 @@ import {
   Shield,
   Users,
   ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useGetAnggotaDetail } from "@/networks/anggota";
@@ -171,10 +170,10 @@ const AnggotaPublicDetail = () => {
                     <span className="text-white/30">|</span>
                   </>
                 )}
-                {member.nik && (
+                {member.nama_kepala_keluarga && (
                   <span className="text-white/60 text-sm flex items-center gap-1.5">
                     <Shield className="w-3.5 h-3.5" />
-                    NIK: {member.nik}
+                    Keluarga: {member.nama_kepala_keluarga}
                   </span>
                 )}
               </div>
@@ -315,7 +314,7 @@ const AnggotaPublicDetail = () => {
         </section>
 
         {/* Keluarga Terkait */}
-        {member.keluarga && member.keluarga.length > 0 && (
+        {member.anggota_keluarga && member.anggota_keluarga.length > 0 && (
           <section className="kp-fade-up kp-d5">
             <div className="flex items-center gap-3 mb-5">
               <h2 className="text-xl font-bold text-[#1c1917]">
@@ -323,45 +322,43 @@ const AnggotaPublicDetail = () => {
               </h2>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#c9a84c]/10 text-[#92400e] text-xs font-semibold">
                 <Users className="w-3 h-3" />
-                {member.keluarga.length} orang
+                {member.anggota_keluarga.length} orang
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {member.keluarga.map((family) => {
-                const fInitials = family.nama
-                  .split(" ")
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join("")
-                  .toUpperCase();
-                return (
-                  <div
-                    key={family.id}
-                    onClick={() => navigate(`/anggota/${family.id}`)}
-                    className="bg-white rounded-2xl p-5 shadow-sm border border-[#e7e5e0] hover:shadow-md hover:border-[#c9a84c]/30 transition-all duration-300 cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#fef3c7] text-[#92400e] flex items-center justify-center text-sm font-bold shrink-0 group-hover:bg-[#c9a84c]/20 transition-colors">
-                        {fInitials}
+              {member.anggota_keluarga
+                ?.filter((item) => item.id !== member.id)
+                .map((family) => {
+                  const fInitials = family.nama
+                    .split(" ")
+                    .map((n) => n[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase();
+                  return (
+                    <div
+                      key={family.id}
+                      onClick={() => navigate(`/anggota/${family.id}`)}
+                      className="bg-white rounded-2xl p-5 shadow-sm border border-[#e7e5e0] hover:shadow-md hover:border-[#c9a84c]/30 transition-all duration-300 cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#fef3c7] text-[#92400e] flex items-center justify-center text-sm font-bold shrink-0 group-hover:bg-[#c9a84c]/20 transition-colors">
+                          {fInitials}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold capitalize text-sm text-[#1c1917] truncate group-hover:text-[#145a3f] transition-colors">
+                            {family.nama}
+                          </p>
+                          {family.no_telepon && family.no_telepon !== "-" && (
+                            <p className=" text-xs text-[#a8a29e] flex items-center gap-1.5">
+                              <Phone className="w-3 h-3" /> {family.no_telepon}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-sm text-[#1c1917] truncate group-hover:text-[#145a3f] transition-colors">
-                          {family.nama}
-                        </p>
-                        <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800">
-                          {family.hubungan}
-                        </span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-[#d6d3d1] group-hover:text-[#145a3f] transition-all group-hover:translate-x-0.5 shrink-0" />
                     </div>
-                    {family.no_telepon && family.no_telepon !== "-" && (
-                      <p className="mt-3 text-xs text-[#a8a29e] flex items-center gap-1.5">
-                        <Phone className="w-3 h-3" /> {family.no_telepon}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </section>
         )}

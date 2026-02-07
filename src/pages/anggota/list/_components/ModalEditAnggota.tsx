@@ -18,28 +18,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
-import { useCreateAnggota } from "@/networks/auth";
+import { useGetAnggotaDetail, useUpdateAnggota } from "@/networks/anggota";
 import { useGetKeluarga } from "@/networks/keluarga";
 import InputSelect from "@/components/InputSelect";
 
 const formSchema = z.object({
-  nama: z.string().min(1, "Nama is required"),
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  nama: z.string().min(1, "Nama harus diisi"),
   nik: z.string().optional(),
   no_telepon: z.string().optional(),
-  email: z.string().email("Invalid email").optional().or(z.literal("")),
+  email: z.string().email("Email tidak valid").optional().or(z.literal("")),
   alamat: z.string().optional(),
   id_keluarga: z.number().nullable().optional(),
 });
 
-interface ModalAddAnggotaProps {
+interface ModalEditAnggotaProps {
   isOpen: boolean;
   onClose: () => void;
+  anggotaId: number;
 }
 
-const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
-  const { mutate } = useCreateAnggota();
+const ModalEditAnggota = ({
+  isOpen,
+  onClose,
+  anggotaId,
+}: ModalEditAnggotaProps) => {
+  const { data } = useGetAnggotaDetail(anggotaId);
+  const { mutate: updateAnggota, isPending } = useUpdateAnggota(anggotaId);
   const { data: keluargaList = [] } = useGetKeluarga();
 
   const keluargaOptions = keluargaList.map((k) => ({
@@ -51,8 +55,6 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       nama: "",
-      username: "",
-      password: "",
       nik: "",
       no_telepon: "",
       email: "",
@@ -62,22 +64,25 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
   });
 
   useEffect(() => {
-    if (!isOpen) {
-      form.reset();
-    }
-  }, [isOpen, form]);
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      mutate(values, {
-        onSuccess: () => {
-          onClose();
-          form.reset();
-        },
+    if (data && isOpen) {
+      form.reset({
+        nama: data.nama || "",
+        nik: data.nik || "",
+        no_telepon: data.no_telepon || "",
+        email: data.email || "",
+        alamat: data.alamat || "",
+        id_keluarga: (data as any).id_keluarga || null,
       });
-    } catch (error) {
-      console.error(error);
     }
+  }, [data, isOpen, form]);
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    updateAnggota(values, {
+      onSuccess: () => {
+        form.reset();
+        onClose();
+      },
+    });
   };
 
   const handleClose = () => {
@@ -85,14 +90,12 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
     onClose();
   };
 
-  const isValid = form.watch(["nama", "username", "password"]).every(Boolean);
-
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px] rounded-2xl border-[#e7e5e0]">
-        <DialogHeader className="flex flex-row items-center justify-between">
+        <DialogHeader>
           <DialogTitle className="text-lg text-[#1c1917]">
-            Tambah Anggota Baru
+            Edit Anggota
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -108,45 +111,6 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
                   <FormControl>
                     <Input
                       placeholder="Masukkan nama"
-                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
-                    Username
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Masukkan username"
-                      className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Masukkan password"
                       className="rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]"
                       {...field}
                     />
@@ -263,10 +227,10 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
               </Button>
               <Button
                 type="submit"
-                disabled={!isValid}
+                disabled={isPending}
                 className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
               >
-                Simpan
+                {isPending ? "Menyimpan..." : "Simpan"}
               </Button>
             </div>
           </form>
@@ -276,4 +240,4 @@ const ModalAddAnggota = ({ isOpen, onClose }: ModalAddAnggotaProps) => {
   );
 };
 
-export default ModalAddAnggota;
+export default ModalEditAnggota;

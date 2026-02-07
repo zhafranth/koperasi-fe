@@ -5,6 +5,16 @@ export interface AnggotaProps {
   no_telepon: string;
   jumlah_pinjaman: number;
   saldo_simpanan: number;
+  nama_kepala_keluarga?: string | null;
+}
+
+export interface UpdateAnggotaPayload {
+  nama?: string;
+  nik?: string;
+  alamat?: string;
+  no_telepon?: string;
+  email?: string;
+  id_keluarga?: number | null;
 }
 
 export interface AnggotaDetailProps {
@@ -22,6 +32,13 @@ export interface AnggotaDetailProps {
   jumlah_pinjaman: number;
   jumlah_cicilan?: number;
   total_cicilan?: number;
+  nama_kepala_keluarga?: string | null;
+  anggota_keluarga?: {
+    id: number;
+    nama: string;
+    hubungan: string;
+    no_telepon: string;
+  }[];
   simpanan: {
     id: number;
     id_jenis: number;

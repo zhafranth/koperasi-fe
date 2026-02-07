@@ -10,7 +10,6 @@ import {
   Building2,
   CheckCircle2,
   Search,
-  Phone,
   ChevronRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -342,9 +341,9 @@ const Home = () => {
                               </span>
                             </div>
                             <div className="flex items-center gap-1.5 mt-1">
-                              <Phone className="w-3 h-3 text-[#a8a29e]" />
+                              <Users className="w-3 h-3 text-[#a8a29e]" />
                               <p className="text-xs text-[#a8a29e]">
-                                {anggota.no_telepon || "-"}
+                                {`Keluarga ${anggota?.nama_kepala_keluarga || "-"}`}
                               </p>
                             </div>
                           </div>

@@ -1,9 +1,11 @@
 import type { AnggotaProps } from "@/api/anggota/anggota.interface";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Pencil } from "lucide-react";
 
 interface Props {
   data: AnggotaProps;
+  onEdit?: (id: number) => void;
 }
 
 const formatCurrency = (amount: number) =>
@@ -23,7 +25,7 @@ const getInitials = (name: string) => {
     .toUpperCase();
 };
 
-const CardAnggota: React.FC<Props> = ({ data }) => {
+const CardAnggota: React.FC<Props> = ({ data, onEdit }) => {
   const { id, nama, no_telepon, saldo_simpanan, jumlah_pinjaman } = data ?? {};
   const navigate = useNavigate();
 
@@ -61,6 +63,18 @@ const CardAnggota: React.FC<Props> = ({ data }) => {
               {formatCurrency(jumlah_pinjaman)}
             </p>
           </div>
+          {onEdit && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(id);
+              }}
+              className="w-9 h-9 rounded-xl bg-[#f7f5f0] hover:bg-[#145a3f]/10 flex items-center justify-center text-[#78716c] hover:text-[#145a3f] transition-colors shrink-0"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

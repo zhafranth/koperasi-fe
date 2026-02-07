@@ -14,10 +14,13 @@ import {
   Wallet,
   CheckCircle2,
   Clock,
+  Pencil,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import { SkeletonDetail } from "@/components/Skeleton";
+import useToggle from "@/hooks/useToggle";
+import ModalEditAnggota from "../list/_components/ModalEditAnggota";
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -48,6 +51,7 @@ const InfoRow = ({
 const AnggotaDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetAnggotaDetail(Number(id));
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useToggle();
 
   if (isLoading) return <SkeletonDetail />;
 
@@ -84,17 +88,26 @@ const AnggotaDetail = () => {
       <div className="kp-fade-up kp-d1 bg-white rounded-2xl shadow-sm border border-[#e7e5e0] overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#0d3b2c] via-[#145a3f] to-[#1a6b50] px-6 py-5">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-[#c9a84c] flex items-center justify-center text-lg font-bold text-[#0d3b2c] font-serif shadow-lg">
-              {initials}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-[#c9a84c] flex items-center justify-center text-lg font-bold text-[#0d3b2c] font-serif shadow-lg">
+                {initials}
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">{nama}</h2>
+                <p className="text-white/50 text-sm flex items-center gap-1.5">
+                  <UserCircle className="w-3.5 h-3.5" />
+                  {username || "-"}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-white">{nama}</h2>
-              <p className="text-white/50 text-sm flex items-center gap-1.5">
-                <UserCircle className="w-3.5 h-3.5" />
-                {username || "-"}
-              </p>
-            </div>
+            <button
+              type="button"
+              onClick={onEditOpen}
+              className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -278,6 +291,14 @@ const AnggotaDetail = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {id && (
+        <ModalEditAnggota
+          isOpen={isEditOpen}
+          onClose={onEditClose}
+          anggotaId={Number(id)}
+        />
+      )}
     </div>
   );
 };

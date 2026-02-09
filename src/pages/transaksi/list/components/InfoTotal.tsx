@@ -1,12 +1,12 @@
 import { useGetTransaksiTotal } from "@/networks/transaksi";
-import { PiggyBank, Wallet, TrendingUp } from "lucide-react";
+import { PiggyBank, Wallet, HandCoins, Palmtree, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import { formatCurrency } from "@/lib/utils";
 
 const InfoTotal = () => {
   const { data } = useGetTransaksiTotal();
   const infos = useMemo(() => {
-    const { jumlah_dana, jumlah_pinjaman, total_dana } = data || {};
+    const { jumlah_dana, jumlah_pinjaman, jumlah_simpanan_sukarela, jumlah_tabungan_liburan, total_dana } = data || {};
     return [
       {
         title: "Jumlah Dana",
@@ -25,6 +25,22 @@ const InfoTotal = () => {
         valueColor: "text-amber-800",
       },
       {
+        title: "Simpanan Sukarela",
+        value: jumlah_simpanan_sukarela,
+        icon: HandCoins,
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-800",
+        valueColor: "text-blue-800",
+      },
+      {
+        title: "Tab. Liburan",
+        value: jumlah_tabungan_liburan,
+        icon: Palmtree,
+        iconBg: "bg-teal-50",
+        iconColor: "text-teal-800",
+        valueColor: "text-teal-800",
+      },
+      {
         title: "Total Dana",
         value: total_dana,
         icon: TrendingUp,
@@ -35,7 +51,7 @@ const InfoTotal = () => {
     ];
   }, [data]);
   return (
-    <div className="grid grid-cols-3 gap-4 mb-4 kp-fade-up kp-d1">
+    <div className="grid grid-cols-5 gap-4 mb-4 kp-fade-up kp-d1">
       {infos.map((info, index) => (
         <div
           key={index}

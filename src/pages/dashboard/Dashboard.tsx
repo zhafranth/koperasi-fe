@@ -12,6 +12,7 @@ import {
   LogOut,
   Building2,
   Home,
+  ArrowDownToLine,
 } from "lucide-react";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
@@ -60,6 +61,11 @@ const Dashboard = () => {
       title: "Keluarga",
       icon: Home,
       path: "/keluarga",
+    },
+    {
+      title: "Penarikan",
+      icon: ArrowDownToLine,
+      path: "/penarikan",
     },
   ];
 

@@ -29,3 +29,10 @@ export interface CreatePinjamanPayload {
   jumlah: number;
   keterangan?: string;
 }
+
+export interface LimitPinjamanProps {
+  simpanan_keluarga: number;
+  max_pinjaman: number;
+  pinjaman_aktif: number;
+  sisa_limit: number;
+}

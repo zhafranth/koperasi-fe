@@ -14,4 +14,9 @@ export const TRANSAKSI_OPTIONS = [
     label: "Cicilan",
     color: "orange",
   },
+  {
+    key: "lainnya",
+    label: "Lainnya",
+    color: "gray",
+  },
 ];

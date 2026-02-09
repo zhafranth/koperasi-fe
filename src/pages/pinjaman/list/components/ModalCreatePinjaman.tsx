@@ -25,8 +25,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
-import { useCreatePinjaman } from "@/networks/pinjaman";
+import { useCreatePinjaman, useGetLimitPinjaman } from "@/networks/pinjaman";
 import { useGetAnggota } from "@/networks/anggota";
+import { formatCurrency } from "@/lib/utils";
 
 const formSchema = z.object({
   id_anggota: z.number({ required_error: "Anggota wajib dipilih" }),
@@ -50,6 +51,11 @@ const ModalAddPinjaman = ({ isOpen, onClose }: ModalAddPinjamanProps) => {
       jumlah: undefined,
       keterangan: "",
     },
+  });
+
+  const idAnggota = form.watch("id_anggota");
+  const { data: limitData } = useGetLimitPinjaman(idAnggota, {
+    enabled: !!idAnggota,
   });
 
   useEffect(() => {
@@ -119,6 +125,36 @@ const ModalAddPinjaman = ({ isOpen, onClose }: ModalAddPinjamanProps) => {
                 </FormItem>
               )}
             />
+
+            {limitData && (
+              <div className="rounded-xl bg-[#f7f5f0] border border-[#e7e5e0] p-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#78716c]">Simpanan Keluarga</span>
+                  <span className="font-medium text-[#1c1917]">
+                    {formatCurrency(limitData.simpanan_keluarga)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#78716c]">Maks. Pinjaman (80%)</span>
+                  <span className="font-medium text-[#1c1917]">
+                    {formatCurrency(limitData.max_pinjaman)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#78716c]">Pinjaman Aktif</span>
+                  <span className="font-medium text-red-600">
+                    {formatCurrency(limitData.pinjaman_aktif)}
+                  </span>
+                </div>
+                <div className="h-px bg-[#e7e5e0]" />
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold text-[#1c1917]">Sisa Limit</span>
+                  <span className="font-bold text-[#145a3f]">
+                    {formatCurrency(limitData.sisa_limit)}
+                  </span>
+                </div>
+              </div>
+            )}
 
             <FormField
               control={form.control}

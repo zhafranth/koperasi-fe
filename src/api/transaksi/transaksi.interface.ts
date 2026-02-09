@@ -10,7 +10,10 @@ export interface TransaksiProps {
 }
 
 export interface TransaksiTotalProps {
+  total_anggota: number;
   jumlah_dana: number;
   jumlah_pinjaman: number;
+  jumlah_simpanan_sukarela: number;
+  jumlah_tabungan_liburan: number;
   total_dana: number;
 }

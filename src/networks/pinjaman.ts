@@ -1,6 +1,7 @@
 import {
   getListPinjaman,
   getDetailPinjaman,
+  getLimitPinjaman,
   postCreatePinjaman,
 } from "@/api/pinjaman";
 import type { CreatePinjamanPayload } from "@/api/pinjaman/pinjaman.interface";
@@ -12,6 +13,17 @@ export const useGetPinjaman = (params?: object) => {
     queryKey: ["pinjaman", "list", params],
     queryFn: () => getListPinjaman(params),
     enabled: !!params,
+  });
+};
+
+export const useGetLimitPinjaman = (
+  idAnggota?: number,
+  options?: { enabled?: boolean }
+) => {
+  return useQuery({
+    queryKey: ["pinjaman", "limit", idAnggota],
+    queryFn: () => getLimitPinjaman(idAnggota!),
+    enabled: !!idAnggota && (options?.enabled !== false),
   });
 };
 

@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ChartKoperasi from "@/components/ChartsKoperasi";
 import { Button } from "@/components/ui/button";
 import {
   Users,
-  Wallet,
   PiggyBank,
   BadgeDollarSign,
+  HandCoins,
+  Palmtree,
+  TrendingUp,
   Building2,
   Search,
   ChevronRight,
@@ -17,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "@/lib/utils";
 import { useGetAnggota } from "@/networks/anggota";
 import { useGetEvents } from "@/networks/event";
+import { useGetTransaksiTotal } from "@/networks/transaksi";
 import EmptyState from "@/components/EmptyState";
 import ModalDetailEvent from "./dashboard/_components/ModalDetailEvent";
 import type { EventProps } from "@/api/event/event.interface";
@@ -57,6 +60,67 @@ const Home = () => {
   const [selectedEvent, setSelectedEvent] = useState<EventProps | null>(null);
   const { data: anggotaList = [] } = useGetAnggota();
   const { data: events = [] } = useGetEvents();
+  const { data: totalData } = useGetTransaksiTotal();
+
+  const stats = useMemo(() => {
+    const d = totalData;
+    return [
+      {
+        title: "Total Anggota",
+        value: String(d?.total_anggota || 0),
+        icon: Users,
+        iconBg: "bg-emerald-50",
+        iconColor: "text-emerald-800",
+        valueColor: "text-emerald-800",
+        delay: "kp-d1",
+      },
+      {
+        title: "Jumlah Dana",
+        value: formatCurrency(d?.jumlah_dana || 0),
+        icon: PiggyBank,
+        iconBg: "bg-emerald-50",
+        iconColor: "text-emerald-800",
+        valueColor: "text-emerald-800",
+        delay: "kp-d2",
+      },
+      {
+        title: "Jumlah Pinjaman",
+        value: formatCurrency(d?.jumlah_pinjaman || 0),
+        icon: BadgeDollarSign,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-800",
+        valueColor: "text-amber-800",
+        delay: "kp-d3",
+      },
+      {
+        title: "Simpanan Sukarela",
+        value: formatCurrency(d?.jumlah_simpanan_sukarela || 0),
+        icon: HandCoins,
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-800",
+        valueColor: "text-blue-800",
+        delay: "kp-d4",
+      },
+      {
+        title: "Tab. Liburan",
+        value: formatCurrency(d?.jumlah_tabungan_liburan || 0),
+        icon: Palmtree,
+        iconBg: "bg-teal-50",
+        iconColor: "text-teal-800",
+        valueColor: "text-teal-800",
+        delay: "kp-d5",
+      },
+      {
+        title: "Total Dana",
+        value: formatCurrency(d?.total_dana || 0),
+        icon: TrendingUp,
+        iconBg: "bg-[#c9a84c]/10",
+        iconColor: "text-[#92400e]",
+        valueColor: "text-[#92400e]",
+        delay: "kp-d6",
+      },
+    ];
+  }, [totalData]);
 
   const filteredAnggota = anggotaList.filter((anggota) =>
     anggota.nama.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -129,73 +193,50 @@ const Home = () => {
 
       {/* Content */}
       <main className="max-w-6xl mx-auto px-6 -mt-10 pb-16 space-y-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            {
-              title: "Total Anggota",
-              value: "150",
-              subtitle: "Aktif: 150 orang",
-              icon: Users,
-              iconBg: "bg-emerald-50",
-              iconColor: "text-emerald-800",
-              valueColor: "text-emerald-800",
-              delay: "kp-d1",
-            },
-            {
-              title: "Total Kas",
-              value: formatCurrency(50000000),
-              subtitle: "+20% dari bulan lalu",
-              icon: Wallet,
-              iconBg: "bg-[#c9a84c]/10",
-              iconColor: "text-[#92400e]",
-              valueColor: "text-[#92400e]",
-              delay: "kp-d2",
-            },
-            {
-              title: "Total Pinjaman",
-              value: formatCurrency(35000000),
-              subtitle: "10 pinjaman aktif",
-              icon: BadgeDollarSign,
-              iconBg: "bg-amber-50",
-              iconColor: "text-amber-800",
-              valueColor: "text-amber-800",
-              delay: "kp-d3",
-            },
-            {
-              title: "Total Simpanan",
-              value: formatCurrency(45000000),
-              subtitle: "Dari 120 anggota",
-              icon: PiggyBank,
-              iconBg: "bg-blue-50",
-              iconColor: "text-blue-800",
-              valueColor: "text-blue-800",
-              delay: "kp-d4",
-            },
-          ].map((stat) => (
-            <div
-              key={stat.title}
-              className={`kp-scale-in ${stat.delay} bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-[#e7e5e0]`}
-            >
-              <div className="flex items-center gap-3 mb-4">
+        {/* Stats Cards - Single Row Strip */}
+        <div className="flex gap-3 overflow-x-auto pb-1 snap-x snap-mandatory lg:snap-none lg:grid lg:grid-cols-6 scrollbar-hide">
+          {stats.map((stat, index) => {
+            const isHighlight = index === stats.length - 1;
+            return (
+              <div
+                key={stat.title}
+                className={`kp-scale-in ${stat.delay} snap-start relative min-w-[152px] flex-shrink-0 lg:min-w-0 rounded-2xl p-4 pb-5 transition-all duration-300 overflow-hidden ${
+                  isHighlight
+                    ? "bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] shadow-lg shadow-[#0d3b2c]/25 border border-[#1a6b50]/30"
+                    : "bg-white border border-[#e7e5e0] shadow-sm hover:shadow-md hover:border-[#c9a84c]/30"
+                }`}
+              >
+                {isHighlight && (
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none" />
+                )}
                 <div
-                  className={`w-11 h-11 rounded-xl ${stat.iconBg} flex items-center justify-center`}
+                  className={`relative w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${
+                    isHighlight ? "bg-[#c9a84c]/15" : stat.iconBg
+                  }`}
                 >
-                  <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
+                  <stat.icon
+                    className={`w-[18px] h-[18px] ${
+                      isHighlight ? "text-[#c9a84c]" : stat.iconColor
+                    }`}
+                  />
                 </div>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#78716c]">
+                <p
+                  className={`relative text-lg font-bold font-serif truncate ${
+                    isHighlight ? "text-white" : stat.valueColor
+                  }`}
+                >
+                  {stat.value}
+                </p>
+                <span
+                  className={`relative text-[10px] font-semibold uppercase tracking-wider mt-1 block ${
+                    isHighlight ? "text-[#c9a84c]/60" : "text-[#78716c]"
+                  }`}
+                >
                   {stat.title}
                 </span>
               </div>
-              <p className={`text-2xl font-bold ${stat.valueColor}`}>
-                {stat.value}
-              </p>
-              <p className="text-xs mt-2 text-[#a8a29e] flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                {stat.subtitle}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Chart + Payments */}

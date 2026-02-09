@@ -167,6 +167,14 @@
     animation: kp-shimmer 1.6s ease-in-out infinite;
   }
 
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .kp-fade-up,
     .kp-scale-in,

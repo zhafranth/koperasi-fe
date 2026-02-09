@@ -18,14 +18,26 @@ import InputRadioGroup from "@/components/InputRadioGroup";
 import { useCreateSimpanan } from "@/networks/simpanan";
 import { useCreatePinjaman } from "@/networks/pinjaman";
 import { useCreateInfaq } from "@/networks/infaq";
+import { useCreateSimpananSukarela } from "@/networks/simpanan-sukarela";
+import { useCreateTabunganLiburan } from "@/networks/tabungan-liburan";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z
   .object({
-    type: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)], {
-      invalid_type_error: "Type tidak valid",
-      required_error: "Type wajib dipilih",
-    }),
+    type: z.union(
+      [
+        z.literal(1),
+        z.literal(2),
+        z.literal(3),
+        z.literal(4),
+        z.literal(5),
+        z.literal(6),
+      ],
+      {
+        invalid_type_error: "Type tidak valid",
+        required_error: "Type wajib dipilih",
+      }
+    ),
     jumlah: z.number().min(1, "Jumlah harus lebih dari 0"),
     id_anggota: z.number().optional(),
     jenis_infaq: z.enum(["masuk", "keluar"]).optional(),
@@ -51,7 +63,10 @@ const formSchema = z
   })
   .superRefine((val, ctx) => {
     const infaqMasuk = val.type === 4 && val.jenis_infaq === "masuk";
-    if (([1, 2, 3].includes(val.type) || infaqMasuk) && !val.id_anggota) {
+    if (
+      ([1, 2, 3, 5, 6].includes(val.type) || infaqMasuk) &&
+      !val.id_anggota
+    ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["id_anggota"],
@@ -90,11 +105,22 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const { mutate: createSimpanan, isPending: isPendingSimpanan } = useCreateSimpanan();
-  const { mutate: createPinjaman, isPending: isPendingPinjaman } = useCreatePinjaman();
+  const { mutate: createSimpanan, isPending: isPendingSimpanan } =
+    useCreateSimpanan();
+  const { mutate: createPinjaman, isPending: isPendingPinjaman } =
+    useCreatePinjaman();
   const { mutate: createInfaq, isPending: isPendingInfaq } = useCreateInfaq();
+  const { mutate: createSukarela, isPending: isPendingSukarela } =
+    useCreateSimpananSukarela();
+  const { mutate: createLiburan, isPending: isPendingLiburan } =
+    useCreateTabunganLiburan();
 
-  const isPending = isPendingSimpanan || isPendingPinjaman || isPendingInfaq;
+  const isPending =
+    isPendingSimpanan ||
+    isPendingPinjaman ||
+    isPendingInfaq ||
+    isPendingSukarela ||
+    isPendingLiburan;
   const typeValue = form.watch("type");
   const jenisInfaqValue = form.watch("jenis_infaq");
 
@@ -106,11 +132,14 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
   }));
 
   const needsAnggota =
-    [1, 2, 3].includes(typeValue) ||
+    [1, 2, 3, 5, 6].includes(typeValue) ||
     (typeValue === 4 && jenisInfaqValue === "masuk");
 
+  const needsKeterangan = [3, 4, 5, 6].includes(typeValue);
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const { tanggal, type, id_anggota, jumlah, keterangan, jenis_infaq } = values;
+    const { tanggal, type, id_anggota, jumlah, keterangan, jenis_infaq } =
+      values;
 
     const onSuccessCallback = {
       onSuccess: () => {
@@ -147,6 +176,20 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
         keterangan,
       };
       createInfaq(payload, onSuccessCallback);
+    } else if (type === 5) {
+      const payload = {
+        id_anggota: id_anggota!,
+        jumlah,
+        keterangan,
+      };
+      createSukarela(payload, onSuccessCallback);
+    } else if (type === 6) {
+      const payload = {
+        id_anggota: id_anggota!,
+        jumlah,
+        keterangan,
+      };
+      createLiburan(payload, onSuccessCallback);
     }
   };
 
@@ -179,6 +222,8 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
                       { value: 2, label: "Cicilan" },
                       { value: 3, label: "Pinjaman" },
                       { value: 4, label: "Infaq" },
+                      { value: 5, label: "Simpanan Sukarela" },
+                      { value: 6, label: "Tab. Liburan" },
                     ]}
                   />
                 </FormControl>
@@ -268,7 +313,7 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
             />
           )}
 
-          {typeValue === 3 && (
+          {needsKeterangan && (
             <FormField
               control={form.control}
               name="keterangan"
@@ -277,27 +322,7 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
                   <FormLabel>Keterangan (Opsional)</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Masukkan keterangan pinjaman"
-                      value={field.value || ""}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          {typeValue === 4 && (
-            <FormField
-              control={form.control}
-              name="keterangan"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Keterangan (Opsional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Masukkan keterangan infaq"
+                      placeholder="Masukkan keterangan"
                       value={field.value || ""}
                       onChange={field.onChange}
                     />

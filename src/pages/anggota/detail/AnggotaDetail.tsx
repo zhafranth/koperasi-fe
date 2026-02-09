@@ -22,6 +22,7 @@ import { SkeletonDetail } from "@/components/Skeleton";
 import useToggle from "@/hooks/useToggle";
 import ModalEditAnggota from "../list/_components/ModalEditAnggota";
 import { formatCurrency } from "@/lib/utils";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 const InfoRow = ({
   icon,
@@ -45,6 +46,7 @@ const AnggotaDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetAnggotaDetail(Number(id));
   const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useToggle();
+  const isPengurus = useIsPengurus();
 
   if (isLoading) return <SkeletonDetail />;
 
@@ -94,13 +96,15 @@ const AnggotaDetail = () => {
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={onEditOpen}
-              className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
-            >
-              <Pencil className="w-4 h-4" />
-            </button>
+            {isPengurus && (
+              <button
+                type="button"
+                onClick={onEditOpen}
+                className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
 

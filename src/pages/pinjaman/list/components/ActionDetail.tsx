@@ -13,6 +13,7 @@ import TabPayment from "./TabPayment";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, EyeIcon } from "lucide-react";
 import useToggle from "@/hooks/useToggle";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 interface Props {
   data: PinjamanProps;
@@ -20,6 +21,7 @@ interface Props {
 
 const ActionDetail: React.FC<Props> = ({ data }) => {
   const { isOpen, toggle } = useToggle();
+  const isPengurus = useIsPengurus();
   const [contentMode, setContentMode] = useState<"detail" | "payment">(
     "detail",
   );
@@ -61,7 +63,7 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
         {contentMode === "payment" && (
           <TabPayment data={detail} changeContent={handleChangeContent} />
         )}
-        {contentMode === "detail" && (
+        {contentMode === "detail" && isPengurus && (
           <Button
             className="bg-transparent hover:bg-gray hover:cursor-pointer text-neutral-900 shadow-none"
             size="sm"

@@ -21,6 +21,7 @@ import "dayjs/locale/id";
 import EmptyState from "@/components/EmptyState";
 import { useState } from "react";
 import { formatCurrency } from "@/lib/utils";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 dayjs.locale("id");
 
@@ -95,6 +96,7 @@ const stats = [
 
 const DashboardHome = () => {
   const { data: events = [] } = useGetEvents();
+  const isPengurus = useIsPengurus();
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
@@ -226,13 +228,15 @@ const DashboardHome = () => {
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={onAddOpen}
-              className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] flex items-center justify-center text-white shadow-md hover:shadow-lg transition-all duration-300"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
+            {isPengurus && (
+              <button
+                type="button"
+                onClick={onAddOpen}
+                className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] flex items-center justify-center text-white shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* Event Cards Grid */}

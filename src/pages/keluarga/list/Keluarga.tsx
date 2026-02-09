@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 const Keluarga = () => {
   const [search, setSearch] = useState("");
@@ -24,6 +25,7 @@ const Keluarga = () => {
 
   const { data: keluargaList = [] } = useGetKeluarga();
   const { mutate: deleteKeluarga, isPending: isDeleting } = useDeleteKeluarga();
+  const isPengurus = useIsPengurus();
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -38,13 +40,15 @@ const Keluarga = () => {
       <div className="space-y-6">
         <div className="kp-fade-up flex items-center justify-between">
           <h2 className="text-2xl font-bold text-[#1c1917]">Daftar Keluarga</h2>
-          <Button
-            onClick={onOpen}
-            className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-          >
-            <PlusIcon className="h-4 w-4 mr-2" />
-            Tambah Keluarga
-          </Button>
+          {isPengurus && (
+            <Button
+              onClick={onOpen}
+              className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <PlusIcon className="h-4 w-4 mr-2" />
+              Tambah Keluarga
+            </Button>
+          )}
         </div>
 
         <div className="kp-fade-up kp-d1">
@@ -62,7 +66,7 @@ const Keluarga = () => {
                   : "Data keluarga akan muncul di sini setelah ditambahkan."
               }
               action={
-                !search ? (
+                !search && isPengurus ? (
                   <Button
                     onClick={onOpen}
                     className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl"
@@ -83,8 +87,8 @@ const Keluarga = () => {
                 >
                   <CardKeluarga
                     data={keluarga}
-                    onEdit={(data) => setEditData(data)}
-                    onDelete={(data) => setDeleteData(data)}
+                    onEdit={isPengurus ? (data) => setEditData(data) : undefined}
+                    onDelete={isPengurus ? (data) => setDeleteData(data) : undefined}
                   />
                 </div>
               );

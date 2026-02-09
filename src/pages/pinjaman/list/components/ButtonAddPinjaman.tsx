@@ -2,9 +2,14 @@ import { Button } from "@/components/ui/button";
 import useToggle from "@/hooks/useToggle";
 import { PlusIcon } from "lucide-react";
 import ModalAddPinjaman from "./ModalCreatePinjaman";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 const ButtonAddPinjaman = () => {
   const { toggle, isOpen } = useToggle();
+  const isPengurus = useIsPengurus();
+
+  if (!isPengurus) return null;
+
   return (
     <>
       <Button

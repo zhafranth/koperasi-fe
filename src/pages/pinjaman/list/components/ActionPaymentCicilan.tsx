@@ -27,6 +27,7 @@ import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 const formSchema = z.object({
   jumlah: z.number().min(1, "Jumlah is required"),
@@ -41,6 +42,9 @@ const ActionPaymentCicilan = () => {
     resolver: zodResolver(formSchema),
   });
   const { isOpen, toggle } = useToggle();
+  const isPengurus = useIsPengurus();
+
+  if (!isPengurus) return null;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("values:", values);

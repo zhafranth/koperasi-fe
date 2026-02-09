@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: profile } = useAuth();
 
   const isAuthenticated = !!localStorage.getItem("token");
 
@@ -134,11 +136,18 @@ const Dashboard = () => {
         <div className="border-t border-white/10 p-5">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-[#c9a84c] flex items-center justify-center text-sm font-bold text-[#0d3b2c] font-serif">
-              JD
+              {profile?.nama
+                ? profile.nama
+                    .split(" ")
+                    .map((w) => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase()
+                : "?"}
             </div>
             <div>
-              <p className="font-semibold text-sm text-white">John Doe</p>
-              <p className="text-xs text-white/40">Admin</p>
+              <p className="font-semibold text-sm text-white">{profile?.nama || "-"}</p>
+              <p className="text-xs text-white/40 capitalize">{profile?.role || "-"}</p>
             </div>
           </div>
           <Button

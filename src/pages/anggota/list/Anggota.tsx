@@ -11,6 +11,7 @@ import Search from "./_components/Search";
 import { useSearchParams } from "react-router-dom";
 import { SkeletonCard } from "@/components/Skeleton";
 import EmptyState from "@/components/EmptyState";
+import { useIsPengurus } from "@/hooks/useAuth";
 
 const Anggota = () => {
   const [searchParams] = useSearchParams();
@@ -20,19 +21,22 @@ const Anggota = () => {
 
   const { data = [], isLoading } = useGetAnggota(queryObject);
   const { isOpen, onOpen, onClose } = useToggle();
+  const isPengurus = useIsPengurus();
 
   return (
     <>
       <div className="space-y-6">
         <div className="kp-fade-up flex items-center justify-between">
           <h2 className="text-2xl font-bold text-[#1c1917]">Daftar Anggota</h2>
-          <Button
-            onClick={onOpen}
-            className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-          >
-            <PlusIcon className="h-4 w-4 mr-2" />
-            Tambah Anggota
-          </Button>
+          {isPengurus && (
+            <Button
+              onClick={onOpen}
+              className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <PlusIcon className="h-4 w-4 mr-2" />
+              Tambah Anggota
+            </Button>
+          )}
         </div>
 
         <div className="kp-fade-up kp-d1">
@@ -52,13 +56,15 @@ const Anggota = () => {
               title="Belum ada anggota"
               description="Data anggota akan muncul di sini setelah ditambahkan."
               action={
-                <Button
-                  onClick={onOpen}
-                  className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl"
-                >
-                  <PlusIcon className="h-4 w-4 mr-2" />
-                  Tambah Anggota
-                </Button>
+                isPengurus ? (
+                  <Button
+                    onClick={onOpen}
+                    className="bg-gradient-to-r from-[#0d3b2c] to-[#145a3f] hover:from-[#145a3f] hover:to-[#1a6b50] text-white font-medium px-6 py-2 rounded-xl"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-2" />
+                    Tambah Anggota
+                  </Button>
+                ) : undefined
               }
             />
           ) : (
@@ -68,7 +74,7 @@ const Anggota = () => {
                 <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
                   <CardAnggota
                     data={anggota}
-                    onEdit={(id) => setEditId(id)}
+                    onEdit={isPengurus ? (id) => setEditId(id) : undefined}
                   />
                 </div>
               );

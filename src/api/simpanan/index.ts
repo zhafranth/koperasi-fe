@@ -1,6 +1,9 @@
 import type { ApiResponse } from "../../../config/axios";
 import apiRequest from "../../../config/axios";
-import type { SimpananPayload } from "./simpanan.interface";
+import type {
+  SimpananChartItem,
+  SimpananPayload,
+} from "./simpanan.interface";
 
 export const postCreateSimpanan = async (data: SimpananPayload) => {
   const response: ApiResponse<undefined> = await apiRequest({
@@ -10,4 +13,14 @@ export const postCreateSimpanan = async (data: SimpananPayload) => {
   });
 
   return response.data;
+};
+
+export const getSimpananChart = async (tahun: number) => {
+  const response: ApiResponse<SimpananChartItem[]> = await apiRequest({
+    method: "GET",
+    url: "/simpanan/chart",
+    params: { tahun },
+  });
+
+  return response.data.data;
 };

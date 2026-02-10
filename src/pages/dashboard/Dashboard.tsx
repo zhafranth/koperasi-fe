@@ -5,7 +5,6 @@ import {
   LayoutDashboard,
   Users,
   Receipt,
-  PiggyBank,
   Wallet,
   Menu,
   X,
@@ -52,12 +51,7 @@ const Dashboard = () => {
       icon: Wallet,
       path: "/pinjaman?status=proses",
     },
-    {
-      title: "Simpanan",
-      icon: PiggyBank,
-      path: "/simpanan",
-    },
-    {
+{
       title: "Keluarga",
       icon: Home,
       path: "/keluarga",

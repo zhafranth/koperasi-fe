@@ -5,6 +5,10 @@ export interface KeluargaAnggotaProps {
   nik: string;
   no_telepon: string;
   status: string;
+  total_simpanan: number;
+  jumlah_pinjaman: number;
+  jumlah_sukarela: number;
+  jumlah_tabungan_liburan: number;
 }
 
 export interface KeluargaProps {
@@ -12,6 +16,10 @@ export interface KeluargaProps {
   nama_kepala_keluarga: string;
   tgl_gabung: string | null;
   created_date: string;
+  total_simpanan: number;
+  total_pinjaman: number;
+  total_sukarela: number;
+  total_tabungan_liburan: number;
   anggota: KeluargaAnggotaProps[];
 }
 

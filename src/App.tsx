@@ -10,6 +10,7 @@ import Transaksi from "./pages/transaksi/list";
 import Pinjaman from "./pages/pinjaman/list";
 import AnggotaPublicDetail from "./pages/anggota/public";
 import Keluarga from "./pages/keluarga/list";
+import KeluargaPublicDetail from "./pages/keluarga/public";
 import Penarikan from "./pages/penarikan/list";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 
@@ -22,13 +23,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/anggota/:id" element={<AnggotaPublicDetail />} />
+        <Route path="/keluarga/:id" element={<KeluargaPublicDetail />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="dashboard" element={<DashboardHome />} />
           <Route path="transaksi" element={<Transaksi />} />
           <Route path="anggota" element={<Anggota />} />
           <Route path="anggota/:id" element={<AnggotaDetail />} />
           <Route path="pinjaman" element={<Pinjaman />} />
-          <Route path="simpanan" element={<div>simpanan</div>} />
           <Route path="keluarga" element={<Keluarga />} />
           <Route path="penarikan" element={<Penarikan />} />
         </Route>

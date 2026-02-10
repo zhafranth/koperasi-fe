@@ -14,12 +14,14 @@ import {
   CalendarDays,
   Clock,
   Sparkles,
+  Home as HomeIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "@/lib/utils";
 import { useGetAnggota } from "@/networks/anggota";
 import { useGetEvents } from "@/networks/event";
 import { useGetTransaksiTotal } from "@/networks/transaksi";
+import { useGetKeluarga } from "@/networks/keluarga";
 import EmptyState from "@/components/EmptyState";
 import ModalDetailEvent from "./dashboard/_components/ModalDetailEvent";
 import type { EventProps } from "@/api/event/event.interface";
@@ -61,6 +63,7 @@ const Home = () => {
   const { data: anggotaList = [] } = useGetAnggota();
   const { data: events = [] } = useGetEvents();
   const { data: totalData } = useGetTransaksiTotal();
+  const { data: keluargaList = [] } = useGetKeluarga();
 
   const stats = useMemo(() => {
     const d = totalData;
@@ -305,6 +308,100 @@ const Home = () => {
             </div>
           </div>
         </div>
+        {/* Daftar Keluarga */}
+        {keluargaList.length > 0 && (
+          <div className="kp-fade-up kp-d3 space-y-4">
+            <div>
+              <h3 className="text-lg font-bold text-[#1c1917] font-serif">
+                Daftar Keluarga
+              </h3>
+              <p className="text-xs text-[#a8a29e] mt-0.5">
+                Data keluarga anggota koperasi
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {keluargaList.map((keluarga, index) => {
+                const delays = [
+                  "kp-d1",
+                  "kp-d2",
+                  "kp-d3",
+                  "kp-d4",
+                  "kp-d5",
+                  "kp-d6",
+                ];
+                return (
+                  <div
+                    key={keluarga.id_keluarga}
+                    className={`kp-scale-in ${delays[Math.min(index, 5)]} group cursor-pointer rounded-2xl border border-[#0d3b2c]/8 p-5 hover:shadow-lg hover:border-[#c9a84c]/40 transition-all duration-300 bg-gradient-to-br from-[#0d3b2c]/[0.04] via-white to-white`}
+                    onClick={() =>
+                      navigate(`/keluarga/${keluarga.id_keluarga}`)
+                    }
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-10 h-10 rounded-xl bg-[#0d3b2c]/[0.08] flex items-center justify-center shrink-0 group-hover:bg-[#0d3b2c]/[0.12] transition-colors">
+                          <HomeIcon className="w-[18px] h-[18px] text-[#145a3f]" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-[15px] text-[#1c1917] font-serif group-hover:text-[#0d3b2c] transition-colors">
+                            {keluarga.nama_kepala_keluarga}
+                          </p>
+                          <span className="inline-flex items-center gap-1 text-[11px] text-[#78716c] mt-0.5">
+                            <Users className="w-3 h-3" />
+                            {keluarga.anggota.length} anggota
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-[#a8a29e] group-hover:text-[#c9a84c] group-hover:translate-x-0.5 transition-all" />
+                    </div>
+
+                    {/* Financial row */}
+                    <div className="flex items-stretch gap-0 rounded-xl bg-white/80 border border-[#0d3b2c]/[0.05] overflow-hidden">
+                      <div className="flex-1 px-3 py-2.5 text-center">
+                        <p className="text-[9px] uppercase tracking-wider text-[#a8a29e] mb-1">
+                          Simpanan
+                        </p>
+                        <p className="text-xs font-bold text-[#145a3f]">
+                          {formatCurrency(keluarga.total_simpanan)}
+                        </p>
+                      </div>
+                      <div className="w-px bg-[#0d3b2c]/[0.06]" />
+                      <div className="flex-1 px-3 py-2.5 text-center">
+                        <p className="text-[9px] uppercase tracking-wider text-[#a8a29e] mb-1">
+                          Pinjaman
+                        </p>
+                        <p className="text-xs font-bold text-amber-700">
+                          {formatCurrency(keluarga.total_pinjaman)}
+                        </p>
+                      </div>
+                      <div className="w-px bg-[#0d3b2c]/[0.06]" />
+                      <div className="flex-1 px-3 py-2.5 text-center">
+                        <p className="text-[9px] uppercase tracking-wider text-[#a8a29e] mb-1">
+                          Sukarela
+                        </p>
+                        <p className="text-xs font-bold text-teal-700">
+                          {formatCurrency(keluarga.total_sukarela)}
+                        </p>
+                      </div>
+                      <div className="w-px bg-[#0d3b2c]/[0.06]" />
+                      <div className="flex-1 px-3 py-2.5 text-center">
+                        <p className="text-[9px] uppercase tracking-wider text-[#a8a29e] mb-1">
+                          Tab. Liburan
+                        </p>
+                        <p className="text-xs font-bold text-blue-700">
+                          {formatCurrency(keluarga.total_tabungan_liburan)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Anggota List */}
         <div className="kp-fade-up kp-d3">
           <div className="bg-white rounded-2xl shadow-sm border border-[#e7e5e0] overflow-hidden">

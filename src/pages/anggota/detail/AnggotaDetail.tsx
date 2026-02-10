@@ -56,7 +56,7 @@ const AnggotaDetail = () => {
     email,
     nik,
     no_telepon,
-    saldo_simpanan,
+    total_simpanan,
     tgl_gabung,
     username,
     jumlah_pinjaman,
@@ -161,7 +161,7 @@ const AnggotaDetail = () => {
                   </span>
                 </div>
                 <p className="text-2xl font-bold text-emerald-800">
-                  {formatCurrency(saldo_simpanan || 0)}
+                  {formatCurrency(total_simpanan || 0)}
                 </p>
               </div>
               <div className="bg-amber-50 p-5 rounded-2xl border border-amber-100">

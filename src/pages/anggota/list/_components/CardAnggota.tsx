@@ -19,7 +19,7 @@ const getInitials = (name: string) => {
 };
 
 const CardAnggota: React.FC<Props> = ({ data, onEdit }) => {
-  const { id, nama, no_telepon, saldo_simpanan, jumlah_pinjaman } = data ?? {};
+  const { id, nama, no_telepon, total_simpanan, jumlah_pinjaman } = data ?? {};
   const navigate = useNavigate();
 
   const handleDetail = () => navigate(`/dashboard/anggota/${id}`);
@@ -45,7 +45,7 @@ const CardAnggota: React.FC<Props> = ({ data, onEdit }) => {
               Saldo Simpanan
             </p>
             <p className="text-base font-bold text-emerald-700">
-              {formatCurrency(saldo_simpanan)}
+              {formatCurrency(total_simpanan)}
             </p>
           </div>
           <div className="text-right">

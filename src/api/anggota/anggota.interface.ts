@@ -4,7 +4,7 @@ export interface AnggotaProps {
   status: string;
   no_telepon: string;
   jumlah_pinjaman: number;
-  saldo_simpanan: number;
+  total_simpanan: number;
   id_keluarga?: number | null;
   nama_kepala_keluarga?: string | null;
 }
@@ -27,7 +27,7 @@ export interface AnggotaDetailProps {
   email: string;
   tgl_gabung: string;
   status: string;
-  saldo_simpanan: number;
+  total_simpanan: number;
   username: string;
   jumlah_simpanan: number;
   jumlah_pinjaman: number;

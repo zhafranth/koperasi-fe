@@ -1,7 +1,6 @@
 import ChartKoperasi from "@/components/ChartsKoperasi";
 import {
   Users,
-  Wallet,
   PiggyBank,
   BadgeDollarSign,
   HandCoins,
@@ -288,66 +287,67 @@ const DashboardHome = () => {
                 description="Belum ada agenda kegiatan koperasi"
               />
             ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {events.map((event, index) => {
-                const delays = [
-                  "kp-d1",
-                  "kp-d2",
-                  "kp-d3",
-                  "kp-d4",
-                  "kp-d5",
-                  "kp-d6",
-                ];
-                const categoryColor =
-                  KATEGORI_COLOR[event.kategori] || "text-gray-800 bg-gray-50";
-                const categoryLabel =
-                  KATEGORI_LABEL[event.kategori] || event.kategori;
-                return (
-                  <div
-                    key={event.id}
-                    className={`kp-scale-in ${delays[Math.min(index, 5)]} group cursor-pointer rounded-xl border border-[#e7e5e0] p-5 hover:shadow-md hover:border-[#c9a84c]/40 transition-all duration-300 bg-white flex flex-col`}
-                  >
-                    {/* Category + Arrow */}
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className={`inline-flex items-center text-[10px] font-semibold px-2.5 py-1 rounded-full ${categoryColor}`}
-                      >
-                        {categoryLabel}
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-[#d6d3d1] group-hover:text-[#c9a84c] transition-colors" />
-                    </div>
-
-                    {/* Title & Description */}
-                    <h4 className="font-semibold text-sm text-[#1c1917] mb-2 leading-snug">
-                      {event.title}
-                    </h4>
-                    <p className="text-xs text-[#a8a29e] leading-relaxed mb-4 line-clamp-2 flex-1">
-                      {event.description || "-"}
-                    </p>
-
-                    {/* Meta */}
-                    <div className="space-y-1.5 pt-3 border-t border-[#e7e5e0]">
-                      <div className="flex items-center gap-2 text-xs text-[#78716c]">
-                        <CalendarDays className="w-3.5 h-3.5 text-[#a8a29e]" />
-                        {dayjs(event.tanggal).format("D MMMM YYYY")}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {events.map((event, index) => {
+                  const delays = [
+                    "kp-d1",
+                    "kp-d2",
+                    "kp-d3",
+                    "kp-d4",
+                    "kp-d5",
+                    "kp-d6",
+                  ];
+                  const categoryColor =
+                    KATEGORI_COLOR[event.kategori] ||
+                    "text-gray-800 bg-gray-50";
+                  const categoryLabel =
+                    KATEGORI_LABEL[event.kategori] || event.kategori;
+                  return (
+                    <div
+                      key={event.id}
+                      className={`kp-scale-in ${delays[Math.min(index, 5)]} group cursor-pointer rounded-xl border border-[#e7e5e0] p-5 hover:shadow-md hover:border-[#c9a84c]/40 transition-all duration-300 bg-white flex flex-col`}
+                    >
+                      {/* Category + Arrow */}
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className={`inline-flex items-center text-[10px] font-semibold px-2.5 py-1 rounded-full ${categoryColor}`}
+                        >
+                          {categoryLabel}
+                        </span>
+                        <ChevronRight className="w-4 h-4 text-[#d6d3d1] group-hover:text-[#c9a84c] transition-colors" />
                       </div>
-                      {event.waktu && (
+
+                      {/* Title & Description */}
+                      <h4 className="font-semibold text-sm text-[#1c1917] mb-2 leading-snug">
+                        {event.title}
+                      </h4>
+                      <p className="text-xs text-[#a8a29e] leading-relaxed mb-4 line-clamp-2 flex-1">
+                        {event.description || "-"}
+                      </p>
+
+                      {/* Meta */}
+                      <div className="space-y-1.5 pt-3 border-t border-[#e7e5e0]">
                         <div className="flex items-center gap-2 text-xs text-[#78716c]">
-                          <Clock className="w-3.5 h-3.5 text-[#a8a29e]" />
-                          {event.waktu}
+                          <CalendarDays className="w-3.5 h-3.5 text-[#a8a29e]" />
+                          {dayjs(event.tanggal).format("D MMMM YYYY")}
                         </div>
-                      )}
-                      {event.location && (
-                        <div className="flex items-center gap-2 text-xs text-[#78716c]">
-                          <MapPin className="w-3.5 h-3.5 text-[#a8a29e]" />
-                          {event.location}
-                        </div>
-                      )}
+                        {event.waktu && (
+                          <div className="flex items-center gap-2 text-xs text-[#78716c]">
+                            <Clock className="w-3.5 h-3.5 text-[#a8a29e]" />
+                            {event.waktu}
+                          </div>
+                        )}
+                        {event.location && (
+                          <div className="flex items-center gap-2 text-xs text-[#78716c]">
+                            <MapPin className="w-3.5 h-3.5 text-[#a8a29e]" />
+                            {event.location}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>

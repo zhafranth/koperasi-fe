@@ -4,3 +4,8 @@ export interface SimpananPayload {
   start: string | null;
   end: string | null;
 }
+
+export interface SimpananChartItem {
+  bulan: number;
+  total: number;
+}

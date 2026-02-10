@@ -9,6 +9,10 @@ export const columns: ColumnDef<TransaksiProps>[] = [
   {
     accessorKey: "nama_anggota",
     header: "Nama",
+    cell: ({ getValue }) => {
+      const value = getValue() as string | null;
+      return value || "Koperasi";
+    },
   },
   {
     accessorKey: "jenis",
@@ -28,6 +32,14 @@ export const columns: ColumnDef<TransaksiProps>[] = [
           {formatCurrency(amount)}
         </p>
       );
+    },
+  },
+  {
+    accessorKey: "keterangan",
+    header: "Keterangan",
+    cell: ({ getValue }) => {
+      const value = getValue() as string | null;
+      return value || "-";
     },
   },
   {

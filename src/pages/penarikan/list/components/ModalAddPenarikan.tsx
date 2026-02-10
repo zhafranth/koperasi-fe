@@ -30,14 +30,26 @@ import { useGetAnggota } from "@/networks/anggota";
 import { useCreatePenarikan, useGetSaldoPenarikan } from "@/networks/penarikan";
 import { formatCurrency } from "@/lib/utils";
 
-const formSchema = z.object({
-  id_anggota: z.number({ required_error: "Anggota wajib dipilih" }),
-  jumlah: z.number().min(1, "Jumlah harus lebih dari 0"),
-  sumber: z.enum(["simpanan", "sukarela", "infaq", "liburan"], {
-    required_error: "Sumber wajib dipilih",
-  }),
-  keterangan: z.string().optional(),
-});
+const SUMBER_KOPERASI = ["infaq", "sukarela"];
+
+const formSchema = z
+  .object({
+    id_anggota: z.number().optional(),
+    jumlah: z.number().min(1, "Jumlah harus lebih dari 0"),
+    sumber: z.enum(["simpanan", "sukarela", "infaq", "liburan"], {
+      required_error: "Sumber wajib dipilih",
+    }),
+    keterangan: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (!SUMBER_KOPERASI.includes(data.sumber)) {
+        return !!data.id_anggota;
+      }
+      return true;
+    },
+    { message: "Anggota wajib dipilih", path: ["id_anggota"] },
+  );
 
 interface Props {
   isOpen: boolean;
@@ -62,10 +74,17 @@ const ModalAddPenarikan: React.FC<Props> = ({ isOpen, onClose }) => {
   const idAnggota = form.watch("id_anggota");
   const sumber = form.watch("sumber");
 
+  const isSumberKoperasi = SUMBER_KOPERASI.includes(sumber);
+  const needsAnggota = !!sumber && !isSumberKoperasi;
+
   const { data: saldoData } = useGetSaldoPenarikan(
-    idAnggota,
+    needsAnggota ? idAnggota : undefined,
     sumber,
-    { enabled: !!idAnggota && !!sumber }
+    {
+      enabled: isSumberKoperasi
+        ? !!sumber
+        : !!idAnggota && !!sumber,
+    },
   );
 
   const anggotaOptions = anggotaList.map((a) => ({
@@ -74,12 +93,22 @@ const ModalAddPenarikan: React.FC<Props> = ({ isOpen, onClose }) => {
   }));
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createPenarikan(values, {
+    const payload = isSumberKoperasi
+      ? { jumlah: values.jumlah, sumber: values.sumber, keterangan: values.keterangan }
+      : values;
+
+    createPenarikan(payload, {
       onSuccess: () => {
         form.reset();
         onClose();
       },
     });
+  };
+
+  const handleSumberChange = (value: string, fieldOnChange: (v: string) => void) => {
+    fieldOnChange(value);
+    form.resetField("id_anggota");
+    form.resetField("jumlah");
   };
 
   return (
@@ -100,7 +129,7 @@ const ModalAddPenarikan: React.FC<Props> = ({ isOpen, onClose }) => {
                 <FormItem>
                   <FormLabel>Sumber Dana</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(v) => handleSumberChange(v, field.onChange)}
                     value={field.value}
                   >
                     <FormControl>
@@ -121,23 +150,25 @@ const ModalAddPenarikan: React.FC<Props> = ({ isOpen, onClose }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="id_anggota"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Anggota</FormLabel>
-                  <FormControl>
-                    <InputSelect
-                      options={anggotaOptions}
-                      value={field.value}
-                      onChange={(v) => field.onChange(v as number)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {needsAnggota && (
+              <FormField
+                control={form.control}
+                name="id_anggota"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Anggota</FormLabel>
+                    <FormControl>
+                      <InputSelect
+                        options={anggotaOptions}
+                        value={field.value}
+                        onChange={(v) => field.onChange(v as number)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             {saldoData && (
               <div className="rounded-xl bg-[#f7f5f0] border border-[#e7e5e0] px-4 py-3">

@@ -16,7 +16,7 @@ export const useGetPenarikan = (params?: object) => {
 };
 
 export const useGetSaldoPenarikan = (
-  id_anggota: number,
+  id_anggota: number | undefined,
   sumber: string,
   options?: { enabled?: boolean }
 ) => {

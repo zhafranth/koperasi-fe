@@ -16,13 +16,18 @@ export const getListPenarikan = async (params?: object) => {
 };
 
 export const getSaldoPenarikan = async (
-  id_anggota: number,
+  id_anggota: number | undefined,
   sumber: string
 ) => {
+  const params: Record<string, any> = { sumber };
+  if (id_anggota) {
+    params.id_anggota = id_anggota;
+  }
+
   const response: ApiResponse<SaldoPenarikanProps> = await apiRequest({
     method: "GET",
     url: "/penarikan/saldo",
-    params: { id_anggota, sumber },
+    params,
   });
 
   return response.data.data;

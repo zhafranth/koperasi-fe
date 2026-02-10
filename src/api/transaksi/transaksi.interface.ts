@@ -1,12 +1,11 @@
 export interface TransaksiProps {
   id: number;
-  id_anggota: number;
+  id_anggota: number | null;
   jenis: string;
   jumlah: number;
-  tanggal: string;
+  createdAt: string;
   keterangan: string | null;
-  saldo_akhir: number;
-  nama_anggota: string;
+  nama_anggota: string | null;
 }
 
 export interface TransaksiTotalProps {
@@ -14,6 +13,7 @@ export interface TransaksiTotalProps {
   jumlah_dana: number;
   jumlah_pinjaman: number;
   jumlah_simpanan_sukarela: number;
+  jumlah_infaq: number;
   jumlah_tabungan_liburan: number;
   total_dana: number;
 }

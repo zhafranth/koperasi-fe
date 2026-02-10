@@ -1,7 +1,7 @@
 export interface PenarikanProps {
   id: number;
-  id_anggota: number;
-  nama: string;
+  id_anggota: number | null;
+  nama: string | null;
   jumlah: number;
   tanggal: string;
   tahun: string | null;
@@ -10,7 +10,7 @@ export interface PenarikanProps {
 }
 
 export interface CreatePenarikanPayload {
-  id_anggota: number;
+  id_anggota?: number;
   jumlah: number;
   sumber: "simpanan" | "sukarela" | "infaq" | "liburan";
   keterangan?: string;

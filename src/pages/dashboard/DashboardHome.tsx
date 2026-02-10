@@ -12,6 +12,8 @@ import {
   ChevronRight,
   Sparkles,
   Plus,
+  Heart,
+  Info,
 } from "lucide-react";
 import { useGetEvents } from "@/networks/event";
 import { useGetTransaksiTotal } from "@/networks/transaksi";
@@ -70,6 +72,7 @@ const DashboardHome = () => {
         iconColor: "text-emerald-800",
         valueColor: "text-emerald-800",
         delay: "kp-d1",
+        info: "Jumlah anggota aktif terdaftar",
       },
       {
         title: "Jumlah Dana",
@@ -79,6 +82,7 @@ const DashboardHome = () => {
         iconColor: "text-emerald-800",
         valueColor: "text-emerald-800",
         delay: "kp-d2",
+        info: "Total simpanan wajib + infaq masuk + sukarela + cicilan + tab. liburan",
       },
       {
         title: "Jumlah Pinjaman",
@@ -88,24 +92,7 @@ const DashboardHome = () => {
         iconColor: "text-amber-800",
         valueColor: "text-amber-800",
         delay: "kp-d3",
-      },
-      {
-        title: "Simpanan Sukarela",
-        value: formatCurrency(d?.jumlah_simpanan_sukarela || 0),
-        icon: HandCoins,
-        iconBg: "bg-blue-50",
-        iconColor: "text-blue-800",
-        valueColor: "text-blue-800",
-        delay: "kp-d4",
-      },
-      {
-        title: "Tab. Liburan",
-        value: formatCurrency(d?.jumlah_tabungan_liburan || 0),
-        icon: Palmtree,
-        iconBg: "bg-teal-50",
-        iconColor: "text-teal-800",
-        valueColor: "text-teal-800",
-        delay: "kp-d5",
+        info: "Total pinjaman berstatus proses",
       },
       {
         title: "Total Dana",
@@ -114,7 +101,42 @@ const DashboardHome = () => {
         iconBg: "bg-[#c9a84c]/10",
         iconColor: "text-[#92400e]",
         valueColor: "text-[#92400e]",
-        delay: "kp-d6",
+        delay: "kp-d4",
+        info: "Dana bersih setelah dikurangi penarikan dan pinjaman",
+        isHighlight: true,
+      },
+    ];
+  }, [totalData]);
+
+  const danaKoperasi = useMemo(() => {
+    const d = totalData;
+    return [
+      {
+        title: "Simpanan Sukarela",
+        value: formatCurrency(d?.jumlah_simpanan_sukarela || 0),
+        icon: HandCoins,
+        iconBg: "bg-blue-50",
+        iconColor: "text-blue-800",
+        valueColor: "text-blue-800",
+        info: "Simpanan sukarela − penarikan sukarela",
+      },
+      {
+        title: "Infaq",
+        value: formatCurrency(d?.jumlah_infaq || 0),
+        icon: Heart,
+        iconBg: "bg-rose-50",
+        iconColor: "text-rose-800",
+        valueColor: "text-rose-800",
+        info: "Infaq masuk − penarikan infaq",
+      },
+      {
+        title: "Tab. Liburan",
+        value: formatCurrency(d?.jumlah_tabungan_liburan || 0),
+        icon: Palmtree,
+        iconBg: "bg-teal-50",
+        iconColor: "text-teal-800",
+        valueColor: "text-teal-800",
+        info: "Tabungan liburan − penarikan liburan",
       },
     ];
   }, [totalData]);
@@ -136,50 +158,104 @@ const DashboardHome = () => {
         </p>
       </div>
 
-      {/* Stats Cards - Single Row Strip */}
-      <div className="flex gap-3 overflow-x-auto -mx-6 px-6 pb-1 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-6 snap-x snap-mandatory lg:snap-none scrollbar-hide">
-        {stats.map((stat, index) => {
-          const isHighlight = index === stats.length - 1;
-          return (
-            <div
-              key={stat.title}
-              className={`kp-scale-in ${stat.delay} snap-start relative min-w-[152px] flex-shrink-0 lg:min-w-0 rounded-2xl p-4 pb-5 transition-all duration-300 overflow-hidden ${
-                isHighlight
-                  ? "bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] shadow-lg shadow-[#0d3b2c]/25 border border-[#1a6b50]/30"
-                  : "bg-white border border-[#e7e5e0] shadow-sm hover:shadow-md hover:border-[#c9a84c]/30"
-              }`}
-            >
-              {isHighlight && (
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none" />
-              )}
+      {/* Stats Cards - Main Row */}
+      <div className="space-y-3">
+        <div className="flex gap-3  -mx-6 px-6 pb-1 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 snap-x snap-mandatory lg:snap-none scrollbar-hide">
+          {stats.map((stat) => {
+            const isHighlight = stat.isHighlight;
+            return (
               <div
-                className={`relative w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${
-                  isHighlight ? "bg-[#c9a84c]/15" : stat.iconBg
+                key={stat.title}
+                className={`kp-scale-in ${stat.delay} snap-start relative min-w-[170px] flex-shrink-0 lg:min-w-0 rounded-2xl p-4 pb-5 transition-all duration-300 ${
+                  isHighlight
+                    ? "bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] shadow-lg shadow-[#0d3b2c]/25 border border-[#1a6b50]/30"
+                    : "bg-white border border-[#e7e5e0] shadow-sm hover:shadow-md hover:border-[#c9a84c]/30"
                 }`}
               >
-                <stat.icon
-                  className={`w-[18px] h-[18px] ${
-                    isHighlight ? "text-[#c9a84c]" : stat.iconColor
+                {isHighlight && (
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none" />
+                )}
+                <div className="relative flex items-center justify-between mb-3">
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                      isHighlight ? "bg-[#c9a84c]/15" : stat.iconBg
+                    }`}
+                  >
+                    <stat.icon
+                      className={`w-[18px] h-[18px] ${
+                        isHighlight ? "text-[#c9a84c]" : stat.iconColor
+                      }`}
+                    />
+                  </div>
+                  <div className="group/info relative">
+                    <Info
+                      className={`w-3.5 h-3.5 cursor-help ${
+                        isHighlight
+                          ? "text-white/30 hover:text-white/60"
+                          : "text-[#d6d3d1] hover:text-[#a8a29e]"
+                      } transition-colors`}
+                    />
+                    <div className="absolute bottom-full right-0 mb-1.5 hidden group-hover/info:block z-20 pointer-events-none">
+                      <div className="bg-[#525252] text-white text-[10px] leading-snug px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap max-w-[200px] text-wrap">
+                        {stat.info}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p
+                  className={`relative text-xl font-bold font-serif truncate ${
+                    isHighlight ? "text-white" : stat.valueColor
                   }`}
-                />
+                >
+                  {stat.value}
+                </p>
+                <span
+                  className={`relative text-[10px] font-semibold uppercase tracking-wider mt-1 block ${
+                    isHighlight ? "text-[#c9a84c]/60" : "text-[#78716c]"
+                  }`}
+                >
+                  {stat.title}
+                </span>
               </div>
-              <p
-                className={`relative text-lg font-bold font-serif truncate ${
-                  isHighlight ? "text-white" : stat.valueColor
-                }`}
+            );
+          })}
+        </div>
+
+        {/* Dana Koperasi - Combined Card */}
+        <div className="kp-scale-in kp-d5 rounded-2xl bg-white border border-[#e7e5e0] shadow-sm">
+          <div className="grid grid-cols-3 divide-x divide-[#e7e5e0]">
+            {danaKoperasi.map((item) => (
+              <div
+                key={item.title}
+                className="group/item relative px-5 py-4 hover:bg-stone-50/50 transition-colors"
               >
-                {stat.value}
-              </p>
-              <span
-                className={`relative text-[10px] font-semibold uppercase tracking-wider mt-1 block ${
-                  isHighlight ? "text-[#c9a84c]/60" : "text-[#78716c]"
-                }`}
-              >
-                {stat.title}
-              </span>
-            </div>
-          );
-        })}
+                <div className="flex items-center justify-between mb-2.5">
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${item.iconBg}`}
+                  >
+                    <item.icon className={`w-4 h-4 ${item.iconColor}`} />
+                  </div>
+                  <div className="group/info relative">
+                    <Info className="w-3.5 h-3.5 cursor-help text-[#d6d3d1] hover:text-[#a8a29e] transition-colors" />
+                    <div className="absolute bottom-full right-0 mb-1.5 hidden group-hover/info:block z-20 pointer-events-none">
+                      <div className="bg-[#525252] text-white text-[10px] leading-snug px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap max-w-[200px] text-wrap">
+                        {item.info}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p
+                  className={`text-lg font-bold font-serif ${item.valueColor}`}
+                >
+                  {item.value}
+                </p>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c] mt-0.5 block">
+                  {item.title}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Chart + Events */}

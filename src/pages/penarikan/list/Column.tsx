@@ -22,6 +22,10 @@ export const columns: ColumnDef<PenarikanProps>[] = [
   {
     accessorKey: "nama",
     header: "Nama",
+    cell: ({ getValue }) => {
+      const value = getValue() as string | null;
+      return value || "Koperasi";
+    },
   },
   {
     accessorKey: "sumber",

@@ -15,8 +15,23 @@ export const TRANSAKSI_OPTIONS = [
     color: "orange",
   },
   {
-    key: "lainnya",
-    label: "Lainnya",
-    color: "gray",
+    key: "sukarela",
+    label: "Sukarela",
+    color: "violet",
+  },
+  {
+    key: "liburan",
+    label: "Tab. Liburan",
+    color: "cyan",
+  },
+  {
+    key: "infaq",
+    label: "Infaq",
+    color: "teal",
+  },
+  {
+    key: "penarikan",
+    label: "Penarikan",
+    color: "red",
   },
 ];

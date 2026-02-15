@@ -40,7 +40,6 @@ const formSchema = z
     ),
     jumlah: z.number().min(1, "Jumlah harus lebih dari 0"),
     id_anggota: z.number().optional(),
-    jenis_infaq: z.enum(["masuk", "keluar"]).optional(),
     tanggal: z
       .object({
         start: z
@@ -62,11 +61,7 @@ const formSchema = z
     keterangan: z.string().optional(),
   })
   .superRefine((val, ctx) => {
-    const infaqMasuk = val.type === 4 && val.jenis_infaq === "masuk";
-    if (
-      ([1, 2, 3, 5, 6].includes(val.type) || infaqMasuk) &&
-      !val.id_anggota
-    ) {
+    if ([1, 2, 3, 4, 5, 6].includes(val.type) && !val.id_anggota) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["id_anggota"],
@@ -90,13 +85,6 @@ const formSchema = z
           message: "Tanggal akhir wajib dipilih",
         });
       }
-    }
-    if (val.type === 4 && !val.jenis_infaq) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["jenis_infaq"],
-        message: "Jenis infaq wajib dipilih",
-      });
     }
   });
 
@@ -122,7 +110,6 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
     isPendingSukarela ||
     isPendingLiburan;
   const typeValue = form.watch("type");
-  const jenisInfaqValue = form.watch("jenis_infaq");
 
   const { data: anggotaList = [] } = useGetAnggota();
 
@@ -131,15 +118,12 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
     label: anggota.nama,
   }));
 
-  const needsAnggota =
-    [1, 2, 3, 5, 6].includes(typeValue) ||
-    (typeValue === 4 && jenisInfaqValue === "masuk");
+  const needsAnggota = [1, 2, 3, 4, 5, 6].includes(typeValue);
 
   const needsKeterangan = [3, 4, 5, 6].includes(typeValue);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const { tanggal, type, id_anggota, jumlah, keterangan, jenis_infaq } =
-      values;
+    const { tanggal, type, id_anggota, jumlah, keterangan } = values;
 
     const onSuccessCallback = {
       onSuccess: () => {
@@ -172,7 +156,7 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
       const payload = {
         id_anggota: id_anggota!,
         jumlah,
-        jenis: jenis_infaq as "masuk" | "keluar",
+        jenis: "masuk" as const,
         keterangan,
       };
       createInfaq(payload, onSuccessCallback);
@@ -249,30 +233,6 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
               </FormItem>
             )}
           />
-
-          {typeValue === 4 && (
-            <FormField
-              control={form.control}
-              name="jenis_infaq"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Jenis Infaq</FormLabel>
-                  <FormControl>
-                    <InputRadioGroup
-                      direction="horizontal"
-                      value={field.value}
-                      onChange={(v) => field.onChange(v as string)}
-                      options={[
-                        { value: "masuk", label: "Masuk" },
-                        { value: "keluar", label: "Keluar" },
-                      ]}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
 
           {needsAnggota && (
             <FormField

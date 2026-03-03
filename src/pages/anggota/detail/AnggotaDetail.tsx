@@ -45,7 +45,11 @@ const InfoRow = ({
 const AnggotaDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetAnggotaDetail(Number(id));
-  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useToggle();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useToggle();
   const isPengurus = useIsPengurus();
 
   if (isLoading) return <SkeletonDetail />;
@@ -72,6 +76,8 @@ const AnggotaDetail = () => {
         .join("")
         .toUpperCase()
     : "";
+
+  console.log("simpanan", simpanan);
 
   return (
     <div className="space-y-6">
@@ -216,9 +222,12 @@ const AnggotaDetail = () => {
                         Iuran Bulanan
                       </span>
                       <p className="text-sm font-semibold text-[#1c1917] mt-1">
-                        {formatDate(new Date(item.tanggal), "MMMM yyyy", {
-                          locale: formatID,
-                        })}
+                        {item?.bulan
+                          ? formatDate(item?.bulan, "MMMM", {
+                              locale: formatID,
+                            })
+                          : "-"}{" "}
+                        {item.tahun}
                       </p>
                     </div>
                   </div>

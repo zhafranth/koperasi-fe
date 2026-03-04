@@ -64,9 +64,7 @@ const ChartKoperasi = () => {
           <h3 className="text-sm font-semibold text-[#1c1917]">
             Simpanan per Bulan
           </h3>
-          <p className="text-xs text-[#a8a29e]">
-            Total simpanan wajib bulanan
-          </p>
+          <p className="text-xs text-[#a8a29e]">Total simpanan wajib bulanan</p>
         </div>
         <Select
           value={String(tahun)}
@@ -112,7 +110,7 @@ const ChartKoperasi = () => {
               cursor={{ fill: "rgba(20, 90, 63, 0.05)" }}
               content={
                 <ChartTooltipContent
-                  formatter={(value, name, item, index) => (
+                  formatter={(value) => (
                     <>
                       <div
                         className="h-2.5 w-2.5 shrink-0 rounded-[2px]"

@@ -22,7 +22,7 @@ Persiapkan konfigurasi testing yang diperlukan sebelum menulis unit test dashboa
 ---
 
 ## Task 2 — Unit test komponen Dashboard (Layout & Sidebar)
-**Status**: [ ] Pending
+**Status**: [x] Completed
 
 Tulis unit test untuk `src/pages/dashboard/Dashboard.tsx`:
 

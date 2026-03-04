@@ -220,13 +220,13 @@ const Home = () => {
       <main className="max-w-6xl mx-auto px-6 -mt-10 pb-16 space-y-8">
         {/* Stats Cards - Main Row */}
         <div className="space-y-3">
-          <div className="flex gap-3 overflow-x-auto pb-1 snap-x snap-mandatory lg:snap-none lg:grid lg:grid-cols-4 scrollbar-hide">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {stats.map((stat) => {
               const isHighlight = stat.isHighlight;
               return (
                 <div
                   key={stat.title}
-                  className={`kp-scale-in ${stat.delay} snap-start relative min-w-[170px] flex-shrink-0 lg:min-w-0 rounded-2xl p-4 pb-5 transition-all duration-300 overflow-hidden ${
+                  className={`kp-scale-in ${stat.delay} relative rounded-2xl p-4 pb-5 transition-all duration-300 overflow-hidden ${
                     isHighlight
                       ? "bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] shadow-lg shadow-[#0d3b2c]/25 border border-[#1a6b50]/30"
                       : "bg-white border border-[#e7e5e0] shadow-sm hover:shadow-md hover:border-[#c9a84c]/30"
@@ -285,7 +285,7 @@ const Home = () => {
               {danaKoperasi.map((item) => (
                 <div
                   key={item.title}
-                  className="group/item relative px-5 py-4 hover:bg-stone-50/50 transition-colors"
+                  className="group/item relative px-3 sm:px-5 py-4 hover:bg-stone-50/50 transition-colors"
                 >
                   <div className="flex items-center justify-between mb-2.5">
                     <div
@@ -304,10 +304,10 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <p className={`text-lg font-bold font-serif ${item.valueColor}`}>
+                  <p className={`text-sm sm:text-lg font-bold font-serif truncate ${item.valueColor}`}>
                     {item.value}
                   </p>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c] mt-0.5 block">
+                  <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-[#78716c] mt-0.5 block">
                     {item.title}
                   </span>
                 </div>

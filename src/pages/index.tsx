@@ -17,6 +17,8 @@ import {
   Home as HomeIcon,
   Heart,
   Info,
+  ArrowDownLeft,
+  ArrowUpRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "@/lib/utils";
@@ -24,6 +26,7 @@ import { useGetAnggota } from "@/networks/anggota";
 import { useGetEvents } from "@/networks/event";
 import { useGetTransaksiTotal } from "@/networks/transaksi";
 import { useGetKeluarga } from "@/networks/keluarga";
+import { useGetPemasukan, useGetPengeluaran } from "@/networks/dana-koperasi";
 import EmptyState from "@/components/EmptyState";
 import ModalDetailEvent from "./dashboard/_components/ModalDetailEvent";
 import type { EventProps } from "@/api/event/event.interface";
@@ -58,6 +61,11 @@ const KATEGORI_LABEL: Record<string, string> = {
   penggalangan_dana: "Penggalangan Dana",
 };
 
+const SUMBER_STYLE: Record<string, { label: string; color: string }> = {
+  infaq: { label: "Infaq", color: "text-rose-800 bg-rose-50" },
+  sukarela: { label: "Sukarela", color: "text-violet-800 bg-violet-50" },
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -66,6 +74,8 @@ const Home = () => {
   const { data: events = [] } = useGetEvents();
   const { data: totalData } = useGetTransaksiTotal();
   const { data: keluargaList = [] } = useGetKeluarga();
+  const { data: pemasukanList = [] } = useGetPemasukan();
+  const { data: pengeluaranList = [] } = useGetPengeluaran();
 
   const stats = useMemo(() => {
     const d = totalData;
@@ -382,6 +392,249 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Pemasukan & Pengeluaran (Infaq + Sukarela) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Card Pemasukan */}
+          <div className="kp-fade-up kp-d5">
+            <div className="bg-white rounded-2xl shadow-sm border border-[#e7e5e0] h-full flex flex-col">
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-[#e7e5e0]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center">
+                      <ArrowDownLeft className="w-4 h-4 text-emerald-800" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#1c1917]">
+                        Pemasukan
+                      </h3>
+                      <p className="text-[11px] text-[#a8a29e] mt-0.5">
+                        Infaq masuk & sumbangan sukarela
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-lg font-bold font-serif text-emerald-800">
+                    {formatCurrency(
+                      pemasukanList.reduce((sum, i) => sum + Number(i.jumlah), 0),
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Summary per sumber */}
+              <div className="grid grid-cols-2 divide-x divide-[#e7e5e0] border-b border-[#e7e5e0]">
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Heart className="w-3 h-3 text-rose-500" />
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c]">
+                      Infaq
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold font-serif text-rose-800">
+                    {formatCurrency(
+                      pemasukanList.filter((i) => i.sumber === "infaq").reduce(
+                        (sum, i) => sum + Number(i.jumlah),
+                        0,
+                      ),
+                    )}
+                  </p>
+                </div>
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <HandCoins className="w-3 h-3 text-violet-500" />
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c]">
+                      Sukarela
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold font-serif text-violet-800">
+                    {formatCurrency(
+                      pemasukanList.filter((i) => i.sumber === "sukarela").reduce(
+                        (sum, i) => sum + Number(i.jumlah),
+                        0,
+                      ),
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Transaction list */}
+              <div className="flex-1 overflow-y-auto max-h-[340px]">
+                {pemasukanList.length > 0 ? (
+                  pemasukanList.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 px-6 py-3.5 hover:bg-stone-50/60 transition-colors"
+                      style={{
+                        borderBottom:
+                          index < pemasukanList.length - 1
+                            ? "1px solid #e7e5e0"
+                            : "none",
+                      }}
+                    >
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                          item.sumber === "infaq" ? "bg-rose-50" : "bg-violet-50"
+                        }`}
+                      >
+                        {item.sumber === "infaq" ? (
+                          <Heart className="w-3.5 h-3.5 text-rose-500" />
+                        ) : (
+                          <HandCoins className="w-3.5 h-3.5 text-violet-500" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-[#1c1917] truncate">
+                          {item.nama_anggota}
+                        </p>
+                        <p className="text-[11px] text-[#a8a29e] mt-0.5">
+                          {dayjs(item.createdAt).format("D MMM YYYY")}
+                          {item.keterangan ? ` · ${item.keterangan}` : ""}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-bold text-emerald-700">
+                          +{formatCurrency(item.jumlah)}
+                        </p>
+                        <span
+                          className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full mt-0.5 ${SUMBER_STYLE[item.sumber]?.color || ""}`}
+                        >
+                          {SUMBER_STYLE[item.sumber]?.label || item.sumber}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={ArrowDownLeft}
+                    title="Belum ada pemasukan"
+                    description="Data pemasukan infaq & sukarela akan muncul di sini"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Card Pengeluaran */}
+          <div className="kp-fade-up kp-d6">
+            <div className="bg-white rounded-2xl shadow-sm border border-[#e7e5e0] h-full flex flex-col">
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-[#e7e5e0]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
+                      <ArrowUpRight className="w-4 h-4 text-red-700" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-[#1c1917]">
+                        Pengeluaran
+                      </h3>
+                      <p className="text-[11px] text-[#a8a29e] mt-0.5">
+                        Infaq keluar & penarikan sukarela
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-lg font-bold font-serif text-red-700">
+                    {formatCurrency(
+                      pengeluaranList.reduce((sum, i) => sum + Number(i.jumlah), 0),
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Summary per sumber */}
+              <div className="grid grid-cols-2 divide-x divide-[#e7e5e0] border-b border-[#e7e5e0]">
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <Heart className="w-3 h-3 text-rose-500" />
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c]">
+                      Infaq
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold font-serif text-rose-800">
+                    {formatCurrency(
+                      pengeluaranList.filter((i) => i.sumber === "infaq").reduce(
+                        (sum, i) => sum + Number(i.jumlah),
+                        0,
+                      ),
+                    )}
+                  </p>
+                </div>
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <HandCoins className="w-3 h-3 text-violet-500" />
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78716c]">
+                      Sukarela
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold font-serif text-violet-800">
+                    {formatCurrency(
+                      pengeluaranList.filter((i) => i.sumber === "sukarela").reduce(
+                        (sum, i) => sum + Number(i.jumlah),
+                        0,
+                      ),
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              {/* Transaction list */}
+              <div className="flex-1 overflow-y-auto max-h-[340px]">
+                {pengeluaranList.length > 0 ? (
+                  pengeluaranList.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 px-6 py-3.5 hover:bg-stone-50/60 transition-colors"
+                      style={{
+                        borderBottom:
+                          index < pengeluaranList.length - 1
+                            ? "1px solid #e7e5e0"
+                            : "none",
+                      }}
+                    >
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                          item.sumber === "infaq" ? "bg-rose-50" : "bg-violet-50"
+                        }`}
+                      >
+                        {item.sumber === "infaq" ? (
+                          <Heart className="w-3.5 h-3.5 text-rose-500" />
+                        ) : (
+                          <HandCoins className="w-3.5 h-3.5 text-violet-500" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-[#1c1917] truncate">
+                          {item.keterangan || "Penarikan " + item.sumber}
+                        </p>
+                        <p className="text-[11px] text-[#a8a29e] mt-0.5">
+                          {dayjs(item.tanggal).format("D MMM YYYY")}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-bold text-red-600">
+                          -{formatCurrency(item.jumlah)}
+                        </p>
+                        <span
+                          className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full mt-0.5 ${SUMBER_STYLE[item.sumber]?.color || ""}`}
+                        >
+                          {SUMBER_STYLE[item.sumber]?.label || item.sumber}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <EmptyState
+                    icon={ArrowUpRight}
+                    title="Belum ada pengeluaran"
+                    description="Data pengeluaran infaq & sukarela akan muncul di sini"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Daftar Keluarga */}
         {keluargaList.length > 0 && (
           <div className="kp-fade-up kp-d3 space-y-4">

@@ -73,7 +73,9 @@ const TabDetail: React.FC<Props> = ({ data, changeContent }) => {
         <div className=" flex items-center justify-between pt-4">
           <div>
             <p className="text-sm font-medium text-gray-500">Total Cicilan</p>
-            <p className="text-lg font-semibold">{formatCurrency(jumlah || 0)}</p>
+            <p className="text-lg font-semibold">
+              {formatCurrency(jumlah || 0)}
+            </p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500">Sisa Cicilan</p>

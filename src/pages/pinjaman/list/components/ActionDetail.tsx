@@ -35,7 +35,13 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={toggle}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        toggle();
+        setContentMode("detail");
+      }}
+    >
       <DialogTrigger asChild>
         <Button className="bg-blue-100 text-blue-500 hover:text-white hover:cursor-pointer hover:bg-blue-400">
           <EyeIcon />
@@ -63,15 +69,17 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
         {contentMode === "payment" && (
           <TabPayment data={detail} changeContent={handleChangeContent} />
         )}
-        {contentMode === "detail" && isPengurus && (
-          <Button
-            className="bg-transparent hover:bg-gray hover:cursor-pointer text-neutral-900 shadow-none"
-            size="sm"
-            onClick={() => handleChangeContent("payment")}
-          >
-            Bayar cicilan
-          </Button>
-        )}
+        {contentMode === "detail" &&
+          detail?.status === "proses" &&
+          isPengurus && (
+            <Button
+              className="bg-transparent hover:bg-gray hover:cursor-pointer text-neutral-900 shadow-none"
+              size="sm"
+              onClick={() => handleChangeContent("payment")}
+            >
+              Bayar cicilan
+            </Button>
+          )}
       </DialogContent>
     </Dialog>
   );

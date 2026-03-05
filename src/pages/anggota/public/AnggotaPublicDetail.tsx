@@ -16,7 +16,7 @@ import {
   Users,
   ChevronLeft,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import { useGetAnggotaDetail } from "@/networks/anggota";
 import { SkeletonDetail } from "@/components/Skeleton";
 import EmptyState from "@/components/EmptyState";
@@ -45,6 +45,15 @@ const AnggotaPublicDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: member, isLoading } = useGetAnggotaDetail(Number(id));
+
+  const sortedSimpanan = useMemo(() => {
+    return member?.simpanan?.sort((a, b) => {
+      // Sort by year first (descending), then by month (descending)
+      const yearDiff = Number(b?.tahun || 0) - Number(a?.tahun || 0);
+      if (yearDiff !== 0) return yearDiff;
+      return Number(b?.bulan || 0) - Number(a?.bulan || 0);
+    });
+  }, [member?.simpanan]);
 
   if (isLoading) {
     return (
@@ -363,13 +372,13 @@ const AnggotaPublicDetail = () => {
               Riwayat Simpanan
             </h2>
             <div className="bg-white rounded-2xl shadow-sm border border-[#e7e5e0] overflow-hidden">
-              {member.simpanan.map((item, index) => (
+              {sortedSimpanan?.map((item, index) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between p-5 hover:bg-stone-50/60 transition-colors"
                   style={{
                     borderBottom:
-                      index < member.simpanan.length - 1
+                      index < sortedSimpanan?.length - 1
                         ? "1px solid #e7e5e0"
                         : "none",
                   }}
@@ -383,9 +392,11 @@ const AnggotaPublicDetail = () => {
                         Iuran Bulanan
                       </p>
                       <p className="text-xs mt-0.5 text-[#a8a29e]">
-                        {formatDate(item.tanggal, "dd MMMM yyyy", {
-                          locale: idLocale,
-                        })}
+                        {item?.bulan &&
+                          formatDate(item?.bulan, "MMMM", {
+                            locale: idLocale,
+                          })}{" "}
+                        {item?.tahun && item?.tahun}
                       </p>
                     </div>
                   </div>

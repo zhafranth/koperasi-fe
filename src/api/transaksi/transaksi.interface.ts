@@ -8,6 +8,11 @@ export interface TransaksiProps {
   nama_anggota: string | null;
 }
 
+export interface UpdateTransaksiPayload {
+  jumlah?: number;
+  keterangan?: string;
+}
+
 export interface TransaksiTotalProps {
   total_anggota: number;
   jumlah_dana: number;

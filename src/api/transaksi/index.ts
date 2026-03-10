@@ -3,6 +3,7 @@ import apiRequest from "../../../config/axios";
 import type {
   TransaksiProps,
   TransaksiTotalProps,
+  UpdateTransaksiPayload,
 } from "./transaksi.interface";
 
 export const getListTransaksi = async (params?: object) => {
@@ -22,4 +23,24 @@ export const getTotalTransaksi = async () => {
   });
 
   return response.data.data;
+};
+
+export const deleteTransaksiApi = async (id: number) => {
+  const response = await apiRequest({
+    method: "DELETE",
+    url: `/transaksi/${id}`,
+  });
+  return response.data;
+};
+
+export const updateTransaksiApi = async (
+  id: number,
+  data: UpdateTransaksiPayload,
+) => {
+  const response = await apiRequest({
+    method: "PUT",
+    url: `/transaksi/${id}`,
+    data,
+  });
+  return response.data;
 };

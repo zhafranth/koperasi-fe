@@ -42,7 +42,8 @@ interface ModalAddPinjamanProps {
 
 const ModalAddPinjaman = ({ isOpen, onClose }: ModalAddPinjamanProps) => {
   const { mutate: createPinjaman, isPending } = useCreatePinjaman();
-  const { data: anggotaList = [] } = useGetAnggota();
+  const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
+  const anggotaList = anggotaResult?.data ?? [];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

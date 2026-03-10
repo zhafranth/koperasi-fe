@@ -168,7 +168,8 @@ const ModalAddKeluarga = ({ isOpen, onClose }: ModalAddKeluargaProps) => {
     },
   });
 
-  const { data: anggotaList = [] } = useGetAnggota();
+  const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
+  const anggotaList = anggotaResult?.data ?? [];
   const { mutate: createKeluarga, isPending } = useCreateKeluarga();
 
   const anggotaOptions = anggotaList

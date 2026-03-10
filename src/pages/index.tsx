@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChartKoperasi from "@/components/ChartsKoperasi";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,7 @@ import { useGetTransaksiTotal } from "@/networks/transaksi";
 import { useGetKeluarga } from "@/networks/keluarga";
 import { useGetPemasukan, useGetPengeluaran } from "@/networks/dana-koperasi";
 import EmptyState from "@/components/EmptyState";
+import { Pagination } from "@/components/Pagination";
 import ModalDetailEvent from "./dashboard/_components/ModalDetailEvent";
 import type { EventProps } from "@/api/event/event.interface";
 import dayjs from "dayjs";
@@ -69,8 +70,27 @@ const SUMBER_STYLE: Record<string, { label: string; color: string }> = {
 const Home = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [anggotaPage, setAnggotaPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<EventProps | null>(null);
-  const { data: anggotaList = [] } = useGetAnggota();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const handleAnggotaSearch = (value: string) => {
+    setSearchQuery(value);
+    setAnggotaPage(1);
+  };
+
+  const { data: anggotaResult } = useGetAnggota({
+    nama: debouncedSearch || undefined,
+    page: anggotaPage,
+    limit: 20,
+  });
+  const anggotaList = anggotaResult?.data ?? [];
+  const anggotaPagination = anggotaResult?.pagination;
   const { data: events = [] } = useGetEvents();
   const { data: totalData } = useGetTransaksiTotal();
   const { data: keluargaList = [] } = useGetKeluarga();
@@ -157,9 +177,6 @@ const Home = () => {
     ];
   }, [totalData]);
 
-  const filteredAnggota = anggotaList.filter((anggota) =>
-    anggota.nama.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
 
   return (
     <div className="min-h-screen bg-[#f7f5f0]">
@@ -750,7 +767,7 @@ const Home = () => {
                   type="text"
                   placeholder="Cari anggota..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleAnggotaSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-[#e7e5e0] bg-[#f7f5f0] text-[#1c1917] placeholder:text-[#a8a29e] focus:outline-none focus:border-[#145a3f] focus:ring-1 focus:ring-[#145a3f]/20 transition-colors"
                 />
               </div>
@@ -758,7 +775,7 @@ const Home = () => {
 
             {/* Anggota Cards Grid */}
             <div className="p-6">
-              {filteredAnggota.length === 0 ? (
+              {anggotaList.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="w-14 h-14 rounded-2xl bg-[#f7f5f0] flex items-center justify-center mx-auto mb-4">
                     <Users className="w-6 h-6 text-[#a8a29e]" />
@@ -771,7 +788,7 @@ const Home = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredAnggota.map((anggota, index) => {
+                  {anggotaList.map((anggota, index) => {
                     const delays = [
                       "kp-d1",
                       "kp-d2",
@@ -838,6 +855,14 @@ const Home = () => {
                 </div>
               )}
             </div>
+            {anggotaPagination && anggotaPagination.total_pages > 1 && (
+              <div className="px-6 pb-4">
+                <Pagination
+                  pagination={anggotaPagination}
+                  onPageChange={setAnggotaPage}
+                />
+              </div>
+            )}
           </div>
         </div>
       </main>

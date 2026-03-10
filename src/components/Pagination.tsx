@@ -14,16 +14,20 @@ interface PaginationProps {
     total: number;
     total_pages: number;
   };
+  onPageChange?: (page: number) => void;
 }
 
-export function Pagination({ pagination }: PaginationProps) {
+export function Pagination({ pagination, onPageChange }: PaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { page = 1, total_pages } = pagination;
 
   const handleLinkPage = (page: number) => {
+    if (onPageChange) {
+      onPageChange(page);
+      return;
+    }
     const newParams = new URLSearchParams(searchParams);
-
     newParams.set("page", String(page));
     setSearchParams(newParams);
   };

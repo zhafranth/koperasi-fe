@@ -13,6 +13,7 @@ const Search = () => {
     const debouncedValue = setTimeout(() => {
       const value = e.target.value;
       const newParams = new URLSearchParams(searchParams);
+      newParams.delete("page");
       if (value === "") {
         newParams.delete("nama");
         setSearchParams(newParams);

@@ -160,7 +160,8 @@ const ModalFormTransaksi = ({ onClose }: { onClose: () => void }) => {
     isPendingSimpanan || isPendingInfaq || isPendingSukarela || isPendingLiburan;
 
   const typeValue = form.watch("type");
-  const { data: anggotaList = [] } = useGetAnggota();
+  const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
+  const anggotaList = anggotaResult?.data ?? [];
 
   const anggotaOptions = anggotaList.map((anggota) => ({
     value: anggota.id,

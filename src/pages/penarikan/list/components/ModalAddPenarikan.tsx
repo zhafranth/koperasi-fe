@@ -68,7 +68,8 @@ const ModalAddPenarikan: React.FC<Props> = ({ isOpen, onClose }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const { data: anggotaList = [] } = useGetAnggota();
+  const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
+  const anggotaList = anggotaResult?.data ?? [];
   const { mutate: createPenarikan, isPending } = useCreatePenarikan();
 
   const idAnggota = form.watch("id_anggota");

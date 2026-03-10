@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router-dom";
 import { SkeletonCard } from "@/components/Skeleton";
 import EmptyState from "@/components/EmptyState";
 import { useIsPengurus } from "@/hooks/useAuth";
+import { Pagination } from "@/components/Pagination";
 
 const Anggota = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +20,9 @@ const Anggota = () => {
 
   const queryObject = Object.fromEntries([...searchParams]);
 
-  const { data = [], isLoading } = useGetAnggota(queryObject);
+  const { data: result, isLoading } = useGetAnggota({ ...queryObject, limit: 20 });
+  const data = result?.data ?? [];
+  const pagination = result?.pagination;
   const { isOpen, onOpen, onClose } = useToggle();
   const isPengurus = useIsPengurus();
 
@@ -81,6 +84,10 @@ const Anggota = () => {
             })
           )}
         </div>
+
+        {pagination && pagination.total_pages > 1 && (
+          <Pagination pagination={pagination} />
+        )}
       </div>
 
       <ModalAddAnggota isOpen={isOpen} onClose={onClose} />

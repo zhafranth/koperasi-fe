@@ -13,7 +13,7 @@ export const getListAnggota = async (params?: object) => {
     params,
   });
 
-  return response.data.data;
+  return response.data;
 };
 
 export const getDetailAnggota = async (id: number) => {

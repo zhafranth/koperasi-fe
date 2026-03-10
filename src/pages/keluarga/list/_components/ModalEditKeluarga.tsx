@@ -171,7 +171,8 @@ const ModalEditKeluarga = ({
     },
   });
 
-  const { data: anggotaList = [] } = useGetAnggota();
+  const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
+  const anggotaList = anggotaResult?.data ?? [];
   const { mutate: updateKeluarga, isPending } = useUpdateKeluarga();
 
   const currentAnggotaIds = data.anggota.map((a) => a.id);

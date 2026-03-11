@@ -11,6 +11,9 @@ import ModalEditTransaksi from "./components/ModalEditTransaksi";
 import DialogDeleteTransaksi from "./components/DialogDeleteTransaksi";
 import { useIsPengurus } from "@/hooks/useAuth";
 import type { TransaksiProps } from "@/api/transaksi/transaksi.interface";
+import Chips from "@/components/Chips";
+import { formatCurrency } from "@/lib/utils";
+import { formatDate } from "date-fns";
 
 const TransaksiList = () => {
   const [searchParams] = useSearchParams();
@@ -20,7 +23,9 @@ const TransaksiList = () => {
   const [editData, setEditData] = useState<TransaksiProps | null>(null);
   const [deleteData, setDeleteData] = useState<TransaksiProps | null>(null);
 
-  const { data, isLoading } = useGetTransaksi(removeEmptyObjectValues(queryObject));
+  const { data, isLoading } = useGetTransaksi(
+    removeEmptyObjectValues(queryObject),
+  );
   const { data: items = [], pagination } = data || {};
 
   const columns = useMemo(
@@ -36,8 +41,36 @@ const TransaksiList = () => {
     [isPengurus],
   );
 
+  const renderMobileCard = (item: TransaksiProps, index: number) => {
+    const amount = Number(item.jumlah);
+    return (
+      <div
+        key={item.id}
+        className="bg-white rounded-xl border border-[#e7e5e0] p-4 kp-fade-up"
+        style={{ animationDelay: `${index * 0.05}s` }}
+      >
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-sm font-semibold text-[#1c1917] truncate mr-2">
+            {item.nama_anggota || "Koperasi"}
+          </p>
+          <Chips options={TRANSAKSI_OPTIONS} value={item.jenis} />
+        </div>
+        <div className="flex items-center justify-between">
+          <p
+            className={`text-sm font-bold ${amount < 0 ? "text-red-600" : "text-green-600"}`}
+          >
+            {formatCurrency(amount)}
+          </p>
+          <p className="text-xs text-[#a8a29e]">
+            {formatDate(new Date(item.createdAt), "dd MMM yyyy")}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <>
+    <div className="pb-20">
       <ListLayout
         columns={columns}
         data={items}
@@ -62,13 +95,11 @@ const TransaksiList = () => {
         extraComponents={<InfoTotal />}
         pagination={pagination}
         extendButtons={<ButtonAddTransaksi />}
+        renderMobileCard={renderMobileCard}
       />
 
       {editData && (
-        <ModalEditTransaksi
-          data={editData}
-          onClose={() => setEditData(null)}
-        />
+        <ModalEditTransaksi data={editData} onClose={() => setEditData(null)} />
       )}
 
       {deleteData && (
@@ -77,7 +108,7 @@ const TransaksiList = () => {
           onClose={() => setDeleteData(null)}
         />
       )}
-    </>
+    </div>
   );
 };
 

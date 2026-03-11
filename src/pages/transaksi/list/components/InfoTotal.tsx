@@ -69,7 +69,7 @@ const InfoTotal = () => {
   return (
     <div className="flex flex-col gap-3 mb-4 kp-fade-up kp-d1">
       {/* 5 metric cards */}
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         {metrics.map((info, index) => (
           <div
             key={index}
@@ -97,7 +97,7 @@ const InfoTotal = () => {
       </div>
 
       {/* Total Dana — featured hero card */}
-      <div className="relative flex items-center justify-between bg-[#0d3b2c] py-4 px-6 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+      <div className="relative flex flex-col gap-3 bg-[#0d3b2c] py-4 px-5 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 md:flex-row md:items-center md:justify-between md:px-6">
         {/* decorative rings */}
         <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full border border-[#c9a84c]/20" />
         <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full border border-[#c9a84c]/15" />
@@ -115,7 +115,7 @@ const InfoTotal = () => {
           </div>
         </div>
 
-        <p className="text-2xl font-bold text-[#c9a84c] relative z-10 tracking-tight">
+        <p className="text-xl font-bold text-[#c9a84c] relative z-10 tracking-tight md:text-2xl">
           {formatCurrency(total_dana || 0)}
         </p>
       </div>

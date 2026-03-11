@@ -7,6 +7,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useSearchParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface PaginationProps {
   pagination: {
@@ -19,6 +20,7 @@ interface PaginationProps {
 
 export function Pagination({ pagination, onPageChange }: PaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isMobile = useIsMobile();
 
   const { page = 1, total_pages } = pagination;
 
@@ -47,8 +49,8 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
               onClick={() => handleLinkPage(Number(page) - 1)}
             />
           </PaginationItem>
-          {Array.from({ length: total_pages }, (_, i) => i + 1).map((num) => {
-            return (
+          {!isMobile &&
+            Array.from({ length: total_pages }, (_, i) => i + 1).map((num) => (
               <PaginationItem
                 key={num}
                 className={`${
@@ -60,8 +62,14 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
               >
                 <PaginationLink>{num}</PaginationLink>
               </PaginationItem>
-            );
-          })}
+            ))}
+          {isMobile && (
+            <PaginationItem>
+              <span className="px-3 text-sm text-[#78716c]">
+                {page} / {total_pages}
+              </span>
+            </PaginationItem>
+          )}
           <PaginationItem>
             <PaginationNext
               className={`hover:cursor-pointer rounded-xl ${

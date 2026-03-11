@@ -8,6 +8,10 @@ import { PlusIcon } from "lucide-react";
 import useToggle from "@/hooks/useToggle";
 import ModalAddPenarikan from "./components/ModalAddPenarikan";
 import { useIsPengurus } from "@/hooks/useAuth";
+import type { PenarikanProps } from "@/api/penarikan/penarikan.interface";
+import { Badge } from "@/components/ui/badge";
+import { formatCurrency } from "@/lib/utils";
+import { formatDate } from "date-fns";
 
 const SUMBER_FILTER_OPTIONS = [
   { label: "All", value: "*" },
@@ -17,6 +21,20 @@ const SUMBER_FILTER_OPTIONS = [
   { label: "Liburan", value: "liburan" },
 ];
 
+const SUMBER_LABEL: Record<string, string> = {
+  simpanan: "Simpanan",
+  sukarela: "Sukarela",
+  infaq: "Infaq",
+  liburan: "Liburan",
+};
+
+const SUMBER_COLOR: Record<string, string> = {
+  simpanan: "bg-emerald-100 text-emerald-700",
+  sukarela: "bg-violet-100 text-violet-700",
+  infaq: "bg-teal-100 text-teal-700",
+  liburan: "bg-cyan-100 text-cyan-700",
+};
+
 const PenarikanList = () => {
   const [searchParams] = useSearchParams();
   const queryObject = Object.fromEntries([...searchParams]);
@@ -25,6 +43,31 @@ const PenarikanList = () => {
 
   const { data = [], isLoading } = useGetPenarikan(
     removeEmptyObjectValues(queryObject)
+  );
+
+  const renderMobileCard = (item: PenarikanProps, index: number) => (
+    <div
+      key={item.id}
+      className="bg-white rounded-xl border border-[#e7e5e0] p-4 kp-fade-up"
+      style={{ animationDelay: `${index * 0.05}s` }}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-sm font-semibold text-[#1c1917] truncate mr-2">
+          {item.nama || "Koperasi"}
+        </p>
+        <Badge className={`rounded-full ${SUMBER_COLOR[item.sumber] || "bg-gray-100 text-gray-700"}`}>
+          {SUMBER_LABEL[item.sumber] || item.sumber}
+        </Badge>
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-bold text-red-600">
+          {formatCurrency(Number(item.jumlah))}
+        </p>
+        <p className="text-xs text-[#a8a29e]">
+          {formatDate(new Date(item.tanggal), "dd MMM yyyy")}
+        </p>
+      </div>
+    </div>
   );
 
   return (
@@ -52,6 +95,7 @@ const PenarikanList = () => {
             </Button>
           ) : undefined
         }
+        renderMobileCard={renderMobileCard}
       />
       <ModalAddPenarikan isOpen={isOpen} onClose={onClose} />
     </>

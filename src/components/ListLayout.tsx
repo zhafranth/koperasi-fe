@@ -2,6 +2,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Header from "./Header";
 import { DataTable } from "./Table";
 import { Pagination } from "./Pagination";
+import { MobileCardList } from "./MobileCard";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface Props<TData, TValue> {
   title: string;
@@ -20,6 +22,7 @@ interface Props<TData, TValue> {
     total: number;
     total_pages: number;
   };
+  renderMobileCard?: (item: TData, index: number) => React.ReactNode;
 }
 
 function ListLayout<TData, TValue>({
@@ -31,12 +34,19 @@ function ListLayout<TData, TValue>({
   extraComponents,
   isLoading,
   pagination,
+  renderMobileCard,
 }: Props<TData, TValue>) {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <Header title={title} extendButtons={extendButtons} filters={filters} />
       {extraComponents}
-      <DataTable columns={columns} data={data} isLoading={isLoading} />
+      {isMobile && renderMobileCard ? (
+        <MobileCardList data={data} renderCard={renderMobileCard} isLoading={isLoading} />
+      ) : (
+        <DataTable columns={columns} data={data} isLoading={isLoading} />
+      )}
       {pagination && <Pagination pagination={pagination} />}
     </>
   );

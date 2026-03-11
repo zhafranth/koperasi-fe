@@ -147,7 +147,7 @@ const DashboardHome = () => {
   } = useToggle();
   const [selectedEvent, setSelectedEvent] = useState<EventProps | null>(null);
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-24">
       {/* Page Header */}
       <div className="kp-fade-up">
         <h1 className="text-2xl font-bold text-[#1c1917] font-serif">
@@ -160,13 +160,13 @@ const DashboardHome = () => {
 
       {/* Stats Cards - Main Row */}
       <div className="space-y-3">
-        <div className="flex gap-3  -mx-6 px-6 pb-1 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 snap-x snap-mandatory lg:snap-none scrollbar-hide">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {stats.map((stat) => {
             const isHighlight = stat.isHighlight;
             return (
               <div
                 key={stat.title}
-                className={`kp-scale-in ${stat.delay} snap-start relative min-w-[170px] flex-shrink-0 lg:min-w-0 rounded-2xl p-4 pb-5 transition-all duration-300 ${
+                className={`kp-scale-in ${stat.delay} relative rounded-2xl p-4 pb-5 transition-all duration-300 ${
                   isHighlight
                     ? "bg-gradient-to-br from-[#0d3b2c] via-[#145a3f] to-[#0d3b2c] shadow-lg shadow-[#0d3b2c]/25 border border-[#1a6b50]/30"
                     : "bg-white border border-[#e7e5e0] shadow-sm hover:shadow-md hover:border-[#c9a84c]/30"
@@ -223,7 +223,7 @@ const DashboardHome = () => {
 
         {/* Dana Koperasi - Combined Card */}
         <div className="kp-scale-in kp-d5 rounded-2xl bg-white border border-[#e7e5e0] shadow-sm">
-          <div className="grid grid-cols-3 divide-x divide-[#e7e5e0]">
+          <div className="grid grid-cols-1 divide-y md:grid-cols-3 md:divide-y-0 md:divide-x divide-[#e7e5e0]">
             {danaKoperasi.map((item) => (
               <div
                 key={item.title}

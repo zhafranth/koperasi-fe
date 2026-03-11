@@ -35,7 +35,7 @@ export function Pagination({ pagination, onPageChange }: PaginationProps) {
   };
 
   return (
-    <div className={isMobile ? "mb-20" : "mb-4"}>
+    <div className="mb-4">
       <PaginationUI className="justify-end mt-4">
         <PaginationContent>
           <PaginationItem>

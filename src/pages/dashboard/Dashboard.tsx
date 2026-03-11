@@ -178,7 +178,7 @@ const Dashboard = () => {
       )}
 
       {/* Main Content */}
-      <main className={cn("flex-1 overflow-y-auto", isMobile ? "p-4 pb-24" : "p-6")}>
+      <main className={cn("flex-1 overflow-y-auto", isMobile ? "p-4 pb-32" : "p-6")}>
         <div className="h-full">
           <Outlet />
         </div>

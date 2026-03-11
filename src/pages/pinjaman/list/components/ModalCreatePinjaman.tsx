@@ -6,13 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import InputNumber from "@/components/InputNumber";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import InputSelect from "@/components/InputSelect";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +38,10 @@ const ModalAddPinjaman = ({ isOpen, onClose }: ModalAddPinjamanProps) => {
   const { mutate: createPinjaman, isPending } = useCreatePinjaman();
   const { data: anggotaResult } = useGetAnggota({ limit: 9999 });
   const anggotaList = anggotaResult?.data ?? [];
+  const anggotaOptions = anggotaList.map((anggota) => ({
+    value: anggota.id,
+    label: anggota.nama,
+  }));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,26 +100,13 @@ const ModalAddPinjaman = ({ isOpen, onClose }: ModalAddPinjamanProps) => {
                   <FormLabel className="text-xs font-semibold uppercase tracking-wider text-[#78716c]">
                     Anggota
                   </FormLabel>
-                  <Select
-                    value={field.value ? String(field.value) : undefined}
-                    onValueChange={(v) => field.onChange(Number(v))}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full rounded-xl border-[#e7e5e0] bg-[#f7f5f0] focus:bg-white focus:border-[#145a3f]">
-                        <SelectValue placeholder="Pilih anggota" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {anggotaList.map((anggota) => (
-                        <SelectItem
-                          key={anggota.id}
-                          value={String(anggota.id)}
-                        >
-                          {anggota.nama}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormControl>
+                    <InputSelect
+                      options={anggotaOptions}
+                      value={field.value}
+                      onChange={(v) => field.onChange(v as number)}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

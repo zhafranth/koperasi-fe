@@ -20,7 +20,10 @@ const Anggota = () => {
 
   const queryObject = Object.fromEntries([...searchParams]);
 
-  const { data: result, isLoading } = useGetAnggota({ ...queryObject, limit: 20 });
+  const { data: result, isLoading } = useGetAnggota({
+    ...queryObject,
+    limit: 20,
+  });
   const data = result?.data ?? [];
   const pagination = result?.pagination;
   const { isOpen, onOpen, onClose } = useToggle();
@@ -28,7 +31,7 @@ const Anggota = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-6 pb-20">
         <div className="kp-fade-up flex items-center justify-between">
           <h2 className="text-2xl font-bold text-[#1c1917]">Daftar Anggota</h2>
           {isPengurus && (
@@ -72,9 +75,20 @@ const Anggota = () => {
             />
           ) : (
             data.map((anggota, index) => {
-              const delays = ["kp-d1", "kp-d2", "kp-d3", "kp-d4", "kp-d5", "kp-d6", "kp-d7"];
+              const delays = [
+                "kp-d1",
+                "kp-d2",
+                "kp-d3",
+                "kp-d4",
+                "kp-d5",
+                "kp-d6",
+                "kp-d7",
+              ];
               return (
-                <div key={`anggota-${index}`} className={`kp-scale-in ${delays[Math.min(index, 6)]}`}>
+                <div
+                  key={`anggota-${index}`}
+                  className={`kp-scale-in ${delays[Math.min(index, 6)]}`}
+                >
                   <CardAnggota
                     data={anggota}
                     onEdit={isPengurus ? (id) => setEditId(id) : undefined}

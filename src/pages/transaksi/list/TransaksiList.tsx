@@ -23,7 +23,9 @@ const TransaksiList = () => {
   const [editData, setEditData] = useState<TransaksiProps | null>(null);
   const [deleteData, setDeleteData] = useState<TransaksiProps | null>(null);
 
-  const { data, isLoading } = useGetTransaksi(removeEmptyObjectValues(queryObject));
+  const { data, isLoading } = useGetTransaksi(
+    removeEmptyObjectValues(queryObject),
+  );
   const { data: items = [], pagination } = data || {};
 
   const columns = useMemo(
@@ -54,7 +56,9 @@ const TransaksiList = () => {
           <Chips options={TRANSAKSI_OPTIONS} value={item.jenis} />
         </div>
         <div className="flex items-center justify-between">
-          <p className={`text-sm font-bold ${amount < 0 ? "text-red-600" : "text-green-600"}`}>
+          <p
+            className={`text-sm font-bold ${amount < 0 ? "text-red-600" : "text-green-600"}`}
+          >
             {formatCurrency(amount)}
           </p>
           <p className="text-xs text-[#a8a29e]">
@@ -66,7 +70,7 @@ const TransaksiList = () => {
   };
 
   return (
-    <>
+    <div className="pb-20">
       <ListLayout
         columns={columns}
         data={items}
@@ -95,10 +99,7 @@ const TransaksiList = () => {
       />
 
       {editData && (
-        <ModalEditTransaksi
-          data={editData}
-          onClose={() => setEditData(null)}
-        />
+        <ModalEditTransaksi data={editData} onClose={() => setEditData(null)} />
       )}
 
       {deleteData && (
@@ -107,7 +108,7 @@ const TransaksiList = () => {
           onClose={() => setDeleteData(null)}
         />
       )}
-    </>
+    </div>
   );
 };
 

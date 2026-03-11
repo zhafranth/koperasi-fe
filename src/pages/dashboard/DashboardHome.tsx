@@ -147,7 +147,7 @@ const DashboardHome = () => {
   } = useToggle();
   const [selectedEvent, setSelectedEvent] = useState<EventProps | null>(null);
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-24">
       {/* Page Header */}
       <div className="kp-fade-up">
         <h1 className="text-2xl font-bold text-[#1c1917] font-serif">

@@ -5,8 +5,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGetPinjamanDetail } from "@/networks/pinjaman";
-import type { PinjamanProps } from "@/api/pinjaman/pinjaman.interface";
+import { useGetAggregatedPinjamanByAnggota } from "@/networks/pinjaman";
+import type { PinjamanAggregatedListItem } from "@/api/pinjaman/pinjaman.interface";
 import { useState } from "react";
 import TabDetail from "./TabDetail";
 import TabPayment from "./TabPayment";
@@ -16,7 +16,7 @@ import useToggle from "@/hooks/useToggle";
 import { useIsPengurus } from "@/hooks/useAuth";
 
 interface Props {
-  data: PinjamanProps;
+  data: PinjamanAggregatedListItem;
 }
 
 const ActionDetail: React.FC<Props> = ({ data }) => {
@@ -25,9 +25,9 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
   const [contentMode, setContentMode] = useState<"detail" | "payment">(
     "detail",
   );
-  const { id_pinjaman: id } = data ?? {};
-  const { data: detail } = useGetPinjamanDetail(id, {
-    enabled: !!id && isOpen,
+  const { id_anggota } = data ?? {};
+  const { data: detail } = useGetAggregatedPinjamanByAnggota(id_anggota, {
+    enabled: !!id_anggota && isOpen,
   });
 
   const handleChangeContent = (content: "detail" | "payment") => {
@@ -47,7 +47,7 @@ const ActionDetail: React.FC<Props> = ({ data }) => {
           <EyeIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-center ">
           {contentMode === "payment" && (
             <Button

@@ -1,4 +1,4 @@
-import type { PinjamanDetailProps } from "@/api/pinjaman/pinjaman.interface";
+import type { PinjamanAggregatedDetail } from "@/api/pinjaman/pinjaman.interface";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,54 +10,64 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import InputNumber from "@/components/InputNumber";
-import { useCicilan } from "@/networks/cicilan";
+import { useDistributedCicilan } from "@/networks/cicilan";
+import { formatCurrency } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface Props {
-  data?: PinjamanDetailProps;
+  data?: PinjamanAggregatedDetail;
   changeContent: (content: "detail" | "payment") => void;
 }
 
-const formSchema = z.object({
-  jumlah: z.number().min(1, "Jumlah is required"),
-  keterangan: z.string().min(1, "Keterangan is required"),
-});
-
 const TabPayment: React.FC<Props> = ({ changeContent, data }) => {
-  const { id_pinjaman: id } = data ?? {};
-  const { mutate } = useCicilan(id);
+  const { id_anggota, total_sisa = 0 } = data ?? {};
+  const { mutate, isPending } = useDistributedCicilan(id_anggota);
+
+  const formSchema = z.object({
+    jumlah: z
+      .number({ message: "Jumlah is required" })
+      .min(1, "Jumlah is required")
+      .max(total_sisa, `Maksimal ${formatCurrency(total_sisa)}`),
+    keterangan: z.string().min(1, "Keterangan is required"),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      mutate(
-        {
-          id_pinjaman: id,
-          jumlah: values.jumlah,
-          keterangan: values.keterangan,
-          tanggal: new Date().toLocaleString("sv-SE").replace("T", " "),
+    if (!id_anggota) return;
+    mutate(
+      {
+        id_anggota,
+        jumlah: values.jumlah,
+        keterangan: values.keterangan,
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+          changeContent("detail");
         },
-        {
-          onSuccess: () => {
-            form.reset();
-            changeContent("detail");
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
+      },
+    );
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="rounded-md border bg-amber-50 p-3 text-sm">
+          <p className="text-amber-900">
+            Total sisa pinjaman:{" "}
+            <span className="font-semibold">{formatCurrency(total_sisa)}</span>
+          </p>
+          <p className="mt-1 text-xs text-amber-700">
+            Pembayaran akan otomatis dialokasikan ke pinjaman terlama (FIFO).
+          </p>
+        </div>
+
         <FormField
           control={form.control}
           name="jumlah"
@@ -102,7 +112,7 @@ const TabPayment: React.FC<Props> = ({ changeContent, data }) => {
           </Button>
           <Button
             type="submit"
-            // disabled={!isValid}
+            disabled={isPending}
             className="bg-gradient-to-r bg-blue-600 hover:bg-blue-500 text-white shadow-md hover:shadow-lg transition-all duration-200"
           >
             Simpan

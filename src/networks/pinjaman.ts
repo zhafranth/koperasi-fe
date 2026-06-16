@@ -3,6 +3,8 @@ import {
   getDetailPinjaman,
   getLimitPinjaman,
   postCreatePinjaman,
+  getAggregatedPinjaman,
+  getAggregatedPinjamanByAnggota,
 } from "@/api/pinjaman";
 import type { CreatePinjamanPayload } from "@/api/pinjaman/pinjaman.interface";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +15,24 @@ export const useGetPinjaman = (params?: object) => {
     queryKey: ["pinjaman", "list", params],
     queryFn: () => getListPinjaman(params),
     enabled: !!params,
+  });
+};
+
+export const useGetAggregatedPinjaman = (params?: object) => {
+  return useQuery({
+    queryKey: ["pinjaman", "aggregated", params],
+    queryFn: () => getAggregatedPinjaman(params),
+  });
+};
+
+export const useGetAggregatedPinjamanByAnggota = (
+  idAnggota: number,
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: ["pinjaman", "aggregated-detail", idAnggota],
+    queryFn: () => getAggregatedPinjamanByAnggota(idAnggota),
+    enabled: !!idAnggota && options?.enabled !== false,
   });
 };
 

@@ -7,6 +7,7 @@ const InfoTotal = () => {
   const { data } = useGetTransaksiTotal();
 
   const {
+    saldo_simpanan,
     jumlah_dana,
     jumlah_pinjaman,
     jumlah_simpanan_sukarela,
@@ -18,22 +19,13 @@ const InfoTotal = () => {
   const metrics = useMemo(
     () => [
       {
-        title: "Jumlah Dana",
-        value: jumlah_dana,
+        title: "Simpanan Wajib",
+        value: saldo_simpanan,
         icon: PiggyBank,
         iconBg: "bg-emerald-50",
         iconColor: "text-emerald-700",
         valueColor: "text-emerald-800",
         bar: "bg-emerald-400",
-      },
-      {
-        title: "Jumlah Pinjaman",
-        value: jumlah_pinjaman,
-        icon: Wallet,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-700",
-        valueColor: "text-amber-800",
-        bar: "bg-amber-400",
       },
       {
         title: "Simpanan Sukarela",
@@ -62,8 +54,17 @@ const InfoTotal = () => {
         valueColor: "text-teal-800",
         bar: "bg-teal-400",
       },
+      {
+        title: "Piutang Pinjaman",
+        value: jumlah_pinjaman,
+        icon: Wallet,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-700",
+        valueColor: "text-amber-800",
+        bar: "bg-amber-400",
+      },
     ],
-    [jumlah_dana, jumlah_pinjaman, jumlah_simpanan_sukarela, jumlah_tabungan_liburan, jumlah_infaq],
+    [saldo_simpanan, jumlah_pinjaman, jumlah_simpanan_sukarela, jumlah_tabungan_liburan, jumlah_infaq],
   );
 
   return (
@@ -96,7 +97,7 @@ const InfoTotal = () => {
         ))}
       </div>
 
-      {/* Total Dana — featured hero card */}
+      {/* Total Dana — featured hero card. Aset = Kas + Piutang. */}
       <div className="relative flex flex-col gap-3 bg-[#0d3b2c] py-4 px-5 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 md:flex-row md:items-center md:justify-between md:px-6">
         {/* decorative rings */}
         <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full border border-[#c9a84c]/20" />
@@ -109,15 +110,20 @@ const InfoTotal = () => {
           </div>
           <div>
             <h3 className="text-[10px] font-semibold uppercase tracking-widest text-[#c9a84c]/70">
-              Total Dana Koperasi
+              Kas Koperasi
             </h3>
-            <p className="text-xs text-white/40 mt-0.5">Akumulasi seluruh dana aktif</p>
+            <p className="text-xs text-white/40 mt-0.5">Uang yang masih di dompet (jumlah dana − piutang)</p>
           </div>
         </div>
 
-        <p className="text-xl font-bold text-[#c9a84c] relative z-10 tracking-tight md:text-2xl">
-          {formatCurrency(total_dana || 0)}
-        </p>
+        <div className="relative z-10 flex flex-col items-start md:items-end">
+          <p className="text-xl font-bold text-[#c9a84c] tracking-tight md:text-2xl">
+            {formatCurrency(total_dana || 0)}
+          </p>
+          <p className="text-[10px] text-white/40 mt-0.5">
+            dari total titipan {formatCurrency(jumlah_dana || 0)}
+          </p>
+        </div>
       </div>
     </div>
   );

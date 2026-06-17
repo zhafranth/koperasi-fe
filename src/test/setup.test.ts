@@ -92,6 +92,7 @@ describe("createMockTransaksiTotal()", () => {
     const total = createMockTransaksiTotal();
 
     expect(total).toHaveProperty("total_anggota");
+    expect(total).toHaveProperty("saldo_simpanan");
     expect(total).toHaveProperty("jumlah_dana");
     expect(total).toHaveProperty("jumlah_pinjaman");
     expect(total).toHaveProperty("jumlah_simpanan_sukarela");

@@ -82,7 +82,7 @@ const DashboardHome = () => {
         iconColor: "text-emerald-800",
         valueColor: "text-emerald-800",
         delay: "kp-d2",
-        info: "Total simpanan wajib + infaq masuk + sukarela + cicilan + tab. liburan",
+        info: "Total titipan anggota (aset koperasi) = kas + piutang",
       },
       {
         title: "Jumlah Pinjaman",
@@ -92,7 +92,7 @@ const DashboardHome = () => {
         iconColor: "text-amber-800",
         valueColor: "text-amber-800",
         delay: "kp-d3",
-        info: "Total pinjaman berstatus proses",
+        info: "Piutang: sisa pinjaman aktif anggota",
       },
       {
         title: "Total Dana",
@@ -102,7 +102,7 @@ const DashboardHome = () => {
         iconColor: "text-[#92400e]",
         valueColor: "text-[#92400e]",
         delay: "kp-d4",
-        info: "Dana bersih setelah dikurangi penarikan dan pinjaman",
+        info: "Kas koperasi (di dompet) = jumlah dana − piutang",
         isHighlight: true,
       },
     ];
@@ -112,13 +112,22 @@ const DashboardHome = () => {
     const d = totalData;
     return [
       {
+        title: "Simpanan Wajib",
+        value: formatCurrency(d?.saldo_simpanan || 0),
+        icon: PiggyBank,
+        iconBg: "bg-emerald-50",
+        iconColor: "text-emerald-800",
+        valueColor: "text-emerald-800",
+        info: "Saldo simpanan wajib (setoran − penarikan)",
+      },
+      {
         title: "Simpanan Sukarela",
         value: formatCurrency(d?.jumlah_simpanan_sukarela || 0),
         icon: HandCoins,
         iconBg: "bg-blue-50",
         iconColor: "text-blue-800",
         valueColor: "text-blue-800",
-        info: "Simpanan sukarela − penarikan sukarela",
+        info: "Saldo sukarela (setoran − penarikan)",
       },
       {
         title: "Infaq",
@@ -127,7 +136,7 @@ const DashboardHome = () => {
         iconBg: "bg-rose-50",
         iconColor: "text-rose-800",
         valueColor: "text-rose-800",
-        info: "Infaq masuk − penarikan infaq",
+        info: "Saldo infaq (masuk − keluar − penarikan)",
       },
       {
         title: "Tab. Liburan",
@@ -136,7 +145,7 @@ const DashboardHome = () => {
         iconBg: "bg-teal-50",
         iconColor: "text-teal-800",
         valueColor: "text-teal-800",
-        info: "Tabungan liburan − penarikan liburan",
+        info: "Saldo tabungan liburan (setoran − penarikan)",
       },
     ];
   }, [totalData]);
@@ -223,7 +232,7 @@ const DashboardHome = () => {
 
         {/* Dana Koperasi - Combined Card */}
         <div className="kp-scale-in kp-d5 rounded-2xl bg-white border border-[#e7e5e0] shadow-sm">
-          <div className="grid grid-cols-1 divide-y md:grid-cols-3 md:divide-y-0 md:divide-x divide-[#e7e5e0]">
+          <div className="grid grid-cols-1 divide-y sm:grid-cols-2 sm:divide-y-0 sm:divide-x md:grid-cols-4 divide-[#e7e5e0]">
             {danaKoperasi.map((item) => (
               <div
                 key={item.title}

@@ -34,12 +34,13 @@ export function createMockTransaksiTotal(
 ): TransaksiTotalProps {
   return {
     total_anggota: 25,
-    jumlah_dana: 50_000_000,
-    jumlah_pinjaman: 10_000_000,
+    saldo_simpanan: 40_000_000,
     jumlah_simpanan_sukarela: 5_000_000,
     jumlah_infaq: 2_000_000,
     jumlah_tabungan_liburan: 3_000_000,
-    total_dana: 30_000_000,
+    jumlah_pinjaman: 10_000_000,
+    jumlah_dana: 50_000_000,
+    total_dana: 40_000_000,
     ...overrides,
   };
 }
